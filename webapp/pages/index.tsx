@@ -17,7 +17,7 @@ export default function Home() {
       <main className={styles.main}>
         <div className={styles.description}>
           <p>
-            Projeto de &nbsp;
+            Projeto de&nbsp;
             <code className={styles.code}>PGP PTR PTI</code>
           </p>
           <div>
