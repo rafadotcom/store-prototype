@@ -8,6 +8,12 @@ import { useState } from "react";
 export default function Admin() {
   const [name, setName] = useState("John Doe");
   const [dob, setDob] = useState("22-06-2001");
+  const [mail, setMail] = useState("aluno@gmail.com");
+  const [NIF, setNIF] = useState ("123456789");
+  const [morada, setMorada] = useState("morada");
+  const [telemovel, setTele] = useState("123456789");
+  const [password, setPass] = useState("1234");
+
   const [isEditingName, setIsEditingName] = useState(false);
   const [isEditingDob, setIsEditingDob] = useState(false);
   const [nameError, setNameError] = useState("");
@@ -126,6 +132,8 @@ export default function Admin() {
                   />
                 </Flex>
               )}
+
+              
               {isEditingDob ? (
                 <Flex alignItems="center" justifyContent="center">
                   <Box mr="4">
@@ -149,6 +157,7 @@ export default function Admin() {
                     onClick={handleDobEditClick}
                     />
                     </Box>
+
                     )}
                     {isEditingProfilePicture ? (
                       <Flex alignItems="center" justifyContent="center">
