@@ -39,21 +39,19 @@ export default function Home() {
     bgRepeat="no-repeat"
     bgPos="center"
     bgSize="cover"
-    minH="100vh"
     overflowX="hidden"
     pos="relative" >
       <Navbar />
 
-      <Box bgImage="url('/cuca.jpeg')" py={10}>
-        <Box bgImage="url('/cuca.jpeg')" bgSize="cover" bgPosition="center" h="300px" mb={10}>
+      <Box bgImage="url('/fundo.jpg')" py={10}>
           <Box maxW="960px" mx="auto" pt={20}>
             <Heading as="h1" size="2xl" color="white">
               A melhor seleção de produtos para você
             </Heading>
-            <Text color="#8B4000" fontSize="xl" mt={5}>
+            <Text color="#65000b" fontSize="xl" mt={5}>
               Encontre tudo o que precisa no nosso catálogo online.
             </Text>
-          </Box>
+          
         </Box>
 
         <Box maxW="960px" mx="auto" px={5}>
@@ -78,7 +76,7 @@ export default function Home() {
 
                     <Stack direction="row" justifyContent="space-between" alignItems="center">
                       <Text color="gray.600">{product.price}€</Text>
-                      <Button colorScheme="orange" size="lg">
+                      <Button color="black" size="lg">
                         Comprar
                       </Button>
                     </Stack>

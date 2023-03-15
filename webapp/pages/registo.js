@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { Global, css } from "@emotion/react";
 import theme from "../styles/styles";
-import Navbar from "../components/Navbar";
+import Navbar from "../components/Navbar_sign";
 import NextLink from "next/link";
 
 export default function Registo() {
@@ -31,7 +31,7 @@ export default function Registo() {
       <Global
         styles={css`
           body {
-            background-image: url('/cuca.jpg');
+            background-image: url('/fundo.jpg');
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
@@ -39,10 +39,16 @@ export default function Registo() {
           }
         `}
       />
+      <Box
+        background="rgb(1,1,1,0.6)"
+        width="100%"
+        height="100%"
+        zIndex="100"
+      >
       <Navbar />
       <Box h="100vh" d="flex" alignItems="center" justifyContent="center">
         <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
-          <Box bg="#8B4000" p="4">
+          <Box bg="#65000b" p="4">
             <Heading size="md" color="white">
               Registe-se na sua conta
             </Heading>
@@ -92,13 +98,13 @@ export default function Registo() {
             <Text mt="4" textAlign="center">
               Já tem uma conta?{" "}
               <NextLink href="/login" passHref>
-                <Link color="#8B4000" href="#">
+                <Link color="#65000b" href="#">
                   Faça o login aqui
                 </Link>
               </NextLink>
             </Text>
           </Box>
-        </Box>
+        </Box></Box>
       </Box>
     </ThemeProvider>
   );
