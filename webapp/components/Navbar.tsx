@@ -40,11 +40,11 @@ const Navbar = () => {
         </Box>
       </Flex>
 
-        <Link as={NextLink} display="flex" alignItems="center" href="/admin" passHref>
-          <img src="/perfil.png" alt="Descrição da imagem" width="50px" mr={4} />
+        <Link as={NextLink} display="flex" alignItems="center" mr={4} href="/admin" passHref>
+          <img src="/perfil.png" alt="Descrição da imagem" width="50px" />
         </Link>
-        <Link as={NextLink} display="flex" alignItems="center" href="/cesto" passHref>
-          <img src="/cesto.png" alt="Descrição da imagem" width="35px" mr={4} />
+        <Link as={NextLink} display="flex" alignItems="center" mr={4} href="/cesto" passHref>
+          <img src="/cesto.png" alt="Descrição da imagem" width="35px" />
         </Link>
       <Box display={{ base: "none", md: "block" }}>
         <NextLink href="/login" passHref>
