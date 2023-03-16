@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Link, Text, Flex, SimpleGrid, IconButton, Input } from "@chakra-ui/react";
+import { Box, Button, Heading, Link, Text, Flex, SimpleGrid, IconButton, Input, InputProps } from "@chakra-ui/react";
 import { FaUser, FaCog, FaChartBar, FaEdit } from "react-icons/fa";
 import { ThemeProvider } from "@chakra-ui/react";
 import theme from "../styles/styles";
@@ -30,11 +30,11 @@ export default function Admin() {
   };
 
 
-  const handleNameChange = (event) => {
+  const handleNameChange = (event:any) => {
     setName(event.target.value);
   };
 
-  const handleDobChange = (event) => {
+  const handleDobChange = (event:any) => {
     setDob(event.target.value);
   };
 
@@ -73,7 +73,7 @@ export default function Admin() {
     setIsEditingDob(true);
   };
 
-  const handleProfilePictureChange = (event) => {
+  const handleProfilePictureChange = (event:any) => {
     setProfilePicture(event.target.files[0]);
   };
 
@@ -118,12 +118,13 @@ export default function Admin() {
                 <Flex alignItems="center" justifyContent="center">
                   <Text mr="4">{name}</Text>
                   <IconButton
-                    icon={<FaUser />}
-                    colorScheme="teal"
-                    size="lg"
-                    variant="ghost"
-                    onClick={handleNameEditClick}
-                  />
+                      icon={<FaUser />}
+                      colorScheme="teal"
+                      size="lg"
+                      variant="ghost"
+                      onClick={handleNameEditClick} 
+                      aria-label={""}                 
+                      />
                 </Flex>
               )}
               {isEditingDob ? (
@@ -142,12 +143,13 @@ export default function Admin() {
                     <Text fontWeight="semibold">Data de Nascimento:</Text>
                     <Text>{dob}</Text>
                     <IconButton
-                    icon={<FaCog />}
-                    variant="ghost"
-                    colorScheme="teal"
-                    size="sm"
-                    onClick={handleDobEditClick}
-                    />
+                      icon={<FaCog />}
+                      variant="ghost"
+                      colorScheme="teal"
+                      size="sm"
+                      onClick={handleDobEditClick} 
+                      aria-label={""}                    
+                      />
                     </Box>
                     )}
                     {isEditingProfilePicture ? (
@@ -172,11 +174,11 @@ export default function Admin() {
                           <Text>Nenhuma imagem selecionada</Text>
                         )}
                         <IconButton
-                        icon={<FaEdit />}
-                        variant="ghost"
-                        colorScheme="teal"
-                        size="sm"
-                        onClick={handleProfilePictureEditClick}
+                      icon={<FaEdit />}
+                      variant="ghost"
+                      colorScheme="teal"
+                      size="sm"
+                      onClick={handleProfilePictureEditClick} aria-label={""}                      
                       />
                     )
                   </Box>

@@ -8,16 +8,22 @@ export default function Home() {
   return (
     <ThemeProvider theme={theme}>
       <Box
-        backgroundImage="url('/cuca.jpg')"
+        backgroundImage="url('/fundo.jpg')"
         backgroundRepeat="no-repeat"
         backgroundPosition="center"
         backgroundSize="cover"
         height="100vh"
         overflowX="hidden"
       >
+        <Box
+        background="rgb(1,1,1,0.6)"
+        width="100%"
+        height="100%"
+        zIndex="100"
+        >
         <Navbar />
         
-      </Box>
+      </Box></Box>
     </ThemeProvider>
   );
 }
