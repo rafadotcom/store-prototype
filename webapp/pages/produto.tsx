@@ -66,7 +66,7 @@ export default function Home() {
         pos="relative" 
         >
         <Box
-        background="rgb(1,1,1,0.6)"
+        background="rgb(1,1,1,0.3)"
         width="100%"
         height="100%"
         zIndex="100"

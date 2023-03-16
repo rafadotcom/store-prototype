@@ -7,7 +7,7 @@ import Navbar from "../components/Navbar";
 export default function Cesto() {
   const [cartItems, setCartItems] = useState([]);
 
-  const removeFromCart = (productId) => {
+  const removeFromCart = (productId:any) => {
     const updatedCart = cartItems.filter((item) => item.id !== productId);
     setCartItems(updatedCart);
   };
@@ -28,7 +28,7 @@ export default function Cesto() {
           height="100%"
           zIndex="100"
         >
-          <Navbar pos="absolute" top={0} left={0} right={0} zIndex="docked" /> 
+          <Navbar /* pos="absolute" top={0} left={0} right={0} zIndex="docked" */ /> 
           <Box pt="64px"> 
             <Flex
               direction="column"
