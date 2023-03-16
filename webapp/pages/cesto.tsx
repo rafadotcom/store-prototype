@@ -52,7 +52,7 @@ export default function Cesto() {
                       <Box borderWidth="1px" borderRadius="lg" overflow="hidden" borderColor="transparent">
                         <Image src={item.image} alt={item.name} display="block" maxWidth="40%" mx="auto" /> 
                         <Box p="6" m="0">
-                          <Box d="flex" alignItems="baseline" >
+                          <Box display="flex" alignItems="baseline" >
                             <Text fontWeight="bold" fontSize="2xl" mr={2}>
                               {item.name}
                             </Text>

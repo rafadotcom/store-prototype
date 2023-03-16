@@ -97,11 +97,9 @@ export default function Registo() {
             </form>
             <Text mt="4" textAlign="center">
               Já tem uma conta?{" "}
-              <NextLink href="/login" passHref>
-                <Link color="#65000b" href="#">
-                  Faça o login aqui
-                </Link>
-              </NextLink>
+              <Link as={NextLink} href="/login" color="#65000b" passHref>
+                Faça o login aqui
+              </Link>
             </Text>
           </Box>
         </Box></Box>
