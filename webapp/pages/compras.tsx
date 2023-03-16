@@ -2,8 +2,12 @@ import { Box, Heading, Text, Stack, Image, Button, Grid, GridItem } from "@chakr
 import { ThemeProvider } from "@chakra-ui/react";
 import theme from "../styles/styles";
 import Navbar from "../components/Navbar";
+import React, { useState } from "react";
 
 export default function Home() {
+
+  const [cartItems, setCartItems] = useState([]); // Array para armazenar os produtos selecionados pelo usuário
+
   // array de produtos
   const products = [
     {
@@ -34,6 +38,10 @@ export default function Home() {
     },
   ];
 
+  const handleAddToCart = (product) => {
+    setCartItems([...cartItems, product]); // Adicionar o produto selecionado ao array do cesto
+  }; 
+
   return (
     <Box bgImage="url('/cuca.jpg')"
     bgRepeat="no-repeat"
@@ -43,7 +51,7 @@ export default function Home() {
     pos="relative" >
       <Navbar />
 
-      <Box bgImage="url('/fundo.jpg')" py={10}>
+      <Box bgImage="url('/fundo.jpg')" bgPos="center" bgSize="cover" py={10}>
           <Box maxW="960px" mx="auto" pt={20}>
             <Heading as="h1" size="2xl" color="white">
               A melhor seleção de produtos para você
@@ -76,14 +84,20 @@ export default function Home() {
 
                     <Stack direction="row" justifyContent="space-between" alignItems="center">
                       <Text color="gray.600">{product.price}€</Text>
-                      <Button color="black" size="lg">
-                        Comprar
+                      <Button 
+                        colorScheme="green" 
+                        size="lg" 
+                        onClick={() => handleAddToCart(product)}
+                        disabled={cartItems.some((item) => item.id === product.id)} // desabilitar botão se produto já estiver no carrinho
+                      >
+                        {cartItems.some((item) => item.id === product.id) ? "Produto já no carrinho" : "Adicionar ao carrinho"} 
                       </Button>
                     </Stack>
                   </Box>
                 </Box>
               </GridItem>
             ))}
+
           </Grid>
         </Box>
       </Box>

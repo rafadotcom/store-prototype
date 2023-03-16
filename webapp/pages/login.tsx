@@ -2,16 +2,20 @@ import { Box, Button, FormControl, FormLabel, Heading, Input, Link, Text } from 
 import { ThemeProvider } from "@chakra-ui/react";
 import { Global, css } from "@emotion/react";
 import theme from "../styles/styles";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import Navbar from "../components/Navbar_sign"; // importe o componente Navbar
 
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+  const [nome, setNome] = useState("");
+  const [nif, setNIF] = useState("");
+  const [telemovel, setTelemovel] = useState("");
+  const [morada, setMorada] = useState("");
+  const [dataNascimento, setDataNascimento] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event:FormEvent) => {
     event.preventDefault();
     console.log(`Email: ${email}, Password: ${password}`);
   };
@@ -30,13 +34,13 @@ export default function Login() {
         `}
       />
       <Box
-        background="rgb(1,1,1,0.6)"
+        background="rgb(1,1,1,0.3)"
         width="100%"
         height="100%"
         zIndex="100"
         >
       <Navbar />
-      <Box h="100vh" d="flex" alignItems="center" justifyContent="center">
+      <Box h="100vh" display="flex" alignItems="center" justifyContent="center">
         <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
           <Box bg="#65000b" p="4">
             <Heading size="md" color="white">
@@ -61,6 +65,51 @@ export default function Login() {
                   placeholder="Sua senha"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                />
+              </FormControl>
+              <FormControl id="nome" mb="4">
+                <FormLabel>Nome</FormLabel>
+                <Input
+                  type="nome"
+                  placeholder="nome"
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                />
+              </FormControl>
+              <FormControl id="nif" mb="4">
+                <FormLabel>NIF</FormLabel>
+                <Input
+                  type="nif"
+                  placeholder="nif"
+                  value={nif}
+                  onChange={(e) => setNIF(e.target.value)}
+                />
+              </FormControl>
+              <FormControl id="dataNascimento" mb="4">
+                <FormLabel>Data de Nascimento</FormLabel>
+                <Input
+                  type="dataNascimento"
+                  placeholder="dataNasciemnto"
+                  value={dataNascimento}
+                  onChange={(e) => setDataNascimento(e.target.value)}
+                />
+              </FormControl>
+              <FormControl id="morada" mb="4">
+                <FormLabel>Morada</FormLabel>
+                <Input
+                  type="morada"
+                  placeholder="morada"
+                  value={morada}
+                  onChange={(e) => setMorada(e.target.value)}
+                />
+              </FormControl>
+              <FormControl id="telemovel" mb="4">
+                <FormLabel>Telemovel</FormLabel>
+                <Input
+                  type="telemovel"
+                  placeholder="telemovel"
+                  value={telemovel}
+                  onChange={(e) => setTelemovel(e.target.value)}
                 />
               </FormControl>
               <Button type="submit" width="full">

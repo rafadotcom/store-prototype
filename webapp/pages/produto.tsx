@@ -47,7 +47,7 @@ export default function Home() {
     },
   ];
 
-  const handleClick = (productId) => {
+  const handleClick = (productId:number) => {
     router.push({
       pathname: "/compras",
       query: { productId },
@@ -66,12 +66,12 @@ export default function Home() {
         pos="relative" 
         >
         <Box
-        background="rgb(1,1,1,0.6)"
+        background="rgb(1,1,1,0.3)"
         width="100%"
         height="100%"
         zIndex="100"
         >
-        <Navbar pos="absolute" top={0} left={0} right={0} zIndex="docked" /> 
+        <Navbar /* TODO pos="absolute" top={0} left={0} right={0} zIndex="docked" *//> 
         <Box pt="64px"> 
           <Flex
             direction="column"
@@ -92,7 +92,7 @@ export default function Home() {
                 <Box borderWidth="1px" borderRadius="lg" overflow="hidden" borderColor="transparent">
                     <Image src={product.image} alt={product.name} display="block" maxWidth="40%" mx="auto" /> 
                     <Box p="6" m="0">
-                      <Box d="flex" alignItems="baseline" >
+                      <Box display="flex" alignItems="baseline" >
                         <Text fontWeight="bold" fontSize="2xl" mr={2}>
                           {product.name}
                         </Text>

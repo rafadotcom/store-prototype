@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import {
   Box,
   Button,
@@ -21,7 +21,7 @@ export default function Registo() {
   const [password, setPassword] = useState("");
   const [confirmePassword, setConfirmePassword] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event:FormEvent) => {
     event.preventDefault();
     console.log(`Nome: ${nome}, Email: ${email}, Password: ${password}`);
   };
@@ -40,13 +40,13 @@ export default function Registo() {
         `}
       />
       <Box
-        background="rgb(1,1,1,0.6)"
+        background="rgb(1,1,1,0.3)"
         width="100%"
         height="100%"
         zIndex="100"
       >
       <Navbar />
-      <Box h="100vh" d="flex" alignItems="center" justifyContent="center">
+      <Box h="100vh" display="flex" alignItems="center" justifyContent="center">
         <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
           <Box bg="#65000b" p="4">
             <Heading size="md" color="white">
@@ -97,11 +97,9 @@ export default function Registo() {
             </form>
             <Text mt="4" textAlign="center">
               Já tem uma conta?{" "}
-              <NextLink href="/login" passHref>
-                <Link color="#65000b" href="#">
-                  Faça o login aqui
-                </Link>
-              </NextLink>
+              <Link as={NextLink} href="/login" color="#65000b" passHref>
+                Faça o login aqui
+              </Link>
             </Text>
           </Box>
         </Box></Box>

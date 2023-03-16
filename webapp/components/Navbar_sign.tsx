@@ -28,7 +28,7 @@ const Navbar = () => {
           <Link href="/about" mr={4} fontSize="md" fontWeight="bold" letterSpacing="wide">
             Sobre nós
           </Link>
-          <Link href="/contact" mr={4} fontSize="md" fontWeight="bold" letterSpacing="wide">
+          <Link href="/contactos" mr={4} fontSize="md" fontWeight="bold" letterSpacing="wide">
             Contatos
           </Link>
         </Box>
