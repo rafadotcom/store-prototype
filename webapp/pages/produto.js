@@ -11,38 +11,38 @@ export default function Home() {
   const products = [
     {
       id: 1,
-      name: "Gin Lua",
-      image: "/produto1.jpeg",
+      name: "Vinho Lua",
+      image: "/produto1.png",
       price: "2€",
     },
     {
       id: 2,
-      name: "Gin Belgravia azul",
-      image: "/produto2.jpeg",
+      name: "Vinho sol",
+      image: "/produto2.png",
       price: "2€",
     },
     {
       id: 3,
-      name: "Gin Belgravia rosa",
-      image: "/produto3.jpeg",
+      name: "Vinho blabla",
+      image: "/produto3.png",
       price: "2€",
     },
     {
       id: 4,
-      name: "Gin",
-      image: "/produto4.jpeg",
+      name: "Vinho lan",
+      image: "/produto4.png",
       price: "2€",
     },
     {
       id: 5,
-      name: "Gin",
+      name: "Vinho chá",
       image: "/produto5.png",
       price: "2€",
     },
     {
       id: 6,
-      name: "Gin",
-      image: "/produto6.jpeg",
+      name: "Vinho olá",
+      image: "/produto6.png",
       price: "2€",
     },
   ];
@@ -56,15 +56,21 @@ export default function Home() {
 
   return (
     <ThemeProvider theme={theme}>
+      
       <Box
-        bgImage="url('/cuca.jpg')"
+        bgImage="url('/fundo.jpg')"
         bgRepeat="no-repeat"
         bgPos="center"
         bgSize="cover"
-        minH="100vh"
         overflowX="hidden"
         pos="relative" 
-      >
+        >
+        <Box
+        background="rgb(1,1,1,0.6)"
+        width="100%"
+        height="100%"
+        zIndex="100"
+        >
         <Navbar pos="absolute" top={0} left={0} right={0} zIndex="docked" /> 
         <Box pt="64px"> 
           <Flex
@@ -75,7 +81,7 @@ export default function Home() {
             px={8}
           >
             <Heading as="h1" size="2xl" color="white" mb={4}>
-              Gins
+              Vinhos
             </Heading>
             <Grid
               templateColumns={{ sm: "repeat(1, 1fr)", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }}
@@ -94,7 +100,7 @@ export default function Home() {
                           {product.price}
                         </Text>
                       </Box>
-                      <Button mt={4} colorScheme="orange" onClick={() => handleClick(product.id)}>
+                      <Button mt={4} colorScheme="#65000b" onClick={() => handleClick(product.id)}>
                         Comprar
                       </Button>
                     </Box>
@@ -104,6 +110,7 @@ export default function Home() {
             </Grid>
           </Flex>
         </Box>
+      </Box>
       </Box>
     </ThemeProvider>
   );

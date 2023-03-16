@@ -10,13 +10,13 @@ const Navbar = () => {
       align="center"
       justify="space-between"
       wrap="wrap"
-      padding="1.5rem"
-      bg="black"
+      padding="0.5rem"
+      bg="#1c1c1c"
       color="white"
     >
       <Flex align="center">
         <Link href="/">
-          <img src="/logo.png" alt="Logo" width="40px" />
+          <img src="/logo_p.jpg" alt="Logo" width="90px" />
         </Link>
       </Flex>
 
@@ -40,30 +40,26 @@ const Navbar = () => {
         </Box>
       </Flex>
 
+        <NextLink href="/admin" passHref>
+          <Link display="flex" alignItems="center">
+            <img src="/perfil.png" alt="Descrição da imagem" width="50px" mr={4} />
+          </Link>
+        </NextLink>
       <Box display={{ base: "none", md: "block" }}>
         <NextLink href="/login" passHref>
           <Button
-            colorScheme="#ff8c00"
+            colorScheme="#65000b"
             variant="outline"
             mr={4}
             borderRadius="0"
             borderColor="white"
           >
-            Sign In
+            Logout
           </Button>
-        </NextLink>
-        <NextLink href="/registo" passHref>
-          <Button
-            colorScheme="teal"
-            variant="solid"
-            borderRadius="0"
-            bg="white"
-            color="#ff8c00"
-          >
-            Sign Up
-          </Button>
-        </NextLink>
+        </NextLink> 
       </Box>
+        
+
     </Flex>
   );
 };
