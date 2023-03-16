@@ -3,13 +3,14 @@ import { ThemeProvider } from "@chakra-ui/react";
 import theme from "../styles/styles";
 import Navbar from "../components/Navbar";
 import React, { useState } from "react";
+import { products } from "@/types/products";
 
 export default function Home() {
 
-  const [cartItems, setCartItems] = useState([]); // Array para armazenar os produtos selecionados pelo usuário
+  const [cartItems, setCartItems] = useState<products[]>([]); // Array para armazenar os produtos selecionados pelo usuário
 
   // array de produtos
-  const products = [
+  const products: products[] = [
     {
       id: 1,
       name: "La Chorona",
@@ -38,7 +39,7 @@ export default function Home() {
     },
   ];
 
-  const handleAddToCart = (product) => {
+  const handleAddToCart = (product:products) => {
     setCartItems([...cartItems, product]); // Adicionar o produto selecionado ao array do cesto
   }; 
 

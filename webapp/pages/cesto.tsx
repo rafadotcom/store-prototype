@@ -3,11 +3,12 @@ import { Box, Button, Heading, Text, Flex, Image, Grid, GridItem } from "@chakra
 import { ThemeProvider } from "@chakra-ui/react";
 import theme from "../styles/styles";
 import Navbar from "../components/Navbar";
+import { products } from "@/types/products";
 
 export default function Cesto() {
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState<products[]>([]);
 
-  const removeFromCart = (productId:any) => {
+  const removeFromCart = (productId:number) => {
     const updatedCart = cartItems.filter((item) => item.id !== productId);
     setCartItems(updatedCart);
   };

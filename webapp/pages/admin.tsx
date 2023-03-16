@@ -80,7 +80,7 @@ export default function Admin() {
   };
 
   const handleProfilePictureChange = (event:any) => {
-    setProfilePicture(event.target.files[0]);
+    setProfilePicture(event.target);
   };
 
   return (
@@ -178,7 +178,7 @@ export default function Admin() {
                       <Box>
                         <Text fontWeight="semibold">Foto de Perfil:</Text>
                         {profilePicture ? (
-                          <Box as="img" src={URL.createObjectURL(profilePicture)} />
+                          <Box as="img" src={profilePicture} />
                         ) : (
                           <Text>Nenhuma imagem selecionada</Text>
                         )}

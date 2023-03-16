@@ -4,46 +4,37 @@ import { ThemeProvider } from "@chakra-ui/react";
 import theme from "../styles/styles";
 import Navbar from "../components/Navbar";
 import { useRouter } from "next/router";
+import { products } from "@/types/products";
 
 export default function Home() {
   const router = useRouter();
 
-  const products = [
+  const products: products[] = [
     {
       id: 1,
-      name: "Vinho Lua",
+      name: "La Chorona",
+      description: "Perfeito para dias triste",
       image: "/produto1.png",
-      price: "2€",
+      seller: {
+        id: 1,
+        name: "Maria Albertina",
+        rating: 4.5,
+        image: "/vendedor1.png",
+      },
+      price: 100,
     },
     {
       id: 2,
-      name: "Vinho sol",
+      name: "El Matador",
+      description: "Perfeito para longas noites de estudo",
       image: "/produto2.png",
-      price: "2€",
-    },
-    {
-      id: 3,
-      name: "Vinho blabla",
-      image: "/produto3.png",
-      price: "2€",
-    },
-    {
-      id: 4,
-      name: "Vinho lan",
-      image: "/produto4.png",
-      price: "2€",
-    },
-    {
-      id: 5,
-      name: "Vinho chá",
-      image: "/produto5.png",
-      price: "2€",
-    },
-    {
-      id: 6,
-      name: "Vinho olá",
-      image: "/produto6.png",
-      price: "2€",
+      seller: {
+        id: 2,
+        name: "Tó Zé",
+        rating: 4.2,
+        image: "/vendedor1.png",
+      },
+      price: 150,
     },
   ];
 
