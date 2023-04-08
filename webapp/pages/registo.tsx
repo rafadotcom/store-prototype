@@ -2,9 +2,12 @@ import { Box, Button, FormControl, FormLabel, Heading, Input, Link, Text } from 
 import { ThemeProvider } from "@chakra-ui/react";
 import { Global, css } from "@emotion/react";
 import theme from "../styles/styles";
-import { FormEvent, useState } from "react";
-import Navbar from "../components/Navbar_sign"; // importe o componente Navbar
+import { useState } from "react";
+import Navbar from "../components/Navbar_sign";
+import User, { IUser } from "../models/User";
+import connect from "../db/connect";
 
+connect();
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -15,10 +18,33 @@ export default function Login() {
   const [morada, setMorada] = useState("");
   const [dataNascimento, setDataNascimento] = useState("");
 
-  const handleSubmit = (event:FormEvent) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(`Email: ${email}, Password: ${password}`);
+    try {
+      const newUser: IUser = new User({
+        email,
+        senha: password,
+        nome,
+        NIF: nif,
+        telemovel,
+        morada,
+        dataNascimento,
+      });
+
+      await newUser.save();
+
+      console.log(`Novo usuário criado: ${newUser}`);
+    } catch (error) {
+      console.error(`Erro ao criar novo usuário: ${error}`);
+    }
   };
+  // rest of the component
+
+
+  
+  // rest of the component
+
+
 
   return (
     <ThemeProvider theme={theme}>
