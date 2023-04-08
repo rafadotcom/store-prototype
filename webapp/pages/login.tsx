@@ -1,4 +1,6 @@
 import { FormEvent, useState } from "react";
+import connect from "../db/connect";
+import User, { IUser } from "../models/User";
 import {
   Box,
   Button,
@@ -15,15 +17,43 @@ import theme from "../styles/styles";
 import Navbar from "../components/Navbar_sign";
 import NextLink from "next/link";
 
+const mongoose = require('mongoose')
+const PORT = 5050;
+
+
+// connect to mongodb
+mongoose.connect("mongodb+srv://admin:admin123@ptiptr.unbaobh.mongodb.net/ptiptr?retryWrites=true&w=majority").then(() => {
+    // User.insertMany({username:"a", name:"okok"})
+    
+  console.log("Server is running...");
+
+});
+
 export default function Registo() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmePassword, setConfirmePassword] = useState("");
 
-  const handleSubmit = (event:FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    console.log(`Nome: ${nome}, Email: ${email}, Password: ${password}`);
+
+    try {
+      const newUser: IUser = new User({
+        nome,
+        email,
+        senha: password,
+        NIF: 123495050,
+        Morada: "Rua Ola",
+        telemovel: 12345234,
+      });
+
+      await newUser.save();
+
+      console.log(`Novo usuário criado: ${newUser}`);
+    } catch (error) {
+      console.error(`Erro ao criar novo usuário: ${error}`);
+    }
   };
 
   return (
