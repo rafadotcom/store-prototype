@@ -1,19 +1,15 @@
-import mongoose, { Mongoose } from 'mongoose';
+// connect.tsx
+import mongoose from "mongoose";
 
 const MONGODB_URI = "mongodb+srv://admin:admin123@ptiptr.unbaobh.mongodb.net/ptiptr?retryWrites=true&w=majority";
 
-if (!MONGODB_URI) {
-  throw new Error(
-    'Please define the MONGODB_URI environment variable inside .env.local',
-  );
-}
-
-
-
-async function connect(): Promise<Mongoose> {
-  const mongoose = require('mongoose');
-  const connection = await mongoose.connect(MONGODB_URI);
-  return connection;
+async function connect() {
+  try {
+    await mongoose.connect(MONGODB_URI);
+    console.log("Connected to MongoDB");
+  } catch (error) {
+    console.error(`Error connecting to MongoDB: ${error.message}`);
+  }
 }
 
 export default connect;

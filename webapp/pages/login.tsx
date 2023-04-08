@@ -17,17 +17,7 @@ import theme from "../styles/styles";
 import Navbar from "../components/Navbar_sign";
 import NextLink from "next/link";
 
-const mongoose = require('mongoose')
-const PORT = 5050;
-
-
-// connect to mongodb
-mongoose.connect("mongodb+srv://admin:admin123@ptiptr.unbaobh.mongodb.net/ptiptr?retryWrites=true&w=majority").then(() => {
-    // User.insertMany({username:"a", name:"okok"})
-    
-  console.log("Server is running...");
-
-});
+connect(); // Call connect() to connect to MongoDB
 
 export default function Registo() {
   const [nome, setNome] = useState("");

@@ -4,15 +4,19 @@ export interface IUser extends Document {
   email: string;
   senha: string;
   nome: string;
-  NIF: Number;
+  NIF: number;
   DataNascimento: Date;
   Morada: string;
-  telemovel: Number;
+  telemovel: number;
 }
 
 const UserSchema = new mongoose.Schema(
   {
-    email: { type: String, lowercase: true, required: [true, "Não pode ser vazio"] },
+    email: { 
+      type: String, 
+      lowercase: true, 
+      required: [true, 'O email é obrigatório'] 
+    },
     senha: String,
     nome: String,
     NIF: Number,
