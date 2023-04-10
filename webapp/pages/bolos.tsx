@@ -3,6 +3,7 @@ import { Box, Heading, Text, Flex, Image, Button } from "@chakra-ui/react";
 import { ThemeProvider } from "@chakra-ui/react";
 import theme from "../styles/styles";
 import Navbar from "../components/Navbar";
+import AddProdutoBolo from "../caminho/para/addProdutobolo";
 
 const products = [
   {
@@ -59,6 +60,7 @@ export default function Produtos() {
           zIndex="100"
         >
           <Navbar />
+          
           <Flex flexWrap="wrap" justifyContent="center" alignItems="center" mt={10}>
           {products.map((product) => {
             const price = Number(product.price.replace(/[^0-9.-]+/g, ""));
