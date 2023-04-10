@@ -7,7 +7,7 @@ export default function Contact() {
   return (
     <ThemeProvider theme={theme}>
       <Box
-        backgroundImage="url('/fundo.jpg')"
+        backgroundImage="url('/fundo2.jpg')"
         backgroundRepeat="no-repeat"
         backgroundPosition="center"
         backgroundSize="cover"
@@ -17,9 +17,9 @@ export default function Contact() {
         <Navbar />
         
         <Box
-          background="rgb(1,1,1,0.3)"
-          width="100%"
-          height="100%"
+          
+          width="80%"
+          height="80%"
           zIndex="100"
           p={8}
         >
@@ -28,7 +28,7 @@ export default function Contact() {
             <Input type="text" name="name" placeholder="Seu nome" mb={4} />
             <Input type="email" name="_replyto" placeholder="Seu endereço de e-mail" mb={4} />
             <Textarea name="message" placeholder="Sua mensagem" mb={4} />
-            <Button type="submit" bg="#65000b">Enviar</Button>
+            <Button type="submit" bg="#8A624A">Enviar</Button>
           </Box>
         </Box>
       </Box>

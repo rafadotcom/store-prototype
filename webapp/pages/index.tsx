@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <ThemeProvider theme={theme}>
       <Box
-        backgroundImage="url('/fundo.jpg')"
+        backgroundImage="url('/fundo2.jpg')"
         backgroundRepeat="no-repeat"
         backgroundPosition="center"
         backgroundSize="cover"

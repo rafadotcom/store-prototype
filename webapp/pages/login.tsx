@@ -29,7 +29,7 @@ export default function Registo() {
       <Global
         styles={css`
           body {
-            background-image: url('/fundo.jpg');
+            background-image: url('/fundo2.jpg');
             background-repeat: no-repeat;
             background-position: center;
             background-size: cover;
@@ -46,7 +46,7 @@ export default function Registo() {
         <Navbar />
         <Box h="100vh" display="flex" alignItems="center" justifyContent="center">
           <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
-            <Box bg="#65000b" p="4">
+            <Box bg="#8A624A" p="4">
               <Heading size="md" color="white">
                 Faça login na sua conta
               </Heading>
@@ -95,7 +95,7 @@ export default function Registo() {
               </form>
               <Text mt="4" textAlign="center">
                 Já tem uma conta?{" "}
-                <Link as={NextLink} href="/login" color="#65000b" passHref>
+                <Link as={NextLink} href="/login" color="#8A624A" passHref>
                   Faça o login aqui
                 </Link>
               </Text>

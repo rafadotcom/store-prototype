@@ -1,27 +1,37 @@
-import { useState } from "react";
-import { Box, Button, Heading, Text, Flex, Image, Grid, GridItem } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import { Box, Heading, Text, Flex, Image, Button } from "@chakra-ui/react";
 import { ThemeProvider } from "@chakra-ui/react";
 import theme from "../styles/styles";
 import Navbar from "../components/Navbar";
-import { products } from "@/types/products";
 
 export default function Cesto() {
-  const [cartItems, setCartItems] = useState<products[]>([]);
+  const [cart, setCart] = useState([]);
 
-  const removeFromCart = (productId:number) => {
-    const updatedCart = cartItems.filter((item) => item.id !== productId);
-    setCartItems(updatedCart);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const items = [];
+    params.forEach((value, key) => {
+      items.push({ [key]: value });
+    });
+    setCart(items);
+  }, []);
+
+  const product = {
+    id: cart.find(item => item.id)?.id || "1",
+    name: cart.find(item => item.name)?.name || "Produto Teste",
+    price: cart.find(item => item.price)?.price || "10,00",
+    image: cart.find(item => item.image)?.image || "https://via.placeholder.com/150",
   };
 
   return (
     <ThemeProvider theme={theme}>
       <Box
-        bgImage="url('/fundo.jpg')"
-        bgRepeat="no-repeat"
-        bgPos="center"
-        bgSize="cover"
+        backgroundImage="url('/fundo2.jpg')"
+        backgroundRepeat="no-repeat"
+        backgroundPosition="center"
+        backgroundSize="cover"
+        height="100vh"
         overflowX="hidden"
-        pos="relative" 
       >
         <Box
           background="rgb(1,1,1,0.3)"
@@ -29,49 +39,31 @@ export default function Cesto() {
           height="100%"
           zIndex="100"
         >
-          <Navbar /* pos="absolute" top={0} left={0} right={0} zIndex="docked" */ /> 
-          <Box pt="64px"> 
-            <Flex
-              direction="column"
-              justify="center"
-              alignItems="center"
-              height="100%"
-              px={8}
+          <Navbar />
+          <Flex flexWrap="wrap" justifyContent="center" alignItems="center" mt={10}>
+            <Box
+              background="white"
+              borderRadius="lg"
+              boxShadow="lg"
+              p={6}
+              mx={4}
+              my={6}
+              maxW="sm"
             >
-              <Heading as="h1" size="2xl" color="white" mb={4}>
-                Cesto de Compras
-              </Heading>
-              {cartItems.length === 0 ? (
-                <Text color="white">O seu cesto está vazio.</Text>
-              ) : (
-                <Grid
-                  templateColumns={{ sm: "repeat(1, 1fr)", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)" }}
-                  gap={6}
-                >
-                  {cartItems.map((item) => (
-                    <GridItem key={item.id}>
-                      <Box borderWidth="1px" borderRadius="lg" overflow="hidden" borderColor="transparent">
-                        <Image src={item.image} alt={item.name} display="block" maxWidth="40%" mx="auto" /> 
-                        <Box p="6" m="0">
-                          <Box display="flex" alignItems="baseline" >
-                            <Text fontWeight="bold" fontSize="2xl" mr={2}>
-                              {item.name}
-                            </Text>
-                            <Text fontSize="lg" color="gray.500">
-                              {item.price}
-                            </Text>
-                          </Box>
-                          <Button mt={4} colorScheme="#65000b" onClick={() => removeFromCart(item.id)}>
-                            Remover do Cesto
-                          </Button>
-                        </Box>
-                      </Box>
-                    </GridItem>
-                  ))}
-                </Grid>
-              )}
-            </Flex>
-          </Box>
+              <Image src={product.image} alt={product.name} mb={6} w="100%" h="200px" objectFit="cover" />                
+              <Text mb={2}>
+                <strong>Preço:</strong> {product.price}
+              </Text>
+              <Button
+                colorScheme="green"
+                onClick={() => {
+                  window.location.href = `/pagamento?${query.toString()}`;
+                }}
+              >
+                Pagar
+              </Button>
+            </Box>
+          </Flex>
         </Box>
       </Box>
     </ThemeProvider>

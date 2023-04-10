@@ -11,7 +11,7 @@ const Navbar = () => {
       justify="space-between"
       wrap="wrap"
       padding="0.5rem"
-      bg="black"
+      bg=""
       color="white"
     >
       <Flex align="center">
@@ -37,7 +37,7 @@ const Navbar = () => {
       <Box display={{ base: "none", md: "block" }}>
         <NextLink href="/login" passHref>
           <Button
-            colorScheme="#65000b"
+            colorScheme="#8A624A"
             variant="outline"
             mr={4}
             borderRadius="0"
@@ -52,7 +52,7 @@ const Navbar = () => {
             variant="solid"
             borderRadius="0"
             bg="white"
-            color="#65000b"
+            color="#8A624A"
           >
             Sign Up
           </Button>

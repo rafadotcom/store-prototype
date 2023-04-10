@@ -11,7 +11,7 @@ const Navbar = () => {
       justify="space-between"
       wrap="wrap"
       padding="0.5rem"
-      bg="#1c1c1c"
+      bg=""
       color="white"
     >
       <Flex align="center">
@@ -34,9 +34,6 @@ const Navbar = () => {
           <Link href="/produto" mr={4} fontSize="md" fontWeight="bold" letterSpacing="wide">
             Produtos
           </Link>
-          <Link href="/compras" mr={4} fontSize="md" fontWeight="bold" letterSpacing="wide">
-            Compras
-          </Link>
         </Box>
       </Flex>
 
@@ -49,7 +46,7 @@ const Navbar = () => {
       <Box display={{ base: "none", md: "block" }}>
         <NextLink href="/login" passHref>
           <Button
-            colorScheme="#65000b"
+            colorScheme="#8A624A"
             variant="outline"
             mr={4}
             borderRadius="0"
