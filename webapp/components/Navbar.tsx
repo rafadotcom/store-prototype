@@ -16,7 +16,7 @@ const Navbar = () => {
     >
       <Flex align="center">
         <Link href="/">
-          <img src="/logo_p.jpg" alt="Logo" width="90px" />
+          <img src="/logo.png" alt="Logo" width="110px" />
         </Link>
       </Flex>
 
