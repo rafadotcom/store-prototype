@@ -28,9 +28,6 @@ const Navbar = () => {
           <Link href="/about" mr={4} fontSize="md" fontWeight="bold" letterSpacing="wide">
             Sobre nós
           </Link>
-          <Link href="/addProdutobolo" mr={4} fontSize="md" fontWeight="bold" letterSpacing="wide">
-            Sobre nós
-          </Link>
           <Link href="/contactos" mr={4} fontSize="md" fontWeight="bold" letterSpacing="wide">
             Contatos
           </Link>
