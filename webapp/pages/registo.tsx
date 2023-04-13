@@ -110,6 +110,7 @@ export default function Login() {
                   />
                 </InputGroup>
 
+
                 <Button type="submit" width="full">
                   Registar
                 </Button>

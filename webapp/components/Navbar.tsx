@@ -34,9 +34,6 @@ const Navbar = () => {
           <Link href="/produto" mr={4} fontSize="md" fontWeight="bold" letterSpacing="wide">
             Produtos
           </Link>
-          <Link href="/addProdutobolo" mr={4} fontSize="md" fontWeight="bold" letterSpacing="wide">
-            Adicionar Produto
-          </Link>
         </Box>
       </Flex>
 

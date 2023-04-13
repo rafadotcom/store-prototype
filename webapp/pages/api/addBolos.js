@@ -1,13 +1,14 @@
 import connect from '@/db/Connection';
-import User from "@/models/schema"
+import Bolo from "@/models/schemaBolos"
 
 connect()
 
 export default async function handler(req, res) {
     try {
-        const user = await User.create(req.body);
-        res.redirect('/login')
-        if (!user) {
+        console.log(req.body)
+        const bolo = await Bolo.create(req.body);
+        res.redirect('/bolos')
+        if (!bolo) {
             return res.json({ "code": 'User not created' })
         }
     } catch (error) {

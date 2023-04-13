@@ -29,7 +29,9 @@ const userSchema = new mongoose.Schema({
   telemovel: {
     type: String,
     required: true,
-  }
+  },
+
+
 })
 
 module.exports = mongoose.models.User || mongoose.model('User', userSchema)

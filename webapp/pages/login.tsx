@@ -1,28 +1,14 @@
-import { FormEvent, useState } from "react";
-import connect from "../db/Connection";
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  Heading,
-  Input,
-  Link,
-  Text,
-  ThemeProvider,
-} from "@chakra-ui/react";
+import { Box, Button, FormControl, FormLabel, Heading, Input, Link, Text, InputGroup } from "@chakra-ui/react";
+import { ThemeProvider } from "@chakra-ui/react";
 import { Global, css } from "@emotion/react";
 import theme from "../styles/styles";
+import { useState } from "react";
 import Navbar from "../components/Navbar_sign";
-import NextLink from "next/link";
 
-connect(); // Call connect() to connect to MongoDB
+export default function Login() {
+  
 
-export default function Registo() {
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmePassword, setConfirmePassword] = useState("");
+  // rest of the component
 
   return (
     <ThemeProvider theme={theme}>
@@ -48,55 +34,40 @@ export default function Registo() {
           <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
             <Box bg="#8A624A" p="4">
               <Heading size="md" color="white">
-                Faça login na sua conta
+                Insira os seus dados
               </Heading>
             </Box>
             <Box p="4">
-              <form>
-                <FormControl id="nome" mb="4">
-                  <FormLabel>Nome</FormLabel>
-                  <Input
-                    type="text"
-                    placeholder="Seu nome"
-                    value={nome}
-                    color="white"
-                  />
-                </FormControl>
-                <FormControl id="email" mb="4">
-                  <FormLabel>Email</FormLabel>
+              <form action="/" method="get">
+
+                <InputGroup mb="4">
+                  <FormLabel color="white">Email</FormLabel>
                   <Input
                     type="email"
                     placeholder="Seu email"
-                    value={email}
+                    name="email"
                     color="white"
                   />
-                </FormControl>
-                <FormControl id="password" mb="4">
-                  <FormLabel>Senha</FormLabel>
+                </InputGroup>
+
+                <InputGroup mb="4">
+                  <FormLabel color="white">Senha</FormLabel>
                   <Input
                     type="password"
                     placeholder="Sua senha"
-                    value={password}
+                    name="password"
                     color="white"
                   />
-                </FormControl>
-                <FormControl id="confirmePassword" mb="4">
-                  <FormLabel>Confirme a Senha</FormLabel>
-                  <Input
-                    type="password"
-                    placeholder="Confirme sua senha"
-                    value={confirmePassword}
-                    color="white"
-                  />
-                </FormControl>
+                </InputGroup>                
                 <Button type="submit" width="full">
-                  Registar
+                  Entrar
                 </Button>
+
               </form>
               <Text mt="4" textAlign="center">
-                Já tem uma conta?{" "}
-                <Link as={NextLink} href="/login" color="#8A624A" passHref>
-                  Faça o login aqui
+                Não tem uma conta ainda?{" "}
+                <Link color="#8A624A" href="#">
+                  Registre-se aqui
                 </Link>
               </Text>
             </Box>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Box, Heading, Text, Flex, Image, Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
-import { ThemeProvider } from "@chakra-ui/react";
+import { ThemeProvider, InputGroup } from "@chakra-ui/react";
 import theme from "../styles/styles";
 import Navbar from "../components/Navbar";
 
@@ -9,7 +9,7 @@ const initialProductState = {
   name: "",
   description: "",
   price: "",
-  
+  image: "/bolo1.png",
 };
 
 export default function Produtos() {
@@ -70,142 +70,127 @@ export default function Produtos() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme= { theme } >
       <Box
         backgroundImage="url('/fundo2.jpg')"
-        backgroundRepeat="no-repeat"
-        backgroundPosition="center"
-        backgroundSize="cover"
-        height="100vh"
-        overflowX="hidden"
+        backgroundRepeat = "no-repeat"
+        backgroundPosition = "center"
+        backgroundSize = "cover"
+        height = "100vh"
+        overflowX = "hidden"
       >
-        <Box>
+        <Box
+          width="100%"
+          height="100%"
+          zIndex="100">
           <Navbar />
 
-          {showAddProduct ? (
-            <Box p={6}>
-              <FormControl mb={4}>
-                <FormLabel>Nome do produto</FormLabel>
-                <Input
-                  type="text"
-                  placeholder="Nome do produto"
-                  value={newProduct.name}
-                  onChange={(e) =>
-                    setNewProduct({
-                      ...newProduct,
-                      name: e.target.value,
-                    })
-                  }
+  {
+    showAddProduct ? (
+      <Box p= { 6} >
+      <form action= "/api/addBolos" method = "post" >
+        <InputGroup mb="4" >
+          <FormLabel color="white" > Nome do produto < /FormLabel>
+            < Input
+              type = "nome do Produto"
+              placeholder = "Nome do produto"
+              name = "name"
+              color = "white"
                 />
-              </FormControl>
+            </InputGroup>
 
-              <FormControl mb={4}>
-                <FormLabel>Descrição do produto</FormLabel>
-                <Input
-                  type="text"
-                  placeholder="Descrição do produto"
-                  value={newProduct.description}
-                  onChange={(e) =>
-                    setNewProduct({
-                      ...newProduct,
-                      description: e.target.value,
-                    })
-                  }
+        < InputGroup mb = "4" >
+          <FormLabel color="white" > Descrição < /FormLabel>
+            < Input
+              type = "descricao"
+              placeholder = "Descrição do Produto"
+              name = "description"
+              color = "white"
                 />
-              </FormControl>
+        </InputGroup>
 
-              <FormControl mb={4}>
-                <FormLabel>
-                  Preço do produto
-                </FormLabel>
-
-                <Input
-                  type="text"
-                  placeholder="Preço do produto"
-                  value={newProduct.price}
-                  onChange={(e) =>
-                    setNewProduct({
-                      ...newProduct,
-                      price: e.target.value,
-                    })
-                  }
+        < InputGroup mb = "4" >
+          <FormLabel color="white" > Preço < /FormLabel>
+            < Input
+              type = "preco"
+              placeholder = "Preço do produto"
+              name = "price"
+              color = "white"
                 />
-              </FormControl>
+        </InputGroup>
 
-  
-            <Flex justify="space-between">
-              <Button onClick={handleCancelAddProduct}>Cancelar</Button>
-              <Button
-                colorScheme="green"
-                onClick={handleAddProduct}
-                disabled={!newProduct.name || !newProduct.description || !newProduct.price || !newProduct.image}
-              >
-                Adicionar Produto
-              </Button>
-            </Flex>
-          </Box>
-        ) : (
-          <>
-            <Box p={6}>
-              <Heading as="h1" size="xl" textAlign="center" mb={6}>
-                Produtos
-              </Heading>
-              <Button
-                colorScheme="green"
-                onClick={() => setShowAddProduct(true)}
-                mb={6}
-              >
-                Adicionar Produto
-              </Button>
-            </Box>
-  
-            <Flex flexWrap="wrap" p={6}>
-              {products.map((product) => (
-                <Box
-                  key={product.id}
-                  p={3}
-                  mb={4}
-                  mr={4}
-                  width={{ base: "40%", md: "48%", lg: "32%" }}
-                  borderWidth="1px"
-                  borderRadius="lg"
-                  overflow="hidden"
-                  bg="#faf0e6"
-                >
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    width="100%"
-                    height="auto"
-                    objectFit="cover"
-                    borderRadius="lg"
-                  />
-  
-                  <Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
-                    {product.name}
-                  </Box>
-  
-                  <Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
-                    {product.description}
-                  </Box>
-  
-                  <Box d="flex" mt="2" alignItems="center">
-                    <Text fontWeight="semibold">{product.price}</Text>
-                    <Button
-                      ml="auto"
-                      colorScheme="green"
-                      onClick={() => handleAddToCart(product)}
+
+      < Flex justify = "space-between" >
+        <Button onClick={ handleCancelAddProduct }> Cancelar < /Button>
+          < Button
+            type = "submit"
+            colorScheme = "green"
+            disabled = {!newProduct.name || !newProduct.description || !newProduct.price
+          }>
+          Adicionar Produto
+        < /Button>
+      < /Flex>
+      < /form>
+    < /Box>
+  ) : (
+    <>
+    <Box p= { 6} >
+      <Heading as="h1" size = "xl" textAlign = "center" mb = { 6} >
+        Produtos
+      < /Heading>
+      < Button
+        bg = "#deb887"
+        onClick = {() => setShowAddProduct(true)}
+        mb = { 6}>
+          Adicionar Produto
+      < /Button>
+    < /Box>
+
+    < Flex flexWrap = "wrap" p = { 6} >
+      {products.map((product) => (
+      <Box
+          key= { product.id }
+          p = { 3}
+          mb = { 4}
+          mr = { 4}
+          width = {{ base: "40%", md: "48%", lg: "32%" }}
+          borderWidth = "1px"
+          borderRadius = "lg"
+          overflow = "hidden"
+          bg = "#faf0e6">
+      <Image src={ product.image }
+        alt = { product.name }
+        width = "100%"
+        height = "auto"
+        objectFit = "cover"
+        borderRadius = "lg"
+          />
+
+      <Box mt="1" fontWeight = "semibold" as="h4" lineHeight = "tight" isTruncated >
+        { product.name }
+      < /Box>
+
+      < Box mt = "1" fontWeight = "semibold" as="h4" lineHeight = "tight" isTruncated >
+        { product.description }
+      < /Box>
+
+      < Box d = "flex" mt = "2" alignItems = "center" >
+        <Text fontWeight="semibold" > { product.price } < /Text>
+        < Button
+          ml = "auto"
+          bg = "#deb887"
+          onClick = {() => handleAddToCart(product)}
                     >
-                      Adicionar ao carrinho
-                    </Button>
-                  </Box>
-                </Box>
-              ))}
-            </Flex>
-          </>
-        )}
-      </Box>
-    </Box>
-  </ThemeProvider>
+          Adicionar ao carrinho
+        < /Button>
+      < /Box>
+    < /Box>
+    ))}
+    </Flex>
+  < />
+)}
+</Box>
+  < /Box>
+  < /ThemeProvider>
   );
 }

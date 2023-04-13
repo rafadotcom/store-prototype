@@ -1,13 +1,14 @@
 import connect from '@/db/Connection';
-import User from "@/models/schema"
+import Cafe from "@/models/schemaCafe"
 
 connect()
 
 export default async function handler(req, res) {
     try {
-        const user = await User.create(req.body);
-        res.redirect('/login')
-        if (!user) {
+        console.log(req.body)
+        const cafe = await Cafe.create(req.body);
+        res.redirect('/cafe')
+        if (!cafe) {
             return res.json({ "code": 'User not created' })
         }
     } catch (error) {

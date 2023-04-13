@@ -20,7 +20,7 @@ export default function Cesto() {
     id: cart.find(item => item.id)?.id || "1",
     name: cart.find(item => item.name)?.name || "Produto Teste",
     price: cart.find(item => item.price)?.price || "10,00",
-    image: cart.find(item => item.image)?.image || "https://via.placeholder.com/150",
+    image: cart.find(item => item.image)?.image || "/public/bolo1.png",
   };
 
   return (

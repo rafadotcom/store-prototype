@@ -20,19 +20,7 @@ const Navbar = () => {
         </Link>
       </Flex>
 
-      <Flex align="center" flexGrow={1}>
-        <Box display={{ base: "none", md: "flex" }} ml={10}>
-          <Link href="/" mr={4} fontSize="md" fontWeight="bold" letterSpacing="wide">
-            Home
-          </Link>
-          <Link href="/about" mr={4} fontSize="md" fontWeight="bold" letterSpacing="wide">
-            Sobre nós
-          </Link>
-          <Link href="/contactos" mr={4} fontSize="md" fontWeight="bold" letterSpacing="wide">
-            Contatos
-          </Link>
-        </Box>
-      </Flex>
+      
 
       <Box display={{ base: "none", md: "block" }}>
         <NextLink href="/login" passHref>
