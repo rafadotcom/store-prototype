@@ -38,7 +38,7 @@ export default function Login() {
               </Heading>
             </Box>
             <Box p="4">
-              <form action="/" method="get">
+              <form action="/api/getBolos" method="get">
 
                 <InputGroup mb="4">
                   <FormLabel color="white">Email</FormLabel>

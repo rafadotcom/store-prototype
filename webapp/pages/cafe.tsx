@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, Heading, Text, Flex, Image, Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
 import { ThemeProvider, InputGroup } from "@chakra-ui/react";
 import theme from "../styles/styles";
@@ -9,60 +9,27 @@ const initialProductState = {
   name: "",
   description: "",
   price: "",
-  image: "/bolo1.png",
+  image: "/produto11.png",
 };
 
+
 export default function Produtos() {
-  const [cart, setCart] = useState([]);
-  const [products, setProducts] = useState([
-    {
-      id: 1,
-      name: "Paz",
-      description: "A paz que uma dentada te trás",
-      price: "3€",
-      image: "/produto11.png",
-    },
-    {
-      id: 2,
-      name: "Alegria",
-      description: "a alegria está à distância de um olhar",
-      price: "2€",
-      image: "/produto22.png",
-    },
-    {
-      id: 3,
-      name: "Porpurina",
-      description: "uma experiência unica",
-      price: "2.10€",
-      image: "/produto33.png",
-    },
-  ]);
+
+
+  useEffect(() => {
+    fetch("api/getCafe", {
+      method : "GET"
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data, "cafes")
+        setProducts(data.data)
+      })
+  }, []) 
+
+  const [products, setProducts] = useState([]);
   const [newProduct, setNewProduct] = useState(initialProductState);
   const [showAddProduct, setShowAddProduct] = useState(false);
-
-  const handleAddToCart = (product) => {
-    const params = new URLSearchParams();
-    params.set("id", product.id);
-    params.set("name", product.name);
-    params.set("description", product.description);
-    params.set("price", product.price);
-    const queryString = params.toString();
-    window.location.href = `/cesto?${queryString}`;
-  };
-
-  const handleAddProduct = () => {
-    const newProductId = products.length + 1;
-
-    setProducts([
-      ...products,
-      {
-        ...newProduct,
-        id: newProductId,
-      },
-    ]);
-    setNewProduct(initialProductState);
-    setShowAddProduct(false);
-  };
 
   const handleCancelAddProduct = () => {
     setNewProduct(initialProductState);
@@ -129,6 +96,14 @@ export default function Produtos() {
           }>
           Adicionar Produto
         < /Button>
+
+        < Button
+            action = {"api/getCafe.js"}
+            colorScheme = "green"
+            disabled = {!newProduct.name || !newProduct.description || !newProduct.price
+          }>
+          Adicionar Produto
+        < /Button>
       < /Flex>
       < /form>
     < /Box>
@@ -158,7 +133,7 @@ export default function Produtos() {
           borderRadius = "lg"
           overflow = "hidden"
           bg = "#faf0e6">
-      <Image src={ product.image }
+      <Image src={ "/produto11.png" }
         alt = { product.name }
         width = "100%"
         height = "auto"
@@ -166,7 +141,7 @@ export default function Produtos() {
         borderRadius = "lg"
           />
 
-      <Box mt="1" fontWeight = "semibold" as="h4" lineHeight = "tight" isTruncated >
+      <Box mt="1" fontWeight = "bold" fontSize="20px" as="h4" lineHeight = "tight" isTruncated >
         { product.name }
       < /Box>
 
@@ -175,7 +150,7 @@ export default function Produtos() {
       < /Box>
 
       < Box d = "flex" mt = "2" alignItems = "center" >
-        <Text fontWeight="semibold" > { product.price } < /Text>
+        <Text fontWeight="semibold" fontSize="30px" color="black"> { product.price } < /Text>
         < Button
           ml = "auto"
           bg = "#deb887"

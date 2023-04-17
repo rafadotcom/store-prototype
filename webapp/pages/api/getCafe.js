@@ -1,12 +1,12 @@
 import connect from '@/db/Connection';
-import Bolo from "@/models/schemaBolos"
+import Cafe from "@/models/schemaCafe"
 
 connect()
 
 export default async function handler(req, res) {
     try{
-        const bolos = await Bolo.find({});
-        res.send({status: 'ok', data: bolos});
+        const cafes = await Cafe.find({});
+        res.send({status: 'ok', data: cafes});
 
     }
     catch(error) {
