@@ -1,14 +1,16 @@
 import connect from '@/db/Connection';
-import User from "@/models/schemaAdmin"
+import Admin from "@/models/schema"
 
 connect()
 
 export default async function handler(req, res) {
-    console.log(await User.find({}).then((result)=>{
-        res.send(result);
-    }).catch((err)=>{
-        console.log(err);
-    }))
+    try{
+        const admin = await Admin.find({});
+        res.send({status: 'ok', data: admin});
 
-
-
+    }
+    catch(error) {
+        console.log(error);
+    }
+        
+}
