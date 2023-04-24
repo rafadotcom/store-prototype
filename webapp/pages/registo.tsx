@@ -110,6 +110,16 @@ export default function Login() {
                   />
                 </InputGroup>
 
+                <InputGroup mb="4">
+                  <FormLabel color="white">Fornecedor ou Consumidor</FormLabel>
+                  <Input
+                    type="tipo"
+                    placeholder="fornecedor ou consumidor"
+                    name="tipo"
+                    color="white"
+                  />
+                </InputGroup>
+
 
                 <Button type="submit" width="full">
                   Registar

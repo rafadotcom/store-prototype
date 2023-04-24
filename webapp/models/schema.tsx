@@ -30,8 +30,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  tipo: {
+    type: String,
+    required: true,
+  },
 
 
 })
 
-module.exports = mongoose.models.User || mongoose.model('User', userSchema)
+const User = mongoose.models.User || model("User", userSchema)
+
+export default User
