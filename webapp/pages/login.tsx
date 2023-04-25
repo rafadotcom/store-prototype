@@ -2,12 +2,31 @@ import { Box, Button, FormControl, FormLabel, Heading, Input, Link, Text, InputG
 import { ThemeProvider } from "@chakra-ui/react";
 import { Global, css } from "@emotion/react";
 import theme from "../styles/styles";
-import { useState } from "react";
+import { FormEventHandler, useState } from "react";
 import Navbar from "../components/Navbar_sign";
+import { signIn } from "next-auth/react";
+import { redirect } from "next/dist/server/api-utils";
+import Router from "next/router";
 
 export default function Login() {
-  
 
+  const [userInfo, setUserInfo] = useState({ email: "", password: "" });
+
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+    // validate your userinfo
+    e.preventDefault();
+
+    const res = await signIn("credentials", {
+      email: userInfo.email,
+      password: userInfo.password,
+      redirect: false
+    });
+
+    console.log(res);
+    if(res.ok){
+      Router.replace("/")
+    }
+  };
   // rest of the component
 
   return (
@@ -38,14 +57,17 @@ export default function Login() {
               </Heading>
             </Box>
             <Box p="4">
-              <form action="/api/login" method="post">
+              <form onSubmit={handleSubmit}>
 
                 <InputGroup mb="4">
                   <FormLabel color="white">Email</FormLabel>
                   <Input
                     type="email"
                     placeholder="Seu email"
-                    name="email"
+                    onChange={({ target }) =>
+                                setUserInfo({ ...userInfo, email: target.value })
+                            }
+                    value={userInfo.email}
                     color="white"
                   />
                 </InputGroup>
@@ -55,7 +77,10 @@ export default function Login() {
                   <Input
                     type="password"
                     placeholder="Sua senha"
-                    name="password"
+                    onChange={({ target }) =>
+                                setUserInfo({ ...userInfo, password: target.value })
+                            }
+                    value={userInfo.password}
                     color="white"
                   />
                 </InputGroup> 
