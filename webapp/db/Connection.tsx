@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 const MONGODB_URI = "mongodb+srv://admin:admin123@projeto-bd.o2s20vn.mongodb.net/?retryWrites=true&w=majority";
 
-const connection = {};
+//99 = uninitialized
+const connection = {isConnected:99};
 
 async function connect() {
   if (connection.isConnected) {

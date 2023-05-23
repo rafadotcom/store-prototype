@@ -1,5 +1,6 @@
-import connect from '@/db/Connection';
-import Bolo from "@/models/schemaBolos"
+import connect from "@/db/Connection";
+import { Bolo } from "@/models/schemaBolos";
+import mongoose from "mongoose";
 
 connect()
 

@@ -56,9 +56,9 @@ export default function Cesto() {
               </Text>
               <Button
                 colorScheme="green"
-                onClick={() => {
+                /*onClick={() => {
                   window.location.href = `/encomenda?${query.toString()}`;
-                }}
+                }}*/
               >
                 Pagar
               </Button>
