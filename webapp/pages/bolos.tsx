@@ -57,7 +57,7 @@ export default function Produtos() {
       <Box p= { 6} >
       <form action= "/api/addBolos" method = "post" >
         <InputGroup mb="4" >
-          <FormLabel color="white" > Nome do produto < /FormLabel>
+          <FormLabel color="white" > Nome do produto </FormLabel>
             < Input
               type = "nome do Produto"
               placeholder = "Nome do produto"
@@ -67,7 +67,7 @@ export default function Produtos() {
             </InputGroup>
 
         < InputGroup mb = "4" >
-          <FormLabel color="white" > Descrição < /FormLabel>
+          <FormLabel color="white" > Descrição </FormLabel>
             < Input
               type = "descricao"
               placeholder = "Descrição do Produto"
@@ -77,7 +77,7 @@ export default function Produtos() {
         </InputGroup>
 
         < InputGroup mb = "4" >
-          <FormLabel color="white" > Preço < /FormLabel>
+          <FormLabel color="white" > Preço </FormLabel>
             < Input
               type = "preco"
               placeholder = "Preço do produto"
@@ -88,38 +88,38 @@ export default function Produtos() {
 
 
       < Flex justify = "space-between" >
-        <Button onClick={ handleCancelAddProduct }> Cancelar < /Button>
+        <Button onClick={ handleCancelAddProduct }> Cancelar </Button>
           < Button
             type = "submit"
             colorScheme = "green"
             disabled = {!newProduct.name || !newProduct.description || !newProduct.price
           }>
           Adicionar Produto
-        < /Button>
+        </Button>
 
         < Button
-            action = {"api/getBolos.js"}
+            /*action = {"api/getBolos.js"}*/
             colorScheme = "green"
             disabled = {!newProduct.name || !newProduct.description || !newProduct.price
           }>
           Adicionar Produto
-        < /Button>
-      < /Flex>
-      < /form>
-    < /Box>
+        </Button>
+      </Flex>
+      </form>
+    </Box>
   ) : (
     <>
     <Box p= { 6} >
       <Heading as="h1" size = "xl" textAlign = "center" mb = { 6} >
         Produtos
-      < /Heading>
+      </Heading>
       < Button
         bg = "#deb887"
         onClick = {() => setShowAddProduct(true)}
         mb = { 6}>
           Adicionar Produto
-      < /Button>
-    < /Box>
+      </Button>
+    </Box>
 
     < Flex flexWrap = "wrap" p = { 6} >
       {products.map((product) => (
@@ -143,29 +143,29 @@ export default function Produtos() {
 
       <Box mt="1" fontWeight = "bold" fontSize="20px" as="h4" lineHeight = "tight" isTruncated >
         { product.name }
-      < /Box>
+      </Box>
 
       < Box mt = "1" fontWeight = "semibold" as="h4" lineHeight = "tight" isTruncated >
         { product.description }
-      < /Box>
+      </Box>
 
-      < Box d = "flex" mt = "2" alignItems = "center" >
-        <Text fontWeight="semibold" fontSize="30px" color="black"> { product.price } < /Text>
+      < Box display = "flex" mt = "2" alignItems = "center" >
+        <Text fontWeight="semibold" fontSize="30px" color="black"> { product.price } </Text>
         < Button
           ml = "auto"
           bg = "#deb887"
-          onClick = {() => handleAddToCart(product)}
+          /*onClick = {() => handleAddToCart(product)}*/
                     >
           Adicionar ao carrinho
-        < /Button>
-      < /Box>
-    < /Box>
+        </Button>
+      </Box>
+    </Box>
     ))}
     </Flex>
-  < />
+  </>
 )}
 </Box>
-  < /Box>
-  < /ThemeProvider>
+  </Box>
+  </ThemeProvider>
   );
 }

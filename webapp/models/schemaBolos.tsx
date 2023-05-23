@@ -16,4 +16,4 @@ const boloSchema = new mongoose.Schema({
   
 })
 
-module.exports = mongoose.models.Bolo || mongoose.model('Bolo', boloSchema)
+export const Bolo = mongoose.models.Bolo || mongoose.model('Bolo', boloSchema);
