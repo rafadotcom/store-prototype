@@ -1,5 +1,5 @@
-import connect from '@/db/Connection';
-import User from "@/models/schema"
+import connect from "../../db/Connection";
+import User from "../../models/schema";
 
 connect()
 

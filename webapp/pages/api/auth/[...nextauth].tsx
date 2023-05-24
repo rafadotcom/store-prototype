@@ -1,5 +1,6 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import checkValidUser from "../checkValidUser";
 
 const authOptions: NextAuthOptions = {
   session: {
@@ -7,16 +8,18 @@ const authOptions: NextAuthOptions = {
   },
   providers: [
     CredentialsProvider({
+
       type: "credentials",
       credentials: {},
-      authorize(credentials, req) {
+      async authorize(credentials, req) {
+
+
         const { email, password } = credentials as {
           email: string;
           password: string;
         };
-        // perform you login logic
-        // find out user from db
-        if (email !== "teste@gmail.com" || password !== "teste") {
+
+        if (! await checkValidUser(email, password)) {
           throw new Error("invalid credentials");
         }
 

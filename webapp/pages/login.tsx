@@ -1,12 +1,9 @@
-import { Box, Button, FormControl, FormLabel, Heading, Input, Link, Text, InputGroup } from "@chakra-ui/react";
-import { ThemeProvider } from "@chakra-ui/react";
+import { Box, Button, FormLabel, Heading, Input, InputGroup, Link, Text, ThemeProvider } from "@chakra-ui/react";
 import { Global, css } from "@emotion/react";
-import theme from "../styles/styles";
+import { signIn } from "next-auth/react";
 import { FormEventHandler, useState } from "react";
 import Navbar from "../components/Navbar_sign";
-import { signIn } from "next-auth/react";
-import { redirect } from "next/dist/server/api-utils";
-import Router from "next/router";
+import theme from "../styles/styles";
 
 export default function Login() {
 
@@ -23,8 +20,12 @@ export default function Login() {
     });
 
     console.log(res);
-    if(res.ok){
-      Router.replace("/")
+
+    if (res.ok) {
+      //Router.replace("/")
+    }
+    else {
+      //Router.replace("/registo")
     }
   };
   // rest of the component
@@ -65,8 +66,8 @@ export default function Login() {
                     type="email"
                     placeholder="Seu email"
                     onChange={({ target }) =>
-                                setUserInfo({ ...userInfo, email: target.value })
-                            }
+                      setUserInfo({ ...userInfo, email: target.value })
+                    }
                     value={userInfo.email}
                     color="white"
                   />
@@ -78,14 +79,14 @@ export default function Login() {
                     type="password"
                     placeholder="Sua senha"
                     onChange={({ target }) =>
-                                setUserInfo({ ...userInfo, password: target.value })
-                            }
+                      setUserInfo({ ...userInfo, password: target.value })
+                    }
                     value={userInfo.password}
                     color="white"
                   />
-                </InputGroup> 
-                
-                
+                </InputGroup>
+
+
                 <Button type="submit" width="full">
                   Entrar
                 </Button>

@@ -1,7 +1,6 @@
-import { Box, Button, Heading, Link, Text, Flex, Image } from "@chakra-ui/react";
-import { ThemeProvider } from "@chakra-ui/react";
-import theme from "../styles/styles";
+import { Box, Button, Heading, Text, ThemeProvider } from "@chakra-ui/react";
 import Navbar from "../components/Navbar";
+import theme from "../styles/styles";
 
 export default function About() {
   return (
@@ -26,8 +25,8 @@ export default function About() {
           textAlign="center"
           padding="5rem"
         >
-  
-      
+
+
           <Heading color="white" fontSize="5xl" mb="4">
             Bem-vindo ao Café Dream Drink!
           </Heading>
@@ -43,11 +42,11 @@ export default function About() {
           <Text color="white" fontSize="lg" mb="8">
             E o que seria de uma bebida deliciosa sem um bom acompanhamento? Temos disponíveis deliciosos bolinhos que complementam na perfeição a sua bebida. Venha visitar-nos e experimentar as nossas especialidades. Estamos ansiosos para lhe proporcionar uma experiência única e memorável.
           </Text>
-          <Button href="" colorScheme="orange" size="lg" mt="8">
+          <Button colorScheme="orange" size="lg" mt="8">
             Visite-nos agora!
           </Button>
         </Box>
-        
+
       </Box>
     </ThemeProvider>
   );

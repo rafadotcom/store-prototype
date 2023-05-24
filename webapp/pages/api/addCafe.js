@@ -1,5 +1,5 @@
-import connect from '@/db/Connection';
-import Cafe from "@/models/schemaCafe"
+import connect from "../../db/Connection";
+import Cafe from "../../models/schemaCafe";
 
 connect()
 
