@@ -17,7 +17,7 @@ export default function Produtos() {
 
 
   useEffect(() => {
-    fetch("https://webstore-backend-nu.vercel.app/api/getCafes", {
+    fetch("https://webstore-backend-nu.vercel.app/api/addCafe", {
       method: "GET"
     })
       .then((res) => res.json())
