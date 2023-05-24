@@ -15,17 +15,17 @@ const initialProductState = {
 
 export default function Produtos() {
 
-
-  useEffect(() => {
-    fetch("https://webstore-backend-nu.vercel.app/api/addCafe", {
-      method: "GET"
+  fetch("https://webstore-backend-nu.vercel.app/api/getCafes", {
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    }
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data, "cafes")
+      setProducts(data.data)
     })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data, "cafes")
-        setProducts(data.data)
-      })
-  }, [])
+
 
   const [products, setProducts] = useState([]);
   const [newProduct, setNewProduct] = useState(initialProductState);
