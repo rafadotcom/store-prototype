@@ -15,6 +15,9 @@ const initialProductState = {
 
 export default function Produtos() {
 
+  const [products, setProducts] = useState([]);
+  const [newProduct, setNewProduct] = useState(initialProductState);
+  const [showAddProduct, setShowAddProduct] = useState(false);
 
   useEffect(() => {
     fetch("https://webstore-backend-nu.vercel.app/api/getBolos", {
@@ -27,9 +30,7 @@ export default function Produtos() {
       })
   }, [])
 
-  const [products, setProducts] = useState([]);
-  const [newProduct, setNewProduct] = useState(initialProductState);
-  const [showAddProduct, setShowAddProduct] = useState(false);
+
 
   const handleCancelAddProduct = () => {
     setNewProduct(initialProductState);
@@ -55,7 +56,7 @@ export default function Produtos() {
           {
             showAddProduct ? (
               <Box p={6} >
-                <form action="https://webstore-backend-nu.vercel.app/api/addBolo" method="post" >
+                <form action={"https://webstore-backend-nu.vercel.app/api/addBolo"} method="post" >
                   <InputGroup mb="4" >
                     <FormLabel color="white" > Nome do produto </FormLabel>
                     < Input
@@ -91,14 +92,6 @@ export default function Produtos() {
                     <Button onClick={handleCancelAddProduct}> Cancelar </Button>
                     < Button
                       type="submit"
-                      colorScheme="green"
-                      disabled={!newProduct.name || !newProduct.description || !newProduct.price
-                      }>
-                      Adicionar Produto
-                    </Button>
-
-                    < Button
-                      /*action = {"api/getBolos.js"}*/
                       colorScheme="green"
                       disabled={!newProduct.name || !newProduct.description || !newProduct.price
                       }>
@@ -166,6 +159,6 @@ export default function Produtos() {
             )}
         </Box>
       </Box>
-    </ThemeProvider>
+    </ThemeProvider >
   );
 }

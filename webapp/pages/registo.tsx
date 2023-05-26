@@ -6,7 +6,7 @@ import { useState } from "react";
 import Navbar from "../components/Navbar_sign";
 
 export default function Login() {
-  
+
 
   // rest of the component
 
@@ -38,7 +38,7 @@ export default function Login() {
               </Heading>
             </Box>
             <Box p="4">
-              <form action="/api/register" method="post">
+              <form action="https://webstore-backend-nu.vercel.app/api/addUser" method="post">
 
                 <InputGroup mb="4">
                   <FormLabel color="white">Nome</FormLabel>

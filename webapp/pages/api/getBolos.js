@@ -1,16 +1,12 @@
-import connect from "../../db/Connection";
-import Bolo from "../../models/schemaBolos";
 
-connect()
+export default async function handler() {
 
-export default async function handler(req, res) {
-    try {
-        const bolos = await Bolo.find({});
-        res.send({ status: 'ok', data: bolos });
+    fetch("https://webstore-backend-theta.vercel.app/api/getUsers")
+        .then((response) => response.json())
+        .then((data) => {
 
-    }
-    catch (error) {
-        console.log(error);
-    }
+            return data.data
+        });
+    return null
 
 }
