@@ -1,11 +1,14 @@
 import { Box, Button, FormLabel, Heading, Input, InputGroup, Link, Text, ThemeProvider } from "@chakra-ui/react";
 import { Global, css } from "@emotion/react";
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/router";
 import { FormEventHandler, useState } from "react";
 import Navbar from "../components/Navbar_sign";
 import theme from "../styles/styles";
 
 export default function Login() {
+
+  const router = useRouter()
 
   const [userInfo, setUserInfo] = useState({ email: "", password: "" });
 
@@ -22,10 +25,10 @@ export default function Login() {
     console.log(res);
 
     if (res.ok) {
-      //Router.replace("/")
+      router.replace("/")
     }
     else {
-      //Router.replace("/registo")
+      router.replace("/registo")
     }
   };
   // rest of the component

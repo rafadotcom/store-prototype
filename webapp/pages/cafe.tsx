@@ -1,8 +1,9 @@
+import { Box, Button, Flex, FormLabel, Heading, Image, Input, InputGroup, Text, ThemeProvider } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Box, Heading, Text, Flex, Image, Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
-import { ThemeProvider, InputGroup } from "@chakra-ui/react";
-import theme from "../styles/styles";
 import Navbar from "../components/Navbar";
+import theme from "../styles/styles";
 
 const initialProductState = {
   id: "",
@@ -14,6 +15,15 @@ const initialProductState = {
 
 
 export default function Produtos() {
+
+  const router = useRouter()
+  const { status, data } = useSession()
+  useEffect(() => {
+    console.log(status)
+    if (status === "unauthenticated") {
+      router.replace("/login")
+    }
+  })
 
   const [products, setProducts] = useState([]);
   const [newProduct, setNewProduct] = useState(initialProductState);
