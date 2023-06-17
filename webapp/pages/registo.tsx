@@ -85,7 +85,7 @@ export default function Login() {
             </Box>
             <Box p="4">
               <iframe name="dummyframe" id="dummyframe" style={{ display: "none" }}></iframe>
-              <form onSubmit="http://webstore-backend-nu.vercel.app/api/addUser" method="post" target="dummyframe">
+              <form action="http://webstore-backend-nu.vercel.app/api/addUser" method="post" target="dummyframe">
 
                 <InputGroup mb="4">
                   <FormLabel color="white">Nome</FormLabel>
