@@ -1,11 +1,57 @@
-import { Box, Button, FormControl, FormLabel, Heading, Input, Link, Text, InputGroup } from "@chakra-ui/react";
-import { ThemeProvider } from "@chakra-ui/react";
+import { Box, Button, FormLabel, Heading, Input, InputGroup, Link, Select, Text, ThemeProvider } from "@chakra-ui/react";
 import { Global, css } from "@emotion/react";
-import theme from "../styles/styles";
+import axios from "axios";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import Navbar from "../components/Navbar_sign";
+import theme from "../styles/styles";
 
 export default function Login() {
+
+  const router = useRouter()
+
+  const [userInfo, setUserInfo] = useState({ nome: "", email: "", password: "", NIF: "", dataNascimento: "", morada: "", telemovel: "", tipo: "" });
+
+  const handleSubmit = (event) => {
+    //event.preventDefault();
+
+    axios.post('https://webstore-backend-nu.vercel.app/api/addUser', userInfo)
+      .then(function (response) {
+        // Aqui você pode manipular a resposta do backend
+        console.log(response.data); // Exibe a resposta no console, por exemplo
+      })
+      .catch(function (error) {
+        // Lidar com erros, se houver
+        console.error('Ocorreu um erro:', error);
+      });
+
+    /* const data =
+    {
+      "nome": userInfo.nome,
+      "email": userInfo.email,
+      "password": userInfo.password,
+      "NIF": userInfo.NIF,
+      "dataNascimento": userInfo.dataNascimento,
+      "morada": userInfo.morada,
+      "telemovel": userInfo.telemovel,
+      "tipo": userInfo.tipo
+    }
+
+    const res = await fetch("https://webstore-backend-nu.vercel.app/api/addUser", {
+      method: "POST",
+      body: JSON.stringify(data)
+    });
+
+    console.log(res); */
+
+  };
+
+  const handleChange = (event) => {
+    setUserInfo({
+      ...userInfo,
+      [event.target.name]: event.target.value
+    });
+  };
 
 
   // rest of the component
@@ -38,7 +84,8 @@ export default function Login() {
               </Heading>
             </Box>
             <Box p="4">
-              <form action="https://webstore-backend-nu.vercel.app/api/addUser" method="post">
+              <iframe name="dummyframe" id="dummyframe" style={{ display: "none" }}></iframe>
+              <form action="https://webstore-backend-nu.vercel.app/api/addUser" method="post" target="dummyframe">
 
                 <InputGroup mb="4">
                   <FormLabel color="white">Nome</FormLabel>
@@ -47,6 +94,8 @@ export default function Login() {
                     placeholder="nome"
                     name="nome"
                     color="white"
+                    value={userInfo.nome}
+                    onChange={handleChange}
                   />
                 </InputGroup>
 
@@ -57,6 +106,8 @@ export default function Login() {
                     placeholder="Seu email"
                     name="email"
                     color="white"
+                    value={userInfo.email}
+                    onChange={handleChange}
                   />
                 </InputGroup>
 
@@ -67,6 +118,8 @@ export default function Login() {
                     placeholder="Sua senha"
                     name="password"
                     color="white"
+                    value={userInfo.password}
+                    onChange={handleChange}
                   />
                 </InputGroup>
 
@@ -77,6 +130,8 @@ export default function Login() {
                     placeholder="nif"
                     name="NIF"
                     color="white"
+                    value={userInfo.NIF}
+                    onChange={handleChange}
                   />
                 </InputGroup>
 
@@ -87,6 +142,8 @@ export default function Login() {
                     placeholder="dataNasciemnto"
                     name="dataNascimento"
                     color="white"
+                    value={userInfo.dataNascimento}
+                    onChange={handleChange}
                   />
                 </InputGroup>
 
@@ -97,6 +154,8 @@ export default function Login() {
                     placeholder="morada"
                     name="morada"
                     color="white"
+                    value={userInfo.morada}
+                    onChange={handleChange}
                   />
                 </InputGroup>
 
@@ -107,17 +166,22 @@ export default function Login() {
                     placeholder="telemovel"
                     name="telemovel"
                     color="white"
+                    value={userInfo.telemovel}
+                    onChange={handleChange}
                   />
                 </InputGroup>
 
                 <InputGroup mb="4">
-                  <FormLabel color="white">Fornecedor ou Consumidor</FormLabel>
-                  <Input
-                    type="tipo"
-                    placeholder="fornecedor ou consumidor"
+                  <FormLabel color="white">Tipo de Conta</FormLabel>
+                  <Select
+                    placeholder='Selecione o tipo de conta'
                     name="tipo"
-                    color="white"
-                  />
+                    value={userInfo.tipo}
+                    onChange={handleChange}
+                  >
+                    <option value='consumidor'>Consumidor</option>
+                    <option value='vendedor'>Vendedor</option>
+                  </Select>
                 </InputGroup>
 
 
@@ -135,6 +199,6 @@ export default function Login() {
             </Box>
           </Box></Box>
       </Box>
-    </ThemeProvider>
+    </ThemeProvider >
   );
 }

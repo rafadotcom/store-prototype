@@ -1,9 +1,13 @@
-import { Box, Button, Heading, Link, Text, Flex } from "@chakra-ui/react";
-import { ThemeProvider } from "@chakra-ui/react";
-import theme from "../styles/styles";
+import { Box, Button, Flex, Link } from "@chakra-ui/react";
+import { signOut } from "next-auth/react";
 import NextLink from "next/link";
 
 const Navbar = () => {
+
+  const handleLogOut = () => {
+    signOut()
+    //router.replace("/login")
+  }
   return (
     <Flex
       as="nav"
@@ -37,26 +41,25 @@ const Navbar = () => {
         </Box>
       </Flex>
 
-        <Link as={NextLink} display="flex" alignItems="center" mr={4} href="/profile" passHref>
-          <img src="/perfil.png" alt="Descrição da imagem" width="50px" />
-        </Link>
-        <Link as={NextLink} display="flex" alignItems="center" mr={4} href="/cesto" passHref>
-          <img src="/cesto.png" alt="Descrição da imagem" width="35px" />
-        </Link>
+      <Link as={NextLink} display="flex" alignItems="center" mr={4} href="/profile" passHref>
+        <img src="/perfil.png" alt="Descrição da imagem" width="50px" />
+      </Link>
+      <Link as={NextLink} display="flex" alignItems="center" mr={4} href="/cesto" passHref>
+        <img src="/cesto.png" alt="Descrição da imagem" width="35px" />
+      </Link>
       <Box display={{ base: "none", md: "block" }}>
-        <NextLink href="/login" passHref>
-          <Button
-            colorScheme="#8A624A"
-            variant="outline"
-            mr={4}
-            borderRadius="0"
-            borderColor="white"
-          >
-            Logout
-          </Button>
-        </NextLink> 
+        <Button
+          onClick={handleLogOut}
+          colorScheme="#8A624A"
+          variant="outline"
+          mr={4}
+          borderRadius="0"
+          borderColor="white"
+        >
+          Logout
+        </Button>
       </Box>
-        
+
 
     </Flex>
   );

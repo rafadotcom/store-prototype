@@ -1,9 +1,21 @@
-import { Box, Button, Heading, Link, Text, Flex } from "@chakra-ui/react";
-import { ThemeProvider } from "@chakra-ui/react";
-import theme from "../styles/styles";
+import { Box, Button, Flex, Link, Text, ThemeProvider } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import Navbar from "../components/Navbar";
+import theme from "../styles/styles";
 
 export default function Produto() {
+
+  const router = useRouter()
+  const { status, data } = useSession()
+  useEffect(() => {
+    console.log(status)
+    if (status === "unauthenticated") {
+      router.replace("/login")
+    }
+  })
+
   return (
     <ThemeProvider theme={theme}>
       <Box
@@ -56,7 +68,7 @@ export default function Produto() {
                     </Button>
                   </Link>
                 </Box>
-               
+
               </Box>
               <Box>
                 <Box
@@ -83,7 +95,7 @@ export default function Produto() {
                     </Button>
                   </Link>
                 </Box>
-                
+
               </Box>
             </Flex>
           </Flex>

@@ -1,8 +1,9 @@
+import { Box, Button, Flex, FormLabel, Heading, Image, Input, InputGroup, Text, ThemeProvider } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Box, Heading, Text, Flex, Image, Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
-import { ThemeProvider, InputGroup } from "@chakra-ui/react";
-import theme from "../styles/styles";
 import Navbar from "../components/Navbar";
+import theme from "../styles/styles";
 
 const initialProductState = {
   id: "",
@@ -15,6 +16,18 @@ const initialProductState = {
 
 export default function Produtos() {
 
+  const router = useRouter()
+  const { status, data } = useSession()
+  useEffect(() => {
+    console.log(status)
+    if (status === "unauthenticated") {
+      router.replace("/login")
+    }
+  })
+
+  const [products, setProducts] = useState([]);
+  const [newProduct, setNewProduct] = useState(initialProductState);
+  const [showAddProduct, setShowAddProduct] = useState(false);
 
   useEffect(() => {
     fetch("https://webstore-backend-nu.vercel.app/api/getBolos", {
@@ -27,9 +40,7 @@ export default function Produtos() {
       })
   }, [])
 
-  const [products, setProducts] = useState([]);
-  const [newProduct, setNewProduct] = useState(initialProductState);
-  const [showAddProduct, setShowAddProduct] = useState(false);
+
 
   const handleCancelAddProduct = () => {
     setNewProduct(initialProductState);
@@ -55,7 +66,7 @@ export default function Produtos() {
           {
             showAddProduct ? (
               <Box p={6} >
-                <form action="https://webstore-backend-nu.vercel.app/api/getBolo" method="post" >
+                <form action={"https://webstore-backend-nu.vercel.app/api/addBolo"} method="post" >
                   <InputGroup mb="4" >
                     <FormLabel color="white" > Nome do produto </FormLabel>
                     < Input
@@ -91,14 +102,6 @@ export default function Produtos() {
                     <Button onClick={handleCancelAddProduct}> Cancelar </Button>
                     < Button
                       type="submit"
-                      colorScheme="green"
-                      disabled={!newProduct.name || !newProduct.description || !newProduct.price
-                      }>
-                      Adicionar Produto
-                    </Button>
-
-                    < Button
-                      /*action = {"api/getBolos.js"}*/
                       colorScheme="green"
                       disabled={!newProduct.name || !newProduct.description || !newProduct.price
                       }>
@@ -166,6 +169,6 @@ export default function Produtos() {
             )}
         </Box>
       </Box>
-    </ThemeProvider>
+    </ThemeProvider >
   );
 }

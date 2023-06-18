@@ -1,8 +1,9 @@
+import { Box, Button, Flex, FormLabel, Heading, Image, Input, InputGroup, Text, ThemeProvider } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Box, Heading, Text, Flex, Image, Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
-import { ThemeProvider, InputGroup } from "@chakra-ui/react";
-import theme from "../styles/styles";
 import Navbar from "../components/Navbar";
+import theme from "../styles/styles";
 
 const initialProductState = {
   id: "",
@@ -15,21 +16,27 @@ const initialProductState = {
 
 export default function Produtos() {
 
-
+  const router = useRouter()
+  const { status, data } = useSession()
   useEffect(() => {
-    fetch("api/getCafe", {
-      method: "GET"
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data, "cafes")
-        setProducts(data.data)
-      })
-  }, [])
+    console.log(status)
+    if (status === "unauthenticated") {
+      router.replace("/login")
+    }
+  })
 
   const [products, setProducts] = useState([]);
   const [newProduct, setNewProduct] = useState(initialProductState);
   const [showAddProduct, setShowAddProduct] = useState(false);
+
+  fetch("https://webstore-backend-nu.vercel.app/api/getCafes", {
+    method: "GET"
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data, "cafes")
+      setProducts(data.data)
+    })
 
   const handleCancelAddProduct = () => {
     setNewProduct(initialProductState);
@@ -55,7 +62,7 @@ export default function Produtos() {
           {
             showAddProduct ? (
               <Box p={6} >
-                <form action="/api/addCafe" method="post" >
+                <form action="https://webstore-backend-nu.vercel.app/api/addCafe" method="post" >
                   <InputGroup mb="4" >
                     <FormLabel color="white" > Nome do produto </FormLabel>
                     <Input
@@ -91,14 +98,6 @@ export default function Produtos() {
                     <Button onClick={handleCancelAddProduct}> Cancelar </Button>
                     < Button
                       type="submit"
-                      colorScheme="green"
-                      disabled={!newProduct.name || !newProduct.description || !newProduct.price
-                      }>
-                      Adicionar Produto
-                    </Button>
-
-                    <Button
-                      /*action = {"api/getCafe.js"}*/
                       colorScheme="green"
                       disabled={!newProduct.name || !newProduct.description || !newProduct.price
                       }>
