@@ -31,7 +31,7 @@ export default function Produtos() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState([]);
-  
+
 
   useEffect(() => {
     fetch("https://webstore-backend-nu.vercel.app/api/getBolos", {
@@ -53,7 +53,7 @@ export default function Produtos() {
   const handleSearch = (event) => {
     const query = event.target.value;
     setSearchQuery(query);
-  
+
     // Filter the products based on the search query and selected filters
     const filtered = products.filter((product) =>
       product.name.toLowerCase().includes(query.toLowerCase()) &&
@@ -62,18 +62,18 @@ export default function Produtos() {
           product.filters && product.filters.includes(filter.replace(/-/g, " "))
         ))
     );
-  
+
     setSelectedFilters(selectedFilters);
     setFilteredProducts(filtered);
-    
+
     setNewProduct((prevProduct) => ({
       ...prevProduct,
       filters: selectedFilters,
     }));
   };
-  
-  
-  
+
+
+
   const handleFilterSelection = (filter) => {
     let updatedFilters;
     if (selectedFilters.includes(filter)) {
@@ -81,7 +81,7 @@ export default function Produtos() {
     } else {
       updatedFilters = [...selectedFilters, filter];
     }
-  
+
     const filtered = products.filter((product) =>
       product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
       (updatedFilters.length === 0 ||
@@ -89,14 +89,14 @@ export default function Produtos() {
           product.filters && product.filters.includes(filter.replace(/-/g, " "))
         ))
     );
-  
+
     setSelectedFilters(updatedFilters);
     setFilteredProducts(filtered);
   };
-  
-  
-  
-  
+
+
+
+
 
   const handleEditProduct = (product) => {
     setEditProduct(product);
@@ -146,7 +146,7 @@ export default function Produtos() {
         console.log("Erro ao excluir o produto:", error);
       });
   };
-  
+
 
   const handleAddProduct = () => {
     setEditProduct(null);
@@ -169,87 +169,87 @@ export default function Produtos() {
 
           {showAddProduct ? (
             <Box p={6} >
-            <form action="https://webstore-backend-nu.vercel.app/api/addBolo" method="post" >
-            <InputGroup mb="4">
-              <FormLabel color="white">Nome do produto</FormLabel>
-              <Input
-                type="text"
-                placeholder="Nome do produto"
-                name="name"
-                color="white"
-                value={newProduct.name}
-                onChange={handleInputChange}
-              />
-            </InputGroup>
+              <form action="https://webstore-backend-nu.vercel.app/api/addBolo" method="post" >
+                <InputGroup mb="4">
+                  <FormLabel color="white">Nome do produto</FormLabel>
+                  <Input
+                    type="text"
+                    placeholder="Nome do produto"
+                    name="name"
+                    color="white"
+                    value={newProduct.name}
+                    onChange={handleInputChange}
+                  />
+                </InputGroup>
 
-            <InputGroup mb="4">
-              <FormLabel color="white">Descrição</FormLabel>
-              <Input
-                type="descricao"
-                placeholder="Descrição do Produto"
-                name="description"
-                color="white"
-                value={newProduct.description}
-                onChange={handleInputChange}
-              />
-            </InputGroup>
+                <InputGroup mb="4">
+                  <FormLabel color="white">Descrição</FormLabel>
+                  <Input
+                    type="descricao"
+                    placeholder="Descrição do Produto"
+                    name="description"
+                    color="white"
+                    value={newProduct.description}
+                    onChange={handleInputChange}
+                  />
+                </InputGroup>
 
-            <InputGroup mb="4">
-              <FormLabel color="white">Preço</FormLabel>
-              <Input
-                type="preco"
-                placeholder="Preço do produto"
-                name="price"
-                color="white"
-                value={newProduct.price}
-                onChange={handleInputChange}
-              />
-            </InputGroup>
+                <InputGroup mb="4">
+                  <FormLabel color="white">Preço</FormLabel>
+                  <Input
+                    type="preco"
+                    placeholder="Preço do produto"
+                    name="price"
+                    color="white"
+                    value={newProduct.price}
+                    onChange={handleInputChange}
+                  />
+                </InputGroup>
 
-            <InputGroup mb="4">
-              <FormLabel color="white">Filtros</FormLabel>
-              <Flex>
-                <Checkbox
-                  colorScheme="green"
-                  checked={selectedFilters.includes("no-gluten")}
-                  onChange={() => handleFilterSelection("no-gluten")}
-                  mr={2}
-                >
-                  Sem Glúten
-                </Checkbox>
-                <Checkbox
-                  colorScheme="green"
-                  checked={selectedFilters.includes("no-lactose")}
-                  onChange={() => handleFilterSelection("no-lactose")}
-                >
-                  Sem Lactose
-                </Checkbox>
-                <Checkbox
-                  colorScheme="green"
-                  checked={selectedFilters.includes("no-sugar")}
-                  onChange={() => handleFilterSelection("no-sugar")}
-                >
-                  Pouco Açucar
-                </Checkbox>
-              </Flex>
-            </InputGroup>
+                <InputGroup mb="4">
+                  <FormLabel color="white">Filtros</FormLabel>
+                  <Flex>
+                    <Checkbox
+                      colorScheme="green"
+                      checked={selectedFilters.includes("no-gluten")}
+                      onChange={() => handleFilterSelection("no-gluten")}
+                      mr={2}
+                    >
+                      Sem Glúten
+                    </Checkbox>
+                    <Checkbox
+                      colorScheme="green"
+                      checked={selectedFilters.includes("no-lactose")}
+                      onChange={() => handleFilterSelection("no-lactose")}
+                    >
+                      Sem Lactose
+                    </Checkbox>
+                    <Checkbox
+                      colorScheme="green"
+                      checked={selectedFilters.includes("no-sugar")}
+                      onChange={() => handleFilterSelection("no-sugar")}
+                    >
+                      Pouco Açucar
+                    </Checkbox>
+                  </Flex>
+                </InputGroup>
 
-            <Flex justify="space-between">
-              <Button onClick={handleCancelAddProduct}>Cancelar</Button>
-              <Button
-                type="submit"
-                colorScheme="green"
-                disabled={
-                  !newProduct.name ||
-                  !newProduct.description ||
-                  !newProduct.price
-                }
-              >
-                {editProduct ? "Editar Produto" : "Adicionar Produto"}
-              </Button>
-            </Flex>
-            </form>
-          </Box>
+                <Flex justify="space-between">
+                  <Button onClick={handleCancelAddProduct}>Cancelar</Button>
+                  <Button
+                    type="submit"
+                    colorScheme="green"
+                    disabled={
+                      !newProduct.name ||
+                      !newProduct.description ||
+                      !newProduct.price
+                    }
+                  >
+                    {editProduct ? "Editar Produto" : "Adicionar Produto"}
+                  </Button>
+                </Flex>
+              </form>
+            </Box>
           ) : (
             <>
               <Box p={6}>
@@ -265,33 +265,6 @@ export default function Produtos() {
                   />
                 </InputGroup>
                 <Flex flexWrap="wrap">
-                  <Button
-                    bg={selectedFilters.includes("no-gluten") ? "blue.500" : "gray.200"}
-                    color={selectedFilters.includes("no-gluten") ? "white" : "black"}
-                    mr={2}
-                    mb={2}
-                    onClick={() => handleFilterSelection("no-gluten")}
-                  >
-                    Sem Glúten
-                  </Button>
-                  <Button
-                    bg={selectedFilters.includes("no-lactose") ? "blue.500" : "gray.200"}
-                    color={selectedFilters.includes("no-lactose") ? "white" : "black"}
-                    mr={2}
-                    mb={2}
-                    onClick={() => handleFilterSelection("no-lactose")}
-                  >
-                    Sem Lactose
-                  </Button>
-                  <Button
-                    bg={selectedFilters.includes("no-sugar") ? "blue.500" : "gray.200"}
-                    color={selectedFilters.includes("no-sugar") ? "white" : "black"}
-                    mr={2}
-                    mb={2}
-                    onClick={() => handleFilterSelection("no-sugar")}
-                  >
-                    Pouco Açúcar
-                  </Button>
                 </Flex>
               </Box>
 
@@ -329,17 +302,11 @@ export default function Produtos() {
                       <Text fontWeight="semibold" fontSize="30px" color="black">
                         {product.price}
                       </Text>
-                      <Button ml="auto" bg="#deb887" onClick={() => handleEditProduct(product)}>
-                        Editar Produto
-                      </Button>
-                      <Button ml="2" bg="#deb887" onClick={() => handleDeleteProduct(product)}>
-                        Excluir Produto
-                      </Button>
                     </Box>
 
                     <Box display="flex" mt="2" alignItems="center">
                       <Text fontWeight="semibold" fontSize="30px" color="black">
-                        
+
                       </Text>
                       <Button ml="auto" bg="#deb887" onClick={() => handleAddToCart(product)}>
                         Adicionar ao carrinho
