@@ -24,6 +24,7 @@ export default function Contact() {
         backgroundPosition="center"
         backgroundSize="cover"
         height="100vh"
+        color="black"
         overflowX="hidden"
       >
         <Navbar />
@@ -36,7 +37,7 @@ export default function Contact() {
           p={8}
         >
           <Heading color="white" as="h1" mb={8}>Entre em contato conosco</Heading>
-          <Box as="form" method="post" action="https://formspree.io/f/your-form-id">
+          <Box as="form" method="post" color="black" action="https://formspree.io/f/your-form-id">
             <Input type="text" name="name" placeholder="Seu nome" mb={4} />
             <Input type="email" name="_replyto" placeholder="Seu endereço de e-mail" mb={4} />
             <Textarea name="message" placeholder="Sua mensagem" mb={4} />
