@@ -9,6 +9,9 @@ export default function Produto() {
 
   const router = useRouter()
   const { status, data } = useSession()
+
+
+
   useEffect(() => {
     console.log(status)
     if (status === "unauthenticated") {

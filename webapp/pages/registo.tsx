@@ -15,9 +15,9 @@ export default function Login() {
   const [dataNascimento, setDataNascimento] = useState("");
 
   const handleSubmit = (event) => {
-    event.preventDefault();
+    //event.preventDefault();
 
-    axios.post('', userInfo)
+    axios.post('https://webstore-backend-nu.vercel.app/api/addUser', userInfo)
       .then(function (response) {
         // Aqui você pode manipular a resposta do backend
         console.log(response.data); // Exibe a resposta no console, por exemplo
@@ -86,9 +86,23 @@ export default function Login() {
               </Heading>
             </Box>
             <Box p="4">
-              <form onSubmit={handleSubmit}>
-                <FormControl id="email" mb="4">
-                  <FormLabel>Email</FormLabel>
+              <iframe name="dummyframe" id="dummyframe" style={{ display: "none" }}></iframe>
+              <form action="https://webstore-backend-nu.vercel.app/api/addUser" method="post" target="dummyframe">
+
+                <InputGroup mb="4">
+                  <FormLabel color="white">Nome</FormLabel>
+                  <Input
+                    type="nome"
+                    placeholder="nome"
+                    name="nome"
+                    color="white"
+                    value={userInfo.nome}
+                    onChange={handleChange}
+                  />
+                </InputGroup>
+
+                <InputGroup mb="4">
+                  <FormLabel color="white">Email</FormLabel>
                   <Input
                     type="email"
                     placeholder="Seu email"
