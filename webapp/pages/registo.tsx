@@ -1,16 +1,18 @@
-import { Box, Button, FormLabel, Heading, Input, InputGroup, Link, Select, Text, ThemeProvider } from "@chakra-ui/react";
+import { Box, Button, FormLabel, Heading, Input, Link, Text, ThemeProvider } from "@chakra-ui/react";
 import { Global, css } from "@emotion/react";
 import axios from "axios";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import Navbar from "../components/Navbar_sign";
 import theme from "../styles/styles";
 
 export default function Login() {
-
-  const router = useRouter()
-
-  const [userInfo, setUserInfo] = useState({ nome: "", email: "", password: "", NIF: "", dataNascimento: "", morada: "", telemovel: "", tipo: "" });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [nome, setNome] = useState("");
+  const [nif, setNIF] = useState("");
+  const [telemovel, setTelemovel] = useState("");
+  const [morada, setMorada] = useState("");
+  const [dataNascimento, setDataNascimento] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -78,121 +80,83 @@ export default function Login() {
         <Navbar />
         <Box h="100vh" display="flex" alignItems="center" justifyContent="center">
           <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
-            <Box bg="#8A624A" p="4">
+            <Box bg="#65000b" p="4">
               <Heading size="md" color="white">
                 Faça o seu registo
               </Heading>
             </Box>
             <Box p="4">
-              <iframe name="dummyframe" id="dummyframe" style={{ display: "none" }}></iframe>
-              <form onSubmit="http://webstore-backend-nu.vercel.app/api/addUser" method="post" target="dummyframe">
-
-                <InputGroup mb="4">
-                  <FormLabel color="white">Nome</FormLabel>
-                  <Input
-                    type="nome"
-                    placeholder="nome"
-                    name="nome"
-                    color="white"
-                    value={userInfo.nome}
-                    onChange={handleChange}
-                  />
-                </InputGroup>
-
-                <InputGroup mb="4">
-                  <FormLabel color="white">Email</FormLabel>
+              <form onSubmit={handleSubmit}>
+                <FormControl id="email" mb="4">
+                  <FormLabel>Email</FormLabel>
                   <Input
                     type="email"
                     placeholder="Seu email"
-                    name="email"
-                    color="white"
-                    value={userInfo.email}
-                    onChange={handleChange}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
-                </InputGroup>
-
-                <InputGroup mb="4">
-                  <FormLabel color="white">Senha</FormLabel>
+                </FormControl>
+                <FormControl id="password" mb="4">
+                  <FormLabel>Senha</FormLabel>
                   <Input
                     type="password"
                     placeholder="Sua senha"
-                    name="password"
-                    color="white"
-                    value={userInfo.password}
-                    onChange={handleChange}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
-                </InputGroup>
-
-                <InputGroup mb="4">
-                  <FormLabel color="white">NIF</FormLabel>
+                </FormControl>
+                <FormControl id="nome" mb="4">
+                  <FormLabel>Nome</FormLabel>
+                  <Input
+                    type="nome"
+                    placeholder="nome"
+                    value={nome}
+                    onChange={(e) => setNome(e.target.value)}
+                  />
+                </FormControl>
+                <FormControl id="nif" mb="4">
+                  <FormLabel>NIF</FormLabel>
                   <Input
                     type="nif"
                     placeholder="nif"
-                    name="NIF"
-                    color="white"
-                    value={userInfo.NIF}
-                    onChange={handleChange}
+                    value={nif}
+                    onChange={(e) => setNIF(e.target.value)}
                   />
-                </InputGroup>
-
-                <InputGroup mb="4">
-                  <FormLabel color="white">Data de Nascimento</FormLabel>
+                </FormControl>
+                <FormControl id="dataNascimento" mb="4">
+                  <FormLabel>Data de Nascimento</FormLabel>
                   <Input
-                    type="date"
+                    type="dataNascimento"
                     placeholder="dataNasciemnto"
-                    name="dataNascimento"
-                    color="white"
-                    value={userInfo.dataNascimento}
-                    onChange={handleChange}
+                    value={dataNascimento}
+                    onChange={(e) => setDataNascimento(e.target.value)}
                   />
-                </InputGroup>
-
-                <InputGroup mb="4">
-                  <FormLabel color="white">Morada</FormLabel>
+                </FormControl>
+                <FormControl id="morada" mb="4">
+                  <FormLabel>Morada</FormLabel>
                   <Input
                     type="morada"
                     placeholder="morada"
-                    name="morada"
-                    color="white"
-                    value={userInfo.morada}
-                    onChange={handleChange}
+                    value={morada}
+                    onChange={(e) => setMorada(e.target.value)}
                   />
-                </InputGroup>
-
-                <InputGroup mb="4">
+                </FormControl>
+                <FormControl id="telemovel" mb="4">
                   <FormLabel>Telemovel</FormLabel>
                   <Input
-                    type="tel"
+                    type="telemovel"
                     placeholder="telemovel"
-                    name="telemovel"
-                    color="white"
-                    value={userInfo.telemovel}
-                    onChange={handleChange}
+                    value={telemovel}
+                    onChange={(e) => setTelemovel(e.target.value)}
                   />
-                </InputGroup>
-
-                <InputGroup mb="4">
-                  <FormLabel color="white">Tipo de Conta</FormLabel>
-                  <Select
-                    placeholder='Selecione o tipo de conta'
-                    name="tipo"
-                    value={userInfo.tipo}
-                    onChange={handleChange}
-                  >
-                    <option value='consumidor'>Consumidor</option>
-                    <option value='vendedor'>Vendedor</option>
-                  </Select>
-                </InputGroup>
-
-
+                </FormControl>
                 <Button type="submit" width="full">
-                  Registar
+                  Entrar
                 </Button>
-
               </form>
               <Text mt="4" textAlign="center">
                 Não tem uma conta ainda?{" "}
-                <Link color="#8A624A" href="#">
+                <Link color="#65000b" href="#">
                   Registre-se aqui
                 </Link>
               </Text>

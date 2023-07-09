@@ -49,8 +49,10 @@ export default function Login() {
       <Box
         background="rgb(1,1,1,0.3)"
         width="100%"
-        height="100%"
+        height="150vh"
         zIndex="100"
+
+
       >
         <Navbar />
         <Box h="100vh" display="flex" alignItems="center" justifyContent="center">
@@ -103,7 +105,7 @@ export default function Login() {
               </Text>
             </Box>
           </Box></Box>
-      </Box>
-    </ThemeProvider>
+      </Box >
+    </ThemeProvider >
   );
 }

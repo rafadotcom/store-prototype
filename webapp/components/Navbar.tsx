@@ -40,7 +40,6 @@ const Navbar = () => {
           </Link>
         </Box>
       </Flex>
-
       <Link as={NextLink} display="flex" alignItems="center" mr={4} href="/profile" passHref>
         <img src="/perfil.png" alt="Descrição da imagem" width="50px" />
       </Link>
