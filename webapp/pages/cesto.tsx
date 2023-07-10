@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Flex, FormLabel, Grid, GridItem, Heading, Image, Input, InputGroup, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Text, ThemeProvider } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Flex, FormLabel, Grid, GridItem, Heading, Image, Input, InputGroup, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Text, ThemeProvider, Spinner } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -32,6 +32,7 @@ export default function cesto() {
   const [cafes, setCafes] = useState([]);
   const [cartIsLoading, setCartIsLoading] = useState(true);
   const [productsAreLoading, setProductsAreLoading] = useState(true);
+  const [total, setTotal] = useState(0);
 
   /** 
    * Procura o cesto do utilizador
@@ -152,22 +153,42 @@ export default function cesto() {
       if (dbCart.length > 0 && cartIsLoading && bolos.length > 0 && cafes.length > 0) {
         loadCart();
         console.log("cart loaded");
+        getTotal();
         setCartIsLoading(false);
       }
     } else { //se o cesto na bd estiver vazio
       setCartIsLoading(false);
     }
+    if (cart.length>0){
+      getTotal();
+    }
     //console.log(cart);
-  }, [dbCart, email, bolos, cafes]);
+  }, [cart, dbCart, email, bolos, cafes]);
 
   function handleQuantityChange(_id: any, value: string): void {
     updateCartData(email, _id, value);
     const foundItem = cart.find(item => item._id === _id);
     if (foundItem) {
-      foundItem.quantidade = value;
+      foundItem.quantidade = parseFloat(value);
       setCart([...cart]); // Update the cart state with the modified item
     }
+    //add total up
+    getTotal();
   }
+
+  /**
+   * Calculates the total amount
+   */
+  const getTotal = () => {
+    let newTotal = 0;
+    console.log("Cart in get total: ",cart);
+    cart.forEach((item) => {
+      if (item.price) {
+        newTotal += parseFloat(item.price) * item.quantidade;
+      }
+    });
+    setTotal(newTotal);
+  } 
 
   return (
     <ThemeProvider theme={theme}>
@@ -188,11 +209,13 @@ export default function cesto() {
           {/* cart = [{_id: "6490361c0c01c91bcaa43dde", quantidade: 1}, {_id: "6490361c0c01c91bcaa43dde", quantidade: 1}] */}
           <div>
             {cartIsLoading ? (
-              <div>Loading...</div>
+              <div style={{ display: "flex", justifyContent: "center" }}>
+                <Spinner thickness='8px' speed='0.65s' emptyColor="#faf0e6"
+                  color="#deb887" size='xl'
+                />
+              </div>
             ) : (
-              cartIsEmpty ? (
-                <div>Cart is empty</div>
-              ) : (
+              cartIsEmpty ? null : (
                 <Grid templateColumns="repeat(3, 1fr)" margin="1rem" gap={4}>
                   {/* Render the cart data */}
                   {cart.map((item) => (
@@ -226,9 +249,16 @@ export default function cesto() {
               )
             )}
           </div>
-          <Button ml="auto" bg="#deb887" margin="1rem">
-            Comprar
-          </Button>
+          <Box margin="auto" minWidth="fit-content" width="auto">
+            <Box minWidth="fit-content" width="0" bg="#faf0e6" margin="1rem" borderRadius="10px" display="flex" alignItems="center" justifyContent="space-between">
+              <Box ml="1.5rem" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
+                Total: {total} €
+              </Box>
+              <Button ml="auto" bg="#deb887" margin="1rem" isDisabled={total === 0}>
+                Comprar
+              </Button>
+            </Box>
+          </Box>
         </Box>
       </Box>
     </ThemeProvider>
