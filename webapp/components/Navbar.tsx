@@ -38,6 +38,10 @@ const Navbar = () => {
           <Link href="/produto" mr={4} fontSize="md" fontWeight="bold" letterSpacing="wide">
             Produtos
           </Link>
+          <Link href="/encomenda" mr={4} fontSize="md" fontWeight="bold" letterSpacing="wide">
+            Encomendas
+          </Link>
+          
         </Box>
       </Flex>
 
