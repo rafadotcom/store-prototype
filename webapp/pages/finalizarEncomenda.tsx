@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Flex, FormLabel, Grid, GridItem, Heading, Image, Input, InputGroup, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Text, ThemeProvider, Spinner } from "@chakra-ui/react";
+import { Select, Box, Button, Checkbox, Flex, FormLabel, Grid, GridItem, Heading, Image, Input, InputGroup, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Text, ThemeProvider, Spinner } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -37,6 +37,10 @@ export default function Cesto() {
   const [cartIsLoading, setCartIsLoading] = useState(true);
   const [productsAreLoading, setProductsAreLoading] = useState(true);
   const [total, setTotal] = useState(0);
+  const [selectedOption, setSelectedOption] = useState('');
+  const [valorApos, setvalorApos] = useState(0);
+  const [nomeEnvio,setNomeEnvio] = useState('');
+  const [precoEnvio,setPrecoEnvio] = useState('');
 
   /** 
    * Procura o cesto do utilizador
@@ -134,8 +138,52 @@ export default function Cesto() {
     }
     console.log("newCart: ",newCart);
   }
-  const handleClick =  () => {
-    router.push('http://localhost:3000/finalizarEncomenda');
+  const handlePayment = async () => {
+    const items = new Map([])
+    let counter = 0
+    for (let i=0;i<cart.length;i++){
+      const id_produto = cart[i]._id;
+      const quantidade = cart[i].quantidade;
+      const bolosTeste = bolos.find(item => item._id === id_produto);
+      const cafesTeste = cafes.find(item => item._id === id_produto);
+      if(bolosTeste !== undefined){
+        if(cafesTeste === undefined){
+          if (items.size === counter){
+            items.set(counter,[quantidade,{precoCentimos: (parseInt(bolosTeste.price)*100), nome: bolosTeste.name}])
+            counter++
+          }
+        }
+      } else if (cafesTeste !== undefined){
+        if(bolosTeste === undefined){
+          if(items.size === counter){
+            items.set(counter,[quantidade,{precoCentimos:(parseInt(cafesTeste.price)*100),nome:cafesTeste.name}])
+            counter++
+          }
+        }
+      }
+    }
+    items.set(counter,[1,{precoCentimos:(parseFloat(precoEnvio)*100),nome:nomeEnvio}])
+    const lineItems = Array.from(items.values()).map(([quantity, { precoCentimos, nome }]) => ({
+      price_data: {
+        currency: 'eur',
+        product_data: {
+          name: nome,
+        },
+        unit_amount: precoCentimos,
+      },
+      quantity: quantity,
+    }));
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      mode:'payment',
+      success_url:"http://localhost:3000/about",
+      cancel_url:"http://localhost:3000/login",
+      line_items: lineItems
+    })
+    window.location.href = session.url;
+;
+    
+
   }
   //procura o cesto e os produtos quando a pagina e aberta
   useEffect(() => {
@@ -181,7 +229,6 @@ export default function Cesto() {
     //add total up
     getTotal();
   }
-
   /**
    * Calculates the total amount
    */
@@ -194,8 +241,29 @@ export default function Cesto() {
       }
     });
     setTotal(newTotal);
-  } 
-
+  }
+  const handleOptionChange = (e) => {
+    const optionValue = e.target.value;
+    setSelectedOption(optionValue);
+    let newTotal = total;
+    let envio = "0";
+    if (optionValue === 'Envio - Fornecedor (7 a 14 dias úteis)') {
+      envio = "0";
+      newTotal += parseFloat(envio);
+    } else if (optionValue === 'Envio - CTT (2 a 4 dias úteis)') {
+      envio = "2.99";
+      newTotal += parseFloat(envio);
+    } else if (optionValue === 'Envio - CTT Expresso (Dia Seguinte)') {
+      envio = "4.99";
+      newTotal += parseFloat(envio);
+    }
+  
+    setvalorApos(newTotal);
+    setNomeEnvio(optionValue);
+    setPrecoEnvio(envio);
+  };
+  
+  
   return (
     <ThemeProvider theme={theme}>
       <Box
@@ -255,15 +323,33 @@ export default function Cesto() {
               )
             )}
           </div>
-          <Box margin="auto" minWidth="fit-content" width="auto">
-            <Box minWidth="fit-content" width="0" bg="#faf0e6" margin="1rem" borderRadius="10px" display="flex" alignItems="center" justifyContent="space-between">
-              <Button ml="auto" bg="#deb887" margin="1rem" onClick={() => handleClick()}>
-                Finalizar Encomenda
-              </Button>
+          <Box>
+            <Box margin="auto" minWidth="fit-content" width="auto">
+                <Box minWidth="fit-content" width="0" bg="#faf0e6" margin="1rem" borderRadius="10px" display="flex" alignItems="center" justifyContent="space-between">
+                <Box ml="1.5rem" fontWeight="semibold" as="h4" lineHeight="tight" width="60px" isTruncated>
+                    Envio
+                </Box>
+                <Select required value={selectedOption} onChange={handleOptionChange}>
+                    <option value="" disabled>Selecione</option>
+                    <option value="Envio - Fornecedor (7 a 14 dias úteis)">Fornecedor (7 a 14 dias úteis) - Envio Gratuito</option>
+                    <option value="Envio - CTT (2 a 4 dias úteis)">CTT (2 a 4 dias úteis) - 2,99€</option>
+                    <option value="Envio - CTT Expresso (Dia Seguinte)">CTT Expresso (Dia Seguinte) - 4,99€</option>
+                </Select>
+                </Box>
             </Box>
-          </Box>
+            </Box>
+            <Box margin="auto" minWidth="fit-content" width="auto">
+                <Box minWidth="fit-content" width="0" bg="#faf0e6" margin="1rem" borderRadius="10px" display="flex" alignItems="center" justifyContent="space-between">
+                <Box ml="1.5rem" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
+                    Total: {valorApos} €
+                </Box>
+                <Button ml="auto" bg="#deb887" margin="1rem" onClick={() => handlePayment()}>
+                    Comprar
+                </Button>
+                </Box>
+            </Box>
         </Box>
-      </Box>
+        </Box>
     </ThemeProvider>
   );
 }
