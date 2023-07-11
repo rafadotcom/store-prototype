@@ -5,11 +5,15 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import theme from "../styles/styles";
 import { Cart } from "../types/cart";
+import Stripe from 'stripe';
 
 import connect from "@/db/Connection";
+import { create } from "domain";
 
 export default function Cesto() {
-
+  const stripe = new Stripe('sk_test_51NSHZzAjScMaZI5GQoyzqHr6lyDoersNIlwvWFdcGgqiieHEVEQvsi6nfWtTHKyxtWj2eZ6LjYdutVNnbejFRQ2I00KhriYYnh',{
+    apiVersion: '2022-11-15',
+  });
   //redirecionar para /login ao tentar aceder esta pagina sem login
   const router = useRouter()
   const { status, data } = useSession()
@@ -130,7 +134,52 @@ export default function Cesto() {
     }
     console.log("newCart: ",newCart);
   }
+  const handlePayment = async () => {
+    const items = new Map([])
+    let counter = 0
+    for (let i=0;i<cart.length;i++){
+      const id_produto = cart[i]._id;
+      const quantidade = cart[i].quantidade;
+      const bolosTeste = bolos.find(item => item._id === id_produto);
+      const cafesTeste = cafes.find(item => item._id === id_produto);
+      if(bolosTeste !== undefined){
+        if(cafesTeste === undefined){
+          if (items.size === counter){
+            items.set(counter,[quantidade,{precoCentimos: (parseInt(bolosTeste.price)*100), nome: bolosTeste.name}])
+            counter++
+          }
+        }
+      } else if (cafesTeste !== undefined){
+        if(bolosTeste === undefined){
+          if(items.size === counter){
+            items.set(counter,[quantidade,{precoCentimos:(parseInt(cafesTeste.price)*100),nome:cafesTeste.name}])
+            counter++
+          }
+        }
+      }
+    }
+    const lineItems = Array.from(items.values()).map(([quantity, { precoCentimos, nome }]) => ({
+      price_data: {
+        currency: 'eur',
+        product_data: {
+          name: nome,
+        },
+        unit_amount: precoCentimos,
+      },
+      quantity: quantity,
+    }));
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      mode:'payment',
+      success_url:"http://localhost:3000/about",
+      cancel_url:"http://localhost:3000/contactos",
+      line_items: lineItems
+    })
+    window.location.href = session.url;
+;
+    
 
+  }
   //procura o cesto e os produtos quando a pagina e aberta
   useEffect(() => {
     console.log("-------")
@@ -254,7 +303,7 @@ export default function Cesto() {
               <Box ml="1.5rem" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
                 Total: {total} €
               </Box>
-              <Button ml="auto" bg="#deb887" margin="1rem" isDisabled={total === 0}>
+              <Button ml="auto" bg="#deb887" margin="1rem" onClick={() => handlePayment()}>
                 Comprar
               </Button>
             </Box>
