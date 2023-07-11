@@ -237,8 +237,8 @@ export default function Cesto() {
                           <Box ml="1.5rem" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
                             {parseFloat(item.price)*item.quantidade} €
                           </Box>
-                          <NumberInput defaultValue={item.quantidade} margin="1rem" focusBorderColor="#deb887" maxW={32} min={0} precision={0} onChange={(value) => handleQuantityChange(item._id, value)}>
-                            <NumberInputField size="sm" bg="white" border="1px solid #deb887"/>
+                          <NumberInput size="sm" defaultValue={item.quantidade} margin="1rem" focusBorderColor="#deb887" maxW={32} min={0} precision={0} onChange={(value) => handleQuantityChange(item._id, value)}>
+                            <NumberInputField bg="white" border="1px solid #deb887"/>
                             <NumberInputStepper><NumberIncrementStepper /><NumberDecrementStepper /></NumberInputStepper>
                           </NumberInput>
                         </Box>
