@@ -8,7 +8,7 @@ import { Cart } from "../types/cart";
 
 import connect from "@/db/Connection";
 
-export default function cesto() {
+export default function Cesto() {
 
   //redirecionar para /login ao tentar aceder esta pagina sem login
   const router = useRouter()
