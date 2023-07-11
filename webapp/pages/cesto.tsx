@@ -303,7 +303,7 @@ export default function Cesto() {
               <Box ml="1.5rem" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
                 Total: {total} €
               </Box>
-              <Button ml="auto" bg="#deb887" margin="1rem" onClick={() => handlePayment()}>
+              <Button ml="auto" bg="#deb887" margin="1rem" onClick={() => handlePayment()} isDisabled={total === 0}>
                 Comprar
               </Button>
             </Box>
