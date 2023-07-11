@@ -108,10 +108,10 @@ export default function Cesto() {
     console.log("found in cafes: ",cafe);
     if (bolo!==undefined) {
       console.log("it was in bolos");
-      return {name: bolo.name, price: bolo.price, img: "/produto11.png", found: true}
+      return {name: bolo.name, price: bolo.price, img: "/bolo1.png", found: true}
     } else if (cafe!==undefined) {
       console.log("it was in cafes");
-      return {name: cafe.name, price: cafe.price, img: "/bolo1.png", found: true}
+      return {name: cafe.name, price: cafe.price, img: "/produto11.png", found: true}
     } else {
       return {found: false}
     }
