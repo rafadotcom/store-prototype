@@ -31,6 +31,7 @@ export default function Produtos() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState([]);
+  const [productsAdded, setProductsAdded] = useState([]);
 
 
   useEffect(() => {
@@ -43,6 +44,9 @@ export default function Produtos() {
         setProducts(data.data);
       });
   }, []);
+
+  //obter o utilizador
+  const email = data?.user.email
 
   const handleCancelAddProduct = () => {
     setNewProduct(initialProductState);
@@ -121,6 +125,12 @@ export default function Produtos() {
 
   const handleAddToCart = (product) => {
     console.log("Product added to cart:", product);
+    const request = "https://webstore-backend-nu.vercel.app/api/updateCesto?id="+email+"&prod="+product._id+"&n=1";
+    console.log(request);
+    fetch(request, {
+      method: "POST"
+    })
+    setProductsAdded(prevProducts => [...prevProducts, product._id]);
   };
 
   const handleDeleteProduct = (product) => {
@@ -308,9 +318,24 @@ export default function Produtos() {
                       <Text fontWeight="semibold" fontSize="30px" color="black">
 
                       </Text>
-                      <Button ml="auto" bg="#deb887" onClick={() => handleAddToCart(product)}>
-                        Adicionar ao carrinho
+                      {productsAdded.includes(product._id) ? (
+                        <Button
+                        ml="auto"
+                        bg="#deb887"
+                        onClick={() => handleAddToCart(product)}
+                        isDisabled={true}
+                        >
+                          Adicionado
+                        </Button>
+                      ) : (
+                      <Button
+                        ml="auto"
+                        bg="#deb887"
+                        onClick={() => handleAddToCart(product)}
+                      >
+                        Adicionar ao Cesto
                       </Button>
+                      )}
                     </Box>
                   </Box>
                 ))}
