@@ -1,6 +1,4 @@
-import { Box, Button, Heading, Link, Text, Flex } from "@chakra-ui/react";
-import { ThemeProvider } from "@chakra-ui/react";
-import theme from "../styles/styles";
+import { Box, Button, Flex, Link } from "@chakra-ui/react";
 import NextLink from "next/link";
 
 const Navbar = () => {
@@ -20,7 +18,7 @@ const Navbar = () => {
         </Link>
       </Flex>
 
-      
+
 
       <Box display={{ base: "none", md: "block" }}>
         <NextLink href="/login" passHref>

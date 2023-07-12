@@ -1,10 +1,8 @@
-import { Box, Button, Heading, Text, ThemeProvider, Flex, FormLabel, Input, InputGroup, background } from "@chakra-ui/react";
+import { Box, Button, Flex, FormLabel, Heading, Image, Input, InputGroup, Text } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import theme from "../styles/styles";
-import Email from "next-auth/providers/email";
 
 export default function Profile() {
 
@@ -14,13 +12,40 @@ export default function Profile() {
     const [morada, setMorada] = useState("")
     const [telemovel, setTelemovel] = useState("")
     const [tipo, setTipo] = useState("")
+    const [bolos, setBolos] = useState([]);
+    const [cafes, setCafes] = useState([]);
+    const [del, setDel] = useState(0)
 
     const router = useRouter()
     const { status, data } = useSession()
 
+
+
     const [canUpdate, setCanUpdate] = useState(false)
 
     const email = data?.user.email
+
+    useEffect(() => {
+        fetch("https://webstore-backend-nu.vercel.app/api/getBolos", {
+            method: "GET"
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data, "bolos");
+                setBolos(data.data);
+            });
+    }, [del]);
+
+    useEffect(() => {
+        fetch("https://webstore-backend-nu.vercel.app/api/getCafes", {
+            method: "GET"
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data, "cafes");
+                setCafes(data.data);
+            });
+    }, [del]);
 
     useEffect(() => {
         console.log(status)
@@ -28,6 +53,32 @@ export default function Profile() {
             router.replace("/login")
         }
     })
+
+    const handleDeleteBolo = async (id) => {
+        await fetch("https://webstore-backend-nu.vercel.app/api/deleteBolo", {
+            method: "POST",
+            mode: "cors",
+            body: JSON.stringify({
+                _id: id
+            })
+        }).then((res) => {
+            console.log(res)
+            setDel(del + 1)
+        })
+    };
+
+    const handleDeleteCafe = async (id) => {
+        await fetch("https://webstore-backend-nu.vercel.app/api/deleteCafe", {
+            method: "POST",
+            mode: "cors",
+            body: JSON.stringify({
+                _id: id
+            })
+        }).then((res) => {
+            console.log(res)
+            setDel(del + 1)
+        })
+    };
 
     const [userInfo, setUserInfo] = useState({ nome: nome, email: email, NIF: nif, dataNascimento: dataNascimento, morada: morada, telemovel: telemovel, tipo: tipo });
 
@@ -62,7 +113,6 @@ export default function Profile() {
     }
 
     const handleSubmit = async () => {
-        console.log("aqui")
         await fetch("https://webstore-backend-nu.vercel.app/api/updateUser", {
             method: "POST",
             mode: "cors",
@@ -80,13 +130,14 @@ export default function Profile() {
     return (
         <Flex
             w="100vw"
-            h="100vh"
+            minH="100vh"
             justifyContent="center"
             alignItems="center"
             backgroundImage="url('/fundo2.jpg')"
             backgroundRepeat="no-repeat"
             backgroundPosition="center"
             backgroundSize="cover"
+            direction="column"
         >
             <Box
                 position="absolute"
@@ -97,6 +148,7 @@ export default function Profile() {
             </Box>
             <form onSubmit={handleSubmit}>
                 <Flex
+                    mt="120px"
                     gap="25px"
                     direction="column"
                     w="70vw"
@@ -181,7 +233,6 @@ export default function Profile() {
                             />
                         </InputGroup>
 
-
                     </Flex>
                     <Flex>
                         <InputGroup mb="4">
@@ -210,9 +261,129 @@ export default function Profile() {
                         </Flex>
                     </Flex>
                 </Flex>
-
-
             </form >
+            {tipo != "consumidor" && (bolos.length > 0 || cafes.length > 0) &&
+                <Heading as="h1" size="xl" textAlign="center" m={6}>
+                    Os seus produtos:
+                </Heading>
+            }
+
+            <Flex flexWrap="wrap" p={6}>
+                {bolos.map((product, index) => {
+                    if (product.seller === email) {
+                        return (
+                            < Box
+                                key={product.id}
+                                p={3}
+                                mb={4}
+                                mr={4}
+                                width={{ base: "40%", md: "48%", lg: "32%" }}
+                                borderWidth="1px"
+                                borderRadius="lg"
+                                overflow="hidden"
+                                bg="#faf0e6"
+                            >
+                                <Image
+                                    src={"/bolo1.png"}
+                                    alt={product.name}
+                                    width="100%"
+                                    height="auto"
+                                    objectFit="cover"
+                                    borderRadius="lg"
+                                />
+
+                                <Box mt="1" fontWeight="bold" fontSize="20px" as="h4" lineHeight="tight" isTruncated>
+                                    {product.name}
+                                </Box>
+
+                                <Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
+                                    {product.description}
+                                </Box>
+
+                                <Box display="flex" mt="2" alignItems="center">
+                                    <Text fontWeight="semibold" fontSize="30px" color="black">
+                                        {product.price + "€"}
+                                    </Text>
+                                </Box>
+
+                                <Box display="flex" mt="2" alignItems="center">
+                                    <Text fontWeight="semibold" fontSize="30px" color="black">
+
+                                    </Text>
+                                    <Button
+                                        ml="auto"
+                                        bg="#deb887"
+                                        onClick={() => handleDeleteBolo(product._id)}
+                                    >
+                                        Apagar Produto
+                                    </Button>
+                                </Box>
+                            </Box>
+                        )
+                    }
+                }
+
+                )}
+            </Flex>
+            <Flex flexWrap="wrap" p={6}>
+                {cafes.map((product, index) => {
+                    if (product.seller === email) {
+                        return (
+                            < Box
+                                key={product.id}
+                                p={3}
+                                mb={4}
+                                mr={4}
+                                width={{ base: "40%", md: "48%", lg: "32%" }}
+                                borderWidth="1px"
+                                borderRadius="lg"
+                                overflow="hidden"
+                                bg="#faf0e6"
+                            >
+                                <Image
+                                    src={"/produto11.png"}
+                                    alt={product.name}
+                                    width="100%"
+                                    height="auto"
+                                    objectFit="cover"
+                                    borderRadius="lg"
+                                />
+
+                                <Box mt="1" fontWeight="bold" fontSize="20px" as="h4" lineHeight="tight" isTruncated>
+                                    {product.name}
+                                </Box>
+
+                                <Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
+                                    {product.description}
+                                </Box>
+
+                                <Box display="flex" mt="2" alignItems="center">
+                                    <Text fontWeight="semibold" fontSize="30px" color="black">
+                                        {product.price + "€"}
+                                    </Text>
+                                </Box>
+
+                                <Box display="flex" mt="2" alignItems="center">
+                                    <Text fontWeight="semibold" fontSize="30px" color="black">
+
+                                    </Text>
+                                    <Button
+                                        ml="auto"
+                                        bg="#deb887"
+                                        onClick={() => handleDeleteCafe(product._id)}
+                                    >
+                                        Apagar Produto
+                                    </Button>
+                                </Box>
+
+                            </Box>
+                        )
+                    }
+
+                }
+
+                )}
+            </Flex>
         </Flex >
     );
 }

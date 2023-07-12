@@ -38,13 +38,8 @@ const Navbar = () => {
           <Link href="/produto" mr={4} fontSize="md" fontWeight="bold" letterSpacing="wide">
             Produtos
           </Link>
-          <Link href="/encomenda" mr={4} fontSize="md" fontWeight="bold" letterSpacing="wide">
-            Encomendas
-          </Link>
-          
         </Box>
       </Flex>
-
       <Link as={NextLink} display="flex" alignItems="center" mr={4} href="/profile" passHref>
         <img src="/perfil.png" alt="Descrição da imagem" width="50px" />
       </Link>

@@ -14,9 +14,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       </ChakraProvider>
     </SessionProvider>
 
-
   );
 }
 
-export default MyApp;
+export default MyApp
 

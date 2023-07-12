@@ -1,6 +1,5 @@
 import { Box, Button, FormLabel, Heading, Input, InputGroup, Link, Select, Text, ThemeProvider } from "@chakra-ui/react";
 import { Global, css } from "@emotion/react";
-import axios from "axios";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Navbar from "../components/Navbar_sign";
@@ -12,38 +11,27 @@ export default function Login() {
 
   const [userInfo, setUserInfo] = useState({ nome: "", email: "", password: "", NIF: "", dataNascimento: "", morada: "", telemovel: "", tipo: "" });
 
-  const handleSubmit = (event) => {
-    //event.preventDefault();
-
-    axios.post('https://webstore-backend-nu.vercel.app/api/addUser', userInfo)
-      .then(function (response) {
-        // Aqui você pode manipular a resposta do backend
-        console.log(response.data); // Exibe a resposta no console, por exemplo
-      })
-      .catch(function (error) {
-        // Lidar com erros, se houver
-        console.error('Ocorreu um erro:', error);
-      });
-
-    /* const data =
-    {
-      "nome": userInfo.nome,
-      "email": userInfo.email,
-      "password": userInfo.password,
-      "NIF": userInfo.NIF,
-      "dataNascimento": userInfo.dataNascimento,
-      "morada": userInfo.morada,
-      "telemovel": userInfo.telemovel,
-      "tipo": userInfo.tipo
-    }
-
-    const res = await fetch("https://webstore-backend-nu.vercel.app/api/addUser", {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    await fetch("https://webstore-backend-nu.vercel.app/api/addUser", {
       method: "POST",
-      body: JSON.stringify(data)
-    });
-
-    console.log(res); */
-
+      mode: "cors",
+      body: JSON.stringify({
+        nome: userInfo.nome,
+        email: userInfo.email,
+        password: userInfo.password,
+        NIF: userInfo.NIF,
+        dataNascimento: userInfo.dataNascimento,
+        telemovel: userInfo.telemovel,
+        morada: userInfo.morada,
+        tipo: userInfo.tipo
+      })
+    }).then((res) => {
+      console.log(res.ok)
+      if (res.ok) {
+        router.push("/login")
+      }
+    })
   };
 
   const handleChange = (event) => {
@@ -85,7 +73,7 @@ export default function Login() {
             </Box>
             <Box p="4">
               <iframe name="dummyframe" id="dummyframe" style={{ display: "none" }}></iframe>
-              <form action="https://webstore-backend-nu.vercel.app/api/addUser" method="post" target="dummyframe">
+              <form onSubmit={handleSubmit}>
 
                 <InputGroup mb="4">
                   <FormLabel color="white">Nome</FormLabel>
