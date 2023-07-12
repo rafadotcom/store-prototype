@@ -25,10 +25,9 @@ export default function Cesto() {
   })
 
   //obter URL em uso
-  const protocol = router?.req?.headers['x-forwarded-proto'] || 'http';
-  const domain = router?.req?.headers.host || 'localhost:3001';
-  const successUrl = `${protocol}://${domain}/about`;
-  const cancelUrl = `${protocol}://${domain}/finalizarEncomenda`;
+  const domain = 'https://takeabite.store';
+  const successUrl = `${domain}/about`;
+  const cancelUrl = `${domain}/finalizarEncomenda`;
   console.log("successUrl: ", successUrl);
   console.log("cancelUrl: ", cancelUrl);
 
