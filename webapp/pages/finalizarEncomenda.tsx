@@ -250,7 +250,7 @@ export default function Cesto() {
     if (optionValue === 'Envio - Fornecedor (7 a 14 dias úteis)') {
       envio = "0";
       newTotal += parseFloat(envio);
-    } else if (optionValue === 'Envio - CTT (2 a 4 dias úteis)') {
+    } else if (optionValue === 'Envio - CTT (4 a 7 dias úteis)') {
       envio = "2.99";
       newTotal += parseFloat(envio);
     } else if (optionValue === 'Envio - CTT Expresso (Dia Seguinte)') {
@@ -332,7 +332,7 @@ export default function Cesto() {
                 <Select required value={selectedOption} onChange={handleOptionChange}>
                     <option value="" disabled>Selecione</option>
                     <option value="Envio - Fornecedor (7 a 14 dias úteis)">Fornecedor (7 a 14 dias úteis) - Envio Gratuito</option>
-                    <option value="Envio - CTT (2 a 4 dias úteis)">CTT (2 a 4 dias úteis) - 2,99€</option>
+                    <option value="Envio - CTT (4 a 7 dias úteis)">CTT (4 a 7 dias úteis) - 2,99€</option>
                     <option value="Envio - CTT Expresso (Dia Seguinte)">CTT Expresso (Dia Seguinte) - 4,99€</option>
                 </Select>
                 </Box>

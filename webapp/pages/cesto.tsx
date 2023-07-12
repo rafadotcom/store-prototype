@@ -257,7 +257,7 @@ export default function Cesto() {
           </div>
           <Box margin="auto" minWidth="fit-content" width="auto">
             <Box minWidth="fit-content" width="0" bg="#faf0e6" margin="1rem" borderRadius="10px" display="flex" alignItems="center" justifyContent="space-between">
-              <Button ml="auto" bg="#deb887" margin="1rem" onClick={() => handleClick()}>
+              <Button ml="auto" bg="#deb887" margin="1rem" onClick={() => handleClick()} disabled={cart.length===0}>
                 Finalizar Encomenda
               </Button>
             </Box>
