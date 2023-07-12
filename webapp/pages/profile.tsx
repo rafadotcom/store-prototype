@@ -14,9 +14,12 @@ export default function Profile() {
     const [tipo, setTipo] = useState("")
     const [bolos, setBolos] = useState([]);
     const [cafes, setCafes] = useState([]);
+    const [del, setDel] = useState(0)
 
     const router = useRouter()
     const { status, data } = useSession()
+
+
 
     const [canUpdate, setCanUpdate] = useState(false)
 
@@ -31,7 +34,7 @@ export default function Profile() {
                 console.log(data, "bolos");
                 setBolos(data.data);
             });
-    }, []);
+    }, [del]);
 
     useEffect(() => {
         fetch("https://webstore-backend-nu.vercel.app/api/getCafes", {
@@ -42,7 +45,7 @@ export default function Profile() {
                 console.log(data, "cafes");
                 setCafes(data.data);
             });
-    }, []);
+    }, [del]);
 
     useEffect(() => {
         console.log(status)
@@ -50,6 +53,32 @@ export default function Profile() {
             router.replace("/login")
         }
     })
+
+    const handleDeleteBolo = async (id) => {
+        await fetch("https://webstore-backend-nu.vercel.app/api/deleteBolo", {
+            method: "POST",
+            mode: "cors",
+            body: JSON.stringify({
+                _id: id
+            })
+        }).then((res) => {
+            console.log(res)
+            setDel(del + 1)
+        })
+    };
+
+    const handleDeleteCafe = async (id) => {
+        await fetch("https://webstore-backend-nu.vercel.app/api/deleteCafe", {
+            method: "POST",
+            mode: "cors",
+            body: JSON.stringify({
+                _id: id
+            })
+        }).then((res) => {
+            console.log(res)
+            setDel(del + 1)
+        })
+    };
 
     const [userInfo, setUserInfo] = useState({ nome: nome, email: email, NIF: nif, dataNascimento: dataNascimento, morada: morada, telemovel: telemovel, tipo: tipo });
 
@@ -233,7 +262,7 @@ export default function Profile() {
                     </Flex>
                 </Flex>
             </form >
-            {tipo != "consumidor" &&
+            {tipo != "consumidor" && (bolos.length > 0 || cafes.length > 0) &&
                 <Heading as="h1" size="xl" textAlign="center" m={6}>
                     Os seus produtos:
                 </Heading>
@@ -275,6 +304,19 @@ export default function Profile() {
                                     <Text fontWeight="semibold" fontSize="30px" color="black">
                                         {product.price + "€"}
                                     </Text>
+                                </Box>
+
+                                <Box display="flex" mt="2" alignItems="center">
+                                    <Text fontWeight="semibold" fontSize="30px" color="black">
+
+                                    </Text>
+                                    <Button
+                                        ml="auto"
+                                        bg="#deb887"
+                                        onClick={() => handleDeleteBolo(product._id)}
+                                    >
+                                        Apagar Produto
+                                    </Button>
                                 </Box>
                             </Box>
                         )
@@ -320,6 +362,20 @@ export default function Profile() {
                                         {product.price + "€"}
                                     </Text>
                                 </Box>
+
+                                <Box display="flex" mt="2" alignItems="center">
+                                    <Text fontWeight="semibold" fontSize="30px" color="black">
+
+                                    </Text>
+                                    <Button
+                                        ml="auto"
+                                        bg="#deb887"
+                                        onClick={() => handleDeleteCafe(product._id)}
+                                    >
+                                        Apagar Produto
+                                    </Button>
+                                </Box>
+
                             </Box>
                         )
                     }
