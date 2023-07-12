@@ -56,10 +56,17 @@ export default function Cesto() {
     })
       .then((res) => res.json())
       .then((data:Cart) => {
-        setDbCart(data.data[0].produtos);
-        //console.log("products from cart fetch: ", cart)
-        if (data.data[0].produtos.length<1){
+        console.log("data.data.length: ",data.data.length)
+        if (data.data.length > 0) {
+          setDbCart(data.data[0].produtos);
+          //console.log("products from cart fetch: ", cart)
+          if (data.data[0].produtos.length<1){
+            setCartIsEmpty(true);
+            setCartIsLoading(false);
+          }
+        } else {
           setCartIsEmpty(true);
+          setCartIsLoading(false);
         }
       })
       .catch((error) => {
@@ -138,6 +145,7 @@ export default function Cesto() {
       setCart(newCart);
     } else {
       setCartIsEmpty(true);
+      setCartIsLoading(false);
     }
     console.log("newCart: ",newCart);
   }
@@ -272,13 +280,13 @@ export default function Cesto() {
               </div>
             ) : (
               cartIsEmpty ? null : (
-                <Grid templateColumns={'repeat(auto-fit, minmax(230px, 1fr))'}  margin="1rem" gap={4}>
+                <Grid display="flex" flexDirection="row" templateColumns={'repeat(auto-fit, minmax(230px, 1fr))'}  margin="1rem" gap={4}>
                   {/* Render the cart data */}
                   {cart.map((item) => (
                     //produto nao encontrado
                     item.found ? (
                       //se o produto for encontrado numa das listas  
-                      <GridItem bg="#faf0e6" borderRadius="10px" key={item._id}>
+                      <GridItem maxWidth="420px" bg="#faf0e6" borderRadius="10px" key={item._id}>
                         <Box mt="1" margin="1rem" fontWeight="bold" fontSize="20px" as="h4" lineHeight="tight" isTruncated >
                         {item.name}
                         </Box>
