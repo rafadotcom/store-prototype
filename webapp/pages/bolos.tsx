@@ -5,13 +5,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import theme from "../styles/styles";
 
-const initialProductState = {
-  id: "",
-  name: "",
-  description: "",
-  price: "",
-  image: "/bolo1.png"
-};
+
 
 export default function Produtos() {
 
@@ -26,6 +20,15 @@ export default function Produtos() {
   });
 
   const email = data?.user.email
+
+  const initialProductState = {
+    id: "",
+    name: "",
+    description: "",
+    price: "",
+    seller: email,
+    image: "/bolo1.png"
+  };
   const [tipo, setTipo] = useState("")
 
   useEffect(() => {
@@ -140,6 +143,17 @@ export default function Produtos() {
                   />
                 </InputGroup>
 
+                <InputGroup mb="4" display="none">
+                  <FormLabel color="white">Vendedor</FormLabel>
+                  <Input
+                    type="preco"
+                    name="seller"
+                    color="white"
+                    value={newProduct.seller}
+                    defaultValue={email}
+                  />
+                </InputGroup>
+
                 <Flex justify="space-between">
                   <Button onClick={handleCancelAddProduct}>Cancelar</Button>
                   <Button
@@ -218,7 +232,13 @@ export default function Produtos() {
 
                     <Box display="flex" mt="2" alignItems="center">
                       <Text fontWeight="semibold" fontSize="30px" color="black">
-                        {product.price}
+                        {product.price + "€"}
+                      </Text>
+                    </Box>
+
+                    <Box display="flex" mt="2" alignItems="center">
+                      <Text fontWeight="semibold" fontSize="15px" color="black">
+                        {product.seller}
                       </Text>
                     </Box>
 

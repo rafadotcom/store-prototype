@@ -5,13 +5,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import theme from "../styles/styles";
 
-const initialProductState = {
-  id: "",
-  name: "",
-  description: "",
-  price: "",
-  image: "/produto11.png",
-};
+
 
 export default function Produtos() {
 
@@ -26,6 +20,16 @@ export default function Produtos() {
   })
 
   const email = data?.user.email
+
+  const initialProductState = {
+    id: "",
+    name: "",
+    description: "",
+    price: "",
+    seller: email,
+    image: "/produto11.png",
+  };
+
   const [tipo, setTipo] = useState("")
 
   useEffect(() => {
@@ -140,6 +144,17 @@ export default function Produtos() {
                       color="white"
                       value={newProduct.price}
                       onChange={handleInputChange}
+                    />
+                  </InputGroup>
+
+                  <InputGroup mb="4" display="none">
+                    <FormLabel color="white">Vendedor</FormLabel>
+                    <Input
+                      type="preco"
+                      name="seller"
+                      color="white"
+                      value={newProduct.seller}
+                      defaultValue={email}
                     />
                   </InputGroup>
 

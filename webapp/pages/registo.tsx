@@ -1,51 +1,37 @@
-import { Box, Button, FormLabel, Heading, Input, Link, Text, ThemeProvider } from "@chakra-ui/react";
+import { Box, Button, FormLabel, Heading, Input, InputGroup, Link, Select, Text, ThemeProvider } from "@chakra-ui/react";
 import { Global, css } from "@emotion/react";
-import axios from "axios";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import Navbar from "../components/Navbar_sign";
 import theme from "../styles/styles";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [nome, setNome] = useState("");
-  const [nif, setNIF] = useState("");
-  const [telemovel, setTelemovel] = useState("");
-  const [morada, setMorada] = useState("");
-  const [dataNascimento, setDataNascimento] = useState("");
 
-  const handleSubmit = (event) => {
-    //event.preventDefault();
+  const router = useRouter()
 
-    axios.post('https://webstore-backend-nu.vercel.app/api/addUser', userInfo)
-      .then(function (response) {
-        // Aqui você pode manipular a resposta do backend
-        console.log(response.data); // Exibe a resposta no console, por exemplo
-      })
-      .catch(function (error) {
-        // Lidar com erros, se houver
-        console.error('Ocorreu um erro:', error);
-      });
+  const [userInfo, setUserInfo] = useState({ nome: "", email: "", password: "", NIF: "", dataNascimento: "", morada: "", telemovel: "", tipo: "" });
 
-    /* const data =
-    {
-      "nome": userInfo.nome,
-      "email": userInfo.email,
-      "password": userInfo.password,
-      "NIF": userInfo.NIF,
-      "dataNascimento": userInfo.dataNascimento,
-      "morada": userInfo.morada,
-      "telemovel": userInfo.telemovel,
-      "tipo": userInfo.tipo
-    }
-
-    const res = await fetch("https://webstore-backend-nu.vercel.app/api/addUser", {
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    await fetch("https://webstore-backend-nu.vercel.app/api/addUser", {
       method: "POST",
-      body: JSON.stringify(data)
-    });
-
-    console.log(res); */
-
+      mode: "cors",
+      body: JSON.stringify({
+        nome: userInfo.nome,
+        email: userInfo.email,
+        password: userInfo.password,
+        NIF: userInfo.NIF,
+        dataNascimento: userInfo.dataNascimento,
+        telemovel: userInfo.telemovel,
+        morada: userInfo.morada,
+        tipo: userInfo.tipo
+      })
+    }).then((res) => {
+      console.log(res.ok)
+      if (res.ok) {
+        router.push("/login")
+      }
+    })
   };
 
   const handleChange = (event) => {
@@ -80,14 +66,14 @@ export default function Login() {
         <Navbar />
         <Box h="100vh" display="flex" alignItems="center" justifyContent="center">
           <Box maxW="sm" borderWidth="1px" borderRadius="lg" overflow="hidden">
-            <Box bg="#65000b" p="4">
+            <Box bg="#8A624A" p="4">
               <Heading size="md" color="white">
                 Faça o seu registo
               </Heading>
             </Box>
             <Box p="4">
               <iframe name="dummyframe" id="dummyframe" style={{ display: "none" }}></iframe>
-              <form action="https://webstore-backend-nu.vercel.app/api/addUser" method="post" target="dummyframe">
+              <form onSubmit={handleSubmit}>
 
                 <InputGroup mb="4">
                   <FormLabel color="white">Nome</FormLabel>
@@ -106,71 +92,95 @@ export default function Login() {
                   <Input
                     type="email"
                     placeholder="Seu email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    name="email"
+                    color="white"
+                    value={userInfo.email}
+                    onChange={handleChange}
                   />
-                </FormControl>
-                <FormControl id="password" mb="4">
-                  <FormLabel>Senha</FormLabel>
+                </InputGroup>
+
+                <InputGroup mb="4">
+                  <FormLabel color="white">Senha</FormLabel>
                   <Input
                     type="password"
                     placeholder="Sua senha"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    name="password"
+                    color="white"
+                    value={userInfo.password}
+                    onChange={handleChange}
                   />
-                </FormControl>
-                <FormControl id="nome" mb="4">
-                  <FormLabel>Nome</FormLabel>
-                  <Input
-                    type="nome"
-                    placeholder="nome"
-                    value={nome}
-                    onChange={(e) => setNome(e.target.value)}
-                  />
-                </FormControl>
-                <FormControl id="nif" mb="4">
-                  <FormLabel>NIF</FormLabel>
+                </InputGroup>
+
+                <InputGroup mb="4">
+                  <FormLabel color="white">NIF</FormLabel>
                   <Input
                     type="nif"
                     placeholder="nif"
-                    value={nif}
-                    onChange={(e) => setNIF(e.target.value)}
+                    name="NIF"
+                    color="white"
+                    value={userInfo.NIF}
+                    onChange={handleChange}
                   />
-                </FormControl>
-                <FormControl id="dataNascimento" mb="4">
-                  <FormLabel>Data de Nascimento</FormLabel>
+                </InputGroup>
+
+                <InputGroup mb="4">
+                  <FormLabel color="white">Data de Nascimento</FormLabel>
                   <Input
-                    type="dataNascimento"
+                    type="date"
                     placeholder="dataNasciemnto"
-                    value={dataNascimento}
-                    onChange={(e) => setDataNascimento(e.target.value)}
+                    name="dataNascimento"
+                    color="white"
+                    value={userInfo.dataNascimento}
+                    onChange={handleChange}
                   />
-                </FormControl>
-                <FormControl id="morada" mb="4">
-                  <FormLabel>Morada</FormLabel>
+                </InputGroup>
+
+                <InputGroup mb="4">
+                  <FormLabel color="white">Morada</FormLabel>
                   <Input
                     type="morada"
                     placeholder="morada"
-                    value={morada}
-                    onChange={(e) => setMorada(e.target.value)}
+                    name="morada"
+                    color="white"
+                    value={userInfo.morada}
+                    onChange={handleChange}
                   />
-                </FormControl>
-                <FormControl id="telemovel" mb="4">
+                </InputGroup>
+
+                <InputGroup mb="4">
                   <FormLabel>Telemovel</FormLabel>
                   <Input
-                    type="telemovel"
+                    type="tel"
                     placeholder="telemovel"
-                    value={telemovel}
-                    onChange={(e) => setTelemovel(e.target.value)}
+                    name="telemovel"
+                    color="white"
+                    value={userInfo.telemovel}
+                    onChange={handleChange}
                   />
-                </FormControl>
+                </InputGroup>
+
+                <InputGroup mb="4">
+                  <FormLabel color="white">Tipo de Conta</FormLabel>
+                  <Select
+                    placeholder='Selecione o tipo de conta'
+                    name="tipo"
+                    value={userInfo.tipo}
+                    onChange={handleChange}
+                  >
+                    <option value='consumidor'>Consumidor</option>
+                    <option value='vendedor'>Vendedor</option>
+                  </Select>
+                </InputGroup>
+
+
                 <Button type="submit" width="full">
-                  Entrar
+                  Registar
                 </Button>
+
               </form>
               <Text mt="4" textAlign="center">
                 Não tem uma conta ainda?{" "}
-                <Link color="#65000b" href="#">
+                <Link color="#8A624A" href="#">
                   Registre-se aqui
                 </Link>
               </Text>
