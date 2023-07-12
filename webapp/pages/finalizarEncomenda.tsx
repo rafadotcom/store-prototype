@@ -21,6 +21,14 @@ export default function Cesto() {
         }
     })
 
+    //obter URL em uso
+    const protocol = router?.req?.headers['x-forwarded-proto'] || 'http';
+    const domain = router?.req?.headers.host || 'localhost:3001';
+    const successUrl = `${protocol}://${domain}/about`;
+    const cancelUrl = `${protocol}://${domain}/finalizarEncomenda`;
+    console.log("successUrl: ", successUrl);
+    console.log("cancelUrl: ", cancelUrl);
+
     //obter o utilizador
     const email = data?.user.email
     //console.log(email);
@@ -173,8 +181,8 @@ export default function Cesto() {
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             mode: 'payment',
-            success_url: "http://localhost:3000/about",
-            cancel_url: "http://localhost:3000/finalizarEncomenda",
+            success_url: successUrl,
+            cancel_url: cancelUrl,
             line_items: lineItems
         })
         window.location.href = session.url;
