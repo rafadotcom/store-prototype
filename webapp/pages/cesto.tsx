@@ -265,13 +265,13 @@ export default function Cesto() {
               </div>
             ) : (
               cartIsEmpty ? null : (
-                <Grid templateColumns="repeat(3, 1fr)" margin="1rem" gap={4}>
+                <Grid templateColumns={'repeat(auto-fit, minmax(230px, 1fr))'}  margin="1rem" gap={4}>
                   {/* Render the cart data */}
                   {cart.map((item) => (
                     //produto nao encontrado
                     item.found ? (
                       //se o produto for encontrado numa das listas  
-                      <GridItem bg="#faf0e6" borderRadius="10px" key={item._id} minWidth={0}>
+                      <GridItem bg="#faf0e6" borderRadius="10px" key={item._id}>
                         <Box mt="1" margin="1rem" fontWeight="bold" fontSize="20px" as="h4" lineHeight="tight" isTruncated >
                         {item.name}
                         </Box>
@@ -308,6 +308,7 @@ export default function Cesto() {
               </Button>
             </Box>
           </Box>
+          <Box h={1}></Box>
         </Box>
       </Box>
     </ThemeProvider>
