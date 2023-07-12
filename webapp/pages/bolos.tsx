@@ -1,7 +1,7 @@
-import { Box, Button, Flex, FormLabel, Heading, Image, Input, InputGroup, Text, ThemeProvider } from "@chakra-ui/react";
+import { Box, Button, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Flex, FormLabel, Heading, Image, Input, InputGroup, Select, Text, ThemeProvider, useDisclosure } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import theme from "../styles/styles";
 
@@ -26,6 +26,9 @@ export default function Produtos() {
     name: "",
     description: "",
     price: "",
+    glutenFree: "",
+    vegetarian: "",
+    vegan: "",
     seller: email,
     image: "/bolo1.png"
   };
@@ -42,6 +45,8 @@ export default function Produtos() {
         });
       });
   })
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const btnRef = React.useRef()
 
   const [products, setProducts] = useState([]);
   const [newProduct, setNewProduct] = useState(initialProductState);
@@ -50,7 +55,8 @@ export default function Produtos() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [productsAdded, setProductsAdded] = useState([]);
-
+  const [comparar1, setComparar1] = useState(null);
+  const [comparar2, setComparar2] = useState(null);
 
   useEffect(() => {
     fetch("https://webstore-backend-nu.vercel.app/api/getBolos", {
@@ -80,12 +86,11 @@ export default function Produtos() {
     setFilteredProducts(filtered);
   };
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setNewProduct((prevProduct) => ({
-      ...prevProduct,
-      [name]: value
-    }));
+  const handleChange = (event) => {
+    setNewProduct({
+      ...newProduct,
+      [event.target.name]: event.target.value
+    });
   };
 
   const handleAddToCart = (product) => {
@@ -96,7 +101,26 @@ export default function Produtos() {
       method: "POST"
     })
     setProductsAdded(prevProducts => [...prevProducts, product._id]);
-  };
+  }
+
+  const handleComparar = (product) => {
+
+    if (comparar1 == null && comparar2 == null) {
+      setComparar1(product)
+    }
+    else if (comparar1 != null && comparar2 == null) {
+      setComparar2(product)
+      onOpen()
+    }
+  }
+
+  const handleCleanComparar = (product) => {
+    setComparar1(null)
+    setComparar2(null)
+    onClose()
+  }
+
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -122,7 +146,7 @@ export default function Produtos() {
                     name="name"
                     color="white"
                     value={newProduct.name}
-                    onChange={handleInputChange}
+                    onChange={handleChange}
                   />
                 </InputGroup>
 
@@ -134,7 +158,7 @@ export default function Produtos() {
                     name="description"
                     color="white"
                     value={newProduct.description}
-                    onChange={handleInputChange}
+                    onChange={handleChange}
                   />
                 </InputGroup>
 
@@ -146,8 +170,47 @@ export default function Produtos() {
                     name="price"
                     color="white"
                     value={newProduct.price}
-                    onChange={handleInputChange}
+                    onChange={handleChange}
                   />
+                </InputGroup>
+
+                <InputGroup mb="4">
+                  <FormLabel color="white">Sem Gluten?</FormLabel>
+                  <Select
+                    name="glutenFree"
+                    color="black"
+                    value={newProduct.glutenFree}
+                    onChange={handleChange}
+                  >
+                    <option value='Sim'>Sim</option>
+                    <option value='Nao'>Nao</option>
+                  </Select>
+                </InputGroup>
+
+                <InputGroup mb="4">
+                  <FormLabel color="white">Vegetariano?</FormLabel>
+                  <Select
+                    name="vegetarian"
+                    color="black"
+                    value={newProduct.vegetarian}
+                    onChange={handleChange}
+                  >
+                    <option value='Sim'>Sim</option>
+                    <option value='Nao'>Nao</option>
+                  </Select>
+                </InputGroup>
+
+                <InputGroup mb="4">
+                  <FormLabel color="white">Vegan?</FormLabel>
+                  <Select
+                    name="vegan"
+                    color="black"
+                    value={newProduct.vegan}
+                    onChange={handleChange}
+                  >
+                    <option value='Sim'>Sim</option>
+                    <option value='Nao'>Nao</option>
+                  </Select>
                 </InputGroup>
 
                 <InputGroup mb="4" display="none">
@@ -253,6 +316,20 @@ export default function Produtos() {
                       <Text fontWeight="semibold" fontSize="30px" color="black">
 
                       </Text>
+                      <Button
+                        ml="auto"
+                        bg="#deb887"
+                        onClick={() => handleComparar(product)}
+                        isDisabled={comparar1 == product || (comparar1 != null && comparar2 != null) ? true : false}
+                      >
+                        Comparar
+                      </Button>
+                    </Box>
+
+                    <Box display="flex" mt="2" alignItems="center">
+                      <Text fontWeight="semibold" fontSize="30px" color="black">
+
+                      </Text>
                       {productsAdded.includes(product._id) ? (
                         <Button
                           ml="auto"
@@ -280,6 +357,170 @@ export default function Produtos() {
           )}
         </Box>
       </Box>
+      <Drawer
+        closeOnOverlayClick={false}
+        isOpen={isOpen}
+        placement='right'
+        onClose={onClose}
+        finalFocusRef={btnRef}
+        size="lg"
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader>Comparar Produtos:</DrawerHeader>
+
+          {comparar1 != null && comparar2 != null &&
+            <DrawerBody>
+              <Flex
+                direction="row"
+              >
+                <Flex
+                  direction="column"
+                >
+                  <Image
+                    src={"/bolo1.png"}
+                    alt={comparar1.name}
+                    width="100%"
+                    height="auto"
+                    objectFit="cover"
+                    borderRadius="lg"
+                  />
+
+                  <Box mt="1" fontWeight="bold" fontSize="20px" as="h4" lineHeight="tight" isTruncated>
+                    {comparar1.name}
+                  </Box>
+
+                  <Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
+                    {comparar1.description}
+                  </Box>
+
+                  <Box display="flex" mt="10" alignItems="center">
+                    <Text fontWeight="semibold" fontSize="17px" color="black">
+                      {"Vendedor: " + comparar1.seller}
+                    </Text>
+                  </Box>
+
+                  <Box display="flex" mt="2" alignItems="center">
+                    <Text fontWeight="semibold" fontSize="17px" color={
+                      (comparar1.glutenFree == comparar2.glutenFree) ?
+                        "black"
+                        : (comparar1.glutenFree == "Sim" ? "green" : "red")
+                    }>
+                      {"Sem Gluten?: " + comparar1.glutenFree}
+                    </Text>
+                  </Box>
+
+                  <Box display="flex" mt="2" alignItems="center">
+                    <Text fontWeight="semibold" fontSize="17px" color={
+                      (comparar1.vegetarian == comparar2.vegetarian) ?
+                        "black"
+                        : (comparar1.vegetarian == "Sim" ? "green" : "red")
+                    }>
+                      {"Vegetariano?: " + comparar1.vegetarian}
+                    </Text>
+                  </Box>
+
+                  <Box display="flex" mt="2" alignItems="center">
+                    <Text fontWeight="semibold" fontSize="17px" color={
+                      (comparar1.vegan == comparar2.vegan) ?
+                        "black"
+                        : (comparar1.vegan == "Sim" ? "green" : "red")
+                    }>
+                      {"Vegan?: " + comparar1.vegan}
+                    </Text>
+                  </Box>
+
+                  <Box display="flex" mt="2" alignItems="center">
+                    <Text fontWeight="semibold" fontSize="17px" color={
+                      (Number(comparar1.price) == Number(comparar2.price)) ?
+                        "black"
+                        : (Number(comparar1.price) < Number(comparar2.price) ? "green" : "red")
+                    }>
+                      {"Preço: " + comparar1.price + "€"}
+                    </Text>
+                  </Box>
+                </Flex>
+
+                <Flex
+                  direction="column"
+                >
+                  <Image
+                    src={"/bolo1.png"}
+                    alt={comparar2.name}
+                    width="100%"
+                    height="auto"
+                    objectFit="cover"
+                    borderRadius="lg"
+                  />
+
+                  <Box mt="1" fontWeight="bold" fontSize="20px" as="h4" lineHeight="tight" isTruncated>
+                    {comparar2.name}
+                  </Box>
+
+                  <Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
+                    {comparar2.description}
+                  </Box>
+
+                  <Box display="flex" mt="10" alignItems="center">
+                    <Text fontWeight="semibold" fontSize="17px" color="black">
+                      {"Vendedor: " + comparar2.seller}
+                    </Text>
+                  </Box>
+
+                  <Box display="flex" mt="2" alignItems="center">
+                    <Text fontWeight="semibold" fontSize="17px" color={
+                      (comparar1.glutenFree == comparar2.glutenFree) ?
+                        "black"
+                        : (comparar2.glutenFree == "Sim" ? "green" : "red")
+                    }>
+                      {"Sem Gluten?: " + comparar2.glutenFree}
+                    </Text>
+                  </Box>
+
+                  <Box display="flex" mt="2" alignItems="center">
+                    <Text fontWeight="semibold" fontSize="17px" color={
+                      (comparar1.vegetarian == comparar2.vegetarian) ?
+                        "black"
+                        : (comparar2.vegetarian == "Sim" ? "green" : "red")
+                    }>
+                      {"Vegetariano?: " + comparar2.vegetarian}
+                    </Text>
+                  </Box>
+
+                  <Box display="flex" mt="2" alignItems="center">
+                    <Text fontWeight="semibold" fontSize="17px" color={
+                      (comparar1.vegan == comparar2.vegan) ?
+                        "black"
+                        : (comparar2.vegan == "Sim" ? "green" : "red")
+                    }>
+                      {"Vegan?: " + comparar2.vegan}
+                    </Text>
+                  </Box>
+
+                  <Box display="flex" mt="2" alignItems="center">
+                    <Text fontWeight="semibold" fontSize="17px" color={
+                      (Number(comparar1.price) == Number(comparar2.price)) ?
+                        "black"
+                        : (Number(comparar2.price) < Number(comparar1.price) ? "green" : "red")
+                    }>
+                      {"Preço: " + comparar2.price + "€"}
+                    </Text>
+                  </Box>
+                </Flex>
+
+              </Flex>
+            </DrawerBody>
+          }
+
+
+
+          <DrawerFooter>
+            <Button variant='outline' mr={3} onClick={handleCleanComparar}>
+              Limpar
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
     </ThemeProvider>
   );
 }
