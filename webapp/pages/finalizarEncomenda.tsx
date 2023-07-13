@@ -266,11 +266,11 @@ export default function Cesto() {
         } else if (optionValue === 'Envio - CTT Expresso (Dia Seguinte)') {
             envio = 4.99;
         }
-        newTotal = (total + envio).toFixed(2);
+        newTotal = parseFloat((total + envio).toFixed(2));
 
         setvalorApos(newTotal);
         setNomeEnvio(optionValue);
-        setPrecoEnvio(envio);
+        setPrecoEnvio(envio.toString());
     };
 
 
