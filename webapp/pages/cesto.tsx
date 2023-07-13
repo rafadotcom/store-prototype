@@ -280,7 +280,7 @@ export default function Cesto() {
               </div>
             ) : (
               cartIsEmpty ? null : (
-                <Grid display="flex" flexDirection="row" templateColumns={'repeat(auto-fit, minmax(230px, 1fr))'}  margin="1rem" gap={4}>
+                <Grid flexDirection="row" templateColumns={'repeat(auto-fit, minmax(230px, max-content))'}  margin="1rem" gap={4}>
                   {/* Render the cart data */}
                   {cart.map((item) => (
                     //produto nao encontrado
