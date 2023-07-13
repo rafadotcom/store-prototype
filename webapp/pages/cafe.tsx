@@ -31,6 +31,7 @@ export default function Produtos() {
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
+  const [productsAdded, setProductsAdded] = useState([]);
 
   fetch("https://webstore-backend-nu.vercel.app/api/getCafes", {
     method: "GET"
@@ -40,6 +41,9 @@ export default function Produtos() {
       console.log(data, "cafes")
       setProducts(data.data)
     })
+  
+  //obter o utilizador
+  const email = data?.user.email
 
   const handleCancelAddProduct = () => {
     setNewProduct(initialProductState);
@@ -81,8 +85,13 @@ export default function Produtos() {
   };
 
   const handleAddToCart = (product) => {
-    
-    console.log("Product added to cart:", product);
+    const request = "https://webstore-backend-nu.vercel.app/api/updateCesto?id="+email+"&prod="+product._id+"&n=1";
+    console.log(request);
+    fetch(request, {
+      method: "POST"
+    })
+    console.log("Product added to cart:", product.name, " x1");
+    setProductsAdded(prevProducts => [...prevProducts, product._id]);
   };
 
   return (
@@ -224,13 +233,24 @@ export default function Produtos() {
                           <Text fontWeight="semibold" fontSize="30px" color="black">
                             
                           </Text>
-                          <Button
-                            ml="auto"
-                            bg="#deb887"
-                            onClick={() => handleAddToCart(product)}
-                          >
-                            Adicionar ao carrinho
-                          </Button>
+                            {productsAdded.includes(product._id) ? (
+                              <Button
+                              ml="auto"
+                              bg="#deb887"
+                              onClick={() => handleAddToCart(product)}
+                              isDisabled={true}
+                              >
+                                Adicionado
+                              </Button>
+                            ) : (
+                            <Button
+                              ml="auto"
+                              bg="#deb887"
+                              onClick={() => handleAddToCart(product)}
+                            >
+                              Adicionar ao Cesto
+                            </Button>
+                            )}
                         </Box>
                       </Box>
                     ))}

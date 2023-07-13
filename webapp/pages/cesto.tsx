@@ -108,10 +108,10 @@ export default function Cesto() {
     console.log("found in cafes: ",cafe);
     if (bolo!==undefined) {
       console.log("it was in bolos");
-      return {name: bolo.name, price: bolo.price, img: "/produto11.png", found: true}
+      return {name: bolo.name, price: bolo.price, img: "/bolo1.png", found: true}
     } else if (cafe!==undefined) {
       console.log("it was in cafes");
-      return {name: cafe.name, price: cafe.price, img: "/bolo1.png", found: true}
+      return {name: cafe.name, price: cafe.price, img: "/produto11.png", found: true}
     } else {
       return {found: false}
     }
@@ -228,7 +228,7 @@ export default function Cesto() {
                     //produto nao encontrado
                     item.found ? (
                       //se o produto for encontrado numa das listas  
-                      <GridItem bg="#faf0e6" borderRadius="10px" key={item._id}>
+                      <GridItem bg="#faf0e6" borderRadius="10px" key={item._id} minWidth={0}>
                         <Box mt="1" margin="1rem" fontWeight="bold" fontSize="20px" as="h4" lineHeight="tight" isTruncated >
                         {item.name}
                         </Box>
@@ -239,12 +239,12 @@ export default function Cesto() {
                           objectFit="cover"
                           borderRadius="lg"
                         />
-                        <Box display="flex" alignItems="center" justifyContent="space-between">
+                        <Box display="flex" alignItems="center" justifyContent="space-between" minWidth="fit-content">
                           <Box ml="1.5rem" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
                             {parseFloat(item.price)*item.quantidade} €
                           </Box>
-                          <NumberInput defaultValue={item.quantidade} margin="1rem" focusBorderColor="#deb887" maxW={32} min={0} precision={0} onChange={(value) => handleQuantityChange(item._id, value)}>
-                            <NumberInputField size="sm" bg="white" border="1px solid #deb887"/>
+                          <NumberInput minWidth={0} size="sm" defaultValue={item.quantidade} margin="1rem" focusBorderColor="#deb887" maxW={24} min={0} precision={0} onChange={(value) => handleQuantityChange(item._id, value)}>
+                            <NumberInputField minWidth="fit-content" borderRadius="md" bg="white" border="1px solid #deb887"/>
                             <NumberInputStepper><NumberIncrementStepper /><NumberDecrementStepper /></NumberInputStepper>
                           </NumberInput>
                         </Box>
