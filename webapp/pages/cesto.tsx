@@ -1,17 +1,15 @@
-import { Box, Button, Checkbox, Flex, FormLabel, Grid, GridItem, Heading, Image, Input, InputGroup, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Text, ThemeProvider, Spinner } from "@chakra-ui/react";
+import { Box, Button, Grid, GridItem, Image, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Spinner, ThemeProvider } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Stripe from 'stripe';
 import Navbar from "../components/Navbar";
 import theme from "../styles/styles";
 import { Cart } from "../types/cart";
-import Stripe from 'stripe';
 
-import connect from "@/db/Connection";
-import { create } from "domain";
 
 export default function Cesto() {
-  const stripe = new Stripe('sk_test_51NSHZzAjScMaZI5GQoyzqHr6lyDoersNIlwvWFdcGgqiieHEVEQvsi6nfWtTHKyxtWj2eZ6LjYdutVNnbejFRQ2I00KhriYYnh',{
+  const stripe = new Stripe('sk_test_51NSHZzAjScMaZI5GQoyzqHr6lyDoersNIlwvWFdcGgqiieHEVEQvsi6nfWtTHKyxtWj2eZ6LjYdutVNnbejFRQ2I00KhriYYnh', {
     apiVersion: '2022-11-15',
   });
   //redirecionar para /login ao tentar aceder esta pagina sem login
@@ -23,13 +21,6 @@ export default function Cesto() {
       router.replace("/login")
     }
   })
-
-  //obter URL em uso
-  const domain = 'https://takeabite.store';
-  const successUrl = `${domain}/about`;
-  const cancelUrl = `${domain}/finalizarEncomenda`;
-  console.log("successUrl: ", successUrl);
-  console.log("cancelUrl: ", cancelUrl);
 
   //obter o utilizador
   const email = data?.user.email
@@ -48,14 +39,14 @@ export default function Cesto() {
   /** 
    * Procura o cesto do utilizador
    */
-  const fetchCartData = (email:string) => {
+  const fetchCartData = (email: string) => {
     //setCartIsLoading(true);
-    const request = "https://webstore-backend-nu.vercel.app/api/getCesto?id="+email;
+    const request = "https://webstore-backend-nu.vercel.app/api/getCesto?id=" + email;
     fetch(request, {
       method: "GET"
     })
       .then((res) => res.json())
-      .then((data:Cart) => {
+      .then((data: Cart) => {
         console.log("data.data.length: ",data.data.length)
         if (data.data.length > 0) {
           setDbCart(data.data[0].produtos);
@@ -77,8 +68,8 @@ export default function Cesto() {
   /** 
    * Atualiza o cesto do utilizador
    */
-  const updateCartData = (email:string, produto:string, quantidade:string) => {
-    const request = "https://webstore-backend-nu.vercel.app/api/updateCesto?id="+email+"&prod="+produto+"&n="+quantidade;
+  const updateCartData = (email: string, produto: string, quantidade: string) => {
+    const request = "https://webstore-backend-nu.vercel.app/api/updateCesto?id=" + email + "&prod=" + produto + "&n=" + quantidade;
     //console.log(request);
     fetch(request, {
       method: "POST"
@@ -114,20 +105,20 @@ export default function Cesto() {
    * Devolve a informação sobre um produto
    * Só deve ser usada quando 'bolos' e 'cafes' estão definidas
    */
-  const getProductInfo = (id:string) => {
+  const getProductInfo = (id: string) => {
     //buscar o nome, preço e imagem
     const bolo = bolos.find(item => item._id === id); //undefined, {"name": "Drenas", "price": "2€"}
     const cafe = cafes.find(item => item._id === id); //undefined, {"name": "Drenas", "price": "2€"}
-    console.log("found in bolos: ",bolo);
-    console.log("found in cafes: ",cafe);
-    if (bolo!==undefined) {
+    console.log("found in bolos: ", bolo);
+    console.log("found in cafes: ", cafe);
+    if (bolo !== undefined) {
       console.log("it was in bolos");
-      return {name: bolo.name, price: bolo.price, img: "/bolo1.png", found: true}
-    } else if (cafe!==undefined) {
+      return { name: bolo.name, price: bolo.price, img: "/bolo1.png", found: true }
+    } else if (cafe !== undefined) {
       console.log("it was in cafes");
-      return {name: cafe.name, price: cafe.price, img: "/produto11.png", found: true}
+      return { name: cafe.name, price: cafe.price, img: "/produto11.png", found: true }
     } else {
-      return {found: false}
+      return { found: false }
     }
   }
 
@@ -137,9 +128,9 @@ export default function Cesto() {
    */
   const loadCart = () => {
     let newCart = [];
-    console.log("cart im working with: ",dbCart);
+    console.log("cart im working with: ", dbCart);
     dbCart.map((item) => (
-      newCart.push({...item, ...getProductInfo(item._id)})
+      newCart.push({ ...item, ...getProductInfo(item._id) })
     ))
     if (newCart.length > 0) {
       setCart(newCart);
@@ -147,53 +138,10 @@ export default function Cesto() {
       setCartIsEmpty(true);
       setCartIsLoading(false);
     }
-    console.log("newCart: ",newCart);
+    console.log("newCart: ", newCart);
   }
-  const handlePayment = async () => {
-    const items = new Map([])
-    let counter = 0
-    for (let i=0;i<cart.length;i++){
-      const id_produto = cart[i]._id;
-      const quantidade = cart[i].quantidade;
-      const bolosTeste = bolos.find(item => item._id === id_produto);
-      const cafesTeste = cafes.find(item => item._id === id_produto);
-      if(bolosTeste !== undefined){
-        if(cafesTeste === undefined){
-          if (items.size === counter){
-            items.set(counter,[quantidade,{precoCentimos: (parseInt(bolosTeste.price)*100), nome: bolosTeste.name}])
-            counter++
-          }
-        }
-      } else if (cafesTeste !== undefined){
-        if(bolosTeste === undefined){
-          if(items.size === counter){
-            items.set(counter,[quantidade,{precoCentimos:(parseInt(cafesTeste.price)*100),nome:cafesTeste.name}])
-            counter++
-          }
-        }
-      }
-    }
-    const lineItems = Array.from(items.values()).map(([quantity, { precoCentimos, nome }]) => ({
-      price_data: {
-        currency: 'eur',
-        product_data: {
-          name: nome,
-        },
-        unit_amount: precoCentimos,
-      },
-      quantity: quantity,
-    }));
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      mode:'payment',
-      success_url: successUrl,
-      cancel_url: cancelUrl,
-      line_items: lineItems
-    })
-    window.location.href = session.url;
-;
-    
-
+  const handleClick = () => {
+    router.push('/finalizarEncomenda');
   }
   //procura o cesto e os produtos quando a pagina e aberta
   useEffect(() => {
@@ -205,7 +153,7 @@ export default function Cesto() {
     console.log("cart.length > 0: ", dbCart.length > 0);
     console.log("cartIsLoading: ", cartIsLoading);
     // Fetch cart data when the email variable changes
-    if (typeof email === 'string' && dbCart.length===0 && cartIsLoading) {
+    if (typeof email === 'string' && dbCart.length === 0 && cartIsLoading) {
       fetchCartData(email);
       console.log("cart feched");
     }
@@ -213,7 +161,7 @@ export default function Cesto() {
       fetchProducts();
       console.log("products feched");
     }
-    if (!cartIsEmpty){
+    if (!cartIsEmpty) {
       if (dbCart.length > 0 && cartIsLoading && bolos.length > 0 && cafes.length > 0) {
         loadCart();
         console.log("cart loaded");
@@ -223,7 +171,7 @@ export default function Cesto() {
     } else { //se o cesto na bd estiver vazio
       setCartIsLoading(false);
     }
-    if (cart.length>0){
+    if (cart.length > 0) {
       getTotal();
     }
     //console.log(cart);
@@ -245,14 +193,14 @@ export default function Cesto() {
    */
   const getTotal = () => {
     let newTotal = 0;
-    console.log("Cart in get total: ",cart);
+    console.log("Cart in get total: ", cart);
     cart.forEach((item) => {
       if (item.price) {
         newTotal += parseFloat(item.price) * item.quantidade;
       }
     });
     setTotal(newTotal);
-  } 
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -267,7 +215,7 @@ export default function Cesto() {
         <Box width="100%" height="100%" zIndex="100">
           <Navbar />
 
-          {/* Para mostrar o que está no carrinho é preciso ir buscar á bd o carrinho do user */} 
+          {/* Para mostrar o que está no carrinho é preciso ir buscar á bd o carrinho do user */}
           {/* Como é que o carrinho é guardado na bd? */}
           {/* Onde é que são adicionadas cenas ao carrinho? bolos, cafe, produto */}
           {/* cart = [{_id: "6490361c0c01c91bcaa43dde", quantidade: 1}, {_id: "6490361c0c01c91bcaa43dde", quantidade: 1}] */}
@@ -286,9 +234,9 @@ export default function Cesto() {
                     //produto nao encontrado
                     item.found ? (
                       //se o produto for encontrado numa das listas  
-                      <GridItem maxWidth="420px" bg="#faf0e6" borderRadius="10px" key={item._id}>
+                      <GridItem maxWidth="470px" bg="#faf0e6" borderRadius="10px" key={item._id}>
                         <Box mt="1" margin="1rem" fontWeight="bold" fontSize="20px" as="h4" lineHeight="tight" isTruncated >
-                        {item.name}
+                          {item.name}
                         </Box>
                         <Image src={item.img}
                           alt={item.name}
@@ -299,10 +247,10 @@ export default function Cesto() {
                         />
                         <Box display="flex" alignItems="center" justifyContent="space-between" minWidth="fit-content">
                           <Box ml="1.5rem" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
-                            {parseFloat(item.price)*item.quantidade} €
+                            {parseFloat(item.price) * item.quantidade} €
                           </Box>
                           <NumberInput minWidth={0} size="sm" defaultValue={item.quantidade} margin="1rem" focusBorderColor="#deb887" maxW={24} min={0} precision={0} onChange={(value) => handleQuantityChange(item._id, value)}>
-                            <NumberInputField minWidth="fit-content" borderRadius="md" bg="white" border="1px solid #deb887"/>
+                            <NumberInputField minWidth="fit-content" borderRadius="md" bg="white" border="1px solid #deb887" />
                             <NumberInputStepper><NumberIncrementStepper /><NumberDecrementStepper /></NumberInputStepper>
                           </NumberInput>
                         </Box>
@@ -315,11 +263,8 @@ export default function Cesto() {
           </div>
           <Box margin="auto" minWidth="fit-content" width="auto">
             <Box minWidth="fit-content" width="0" bg="#faf0e6" margin="1rem" borderRadius="10px" display="flex" alignItems="center" justifyContent="space-between">
-              <Box ml="1.5rem" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
-                Total: {total} €
-              </Box>
-              <Button ml="auto" bg="#deb887" margin="1rem" onClick={() => handlePayment()} isDisabled={total === 0}>
-                Comprar
+              <Button ml="auto" bg="#deb887" margin="1rem" onClick={() => handleClick()} disabled={cart.length === 0}>
+                Finalizar Encomenda
               </Button>
             </Box>
           </Box>
