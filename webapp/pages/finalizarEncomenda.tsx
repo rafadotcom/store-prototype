@@ -176,8 +176,8 @@ export default function Cesto() {
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode:'payment',
-      success_url:"http://localhost:3000/about",
-      cancel_url:"http://localhost:3000/login",
+      success_url:"http://localhost:3000/sucesso",
+      cancel_url:"http://localhost:3000/semSucesso",
       line_items: lineItems
     })
     window.location.href = session.url;
