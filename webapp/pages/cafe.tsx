@@ -123,7 +123,7 @@ export default function Produtos() {
                       color="white"
                       value={newProduct.name}
                       onChange={handleInputChange}
-                    />
+                      bg="gray.100"/>
                   </InputGroup>
 
                   < InputGroup mb="4" >
@@ -135,7 +135,7 @@ export default function Produtos() {
                       color="white"
                       value={newProduct.description}
                       onChange={handleInputChange}
-                    />
+                      bg="gray.100"/>
                   </InputGroup>
 
                   < InputGroup mb="4" >
@@ -147,7 +147,7 @@ export default function Produtos() {
                       color="white"
                       value={newProduct.price}
                       onChange={handleInputChange}
-                    />
+                      bg="gray.100" />
                   </InputGroup>
 
 
@@ -179,6 +179,7 @@ export default function Produtos() {
                     placeholder="Pesquisar produto"
                     value={searchQuery}
                     onChange={handleSearch}
+                    bg="gray.100"
                   />
                 </InputGroup>
                   <Button
