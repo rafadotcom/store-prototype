@@ -120,6 +120,9 @@ export default function Produtos() {
     onClose()
   }
 
+  const [isPhone] = useMediaQuery("(max-width: 600px)"); 
+
+
 
 
   return (
@@ -270,14 +273,15 @@ export default function Produtos() {
                 </Flex>
               </Box>
 
-              <Flex flexWrap="wrap" p={6}>
+              <Flex flexWrap="wrap" p={6} flexDirection={isPhone ? "column" : "row"}>
                 {(searchQuery ? filteredProducts : products).map((product) => (
                   <Box
                     key={product.id}
                     p={3}
                     mb={4}
                     mr={4}
-                    width={{ base: "40%", md: "48%", lg: "32%" }}
+                    width={{ base: isPhone ? "100%" : "48%", md: "48%", lg: "32%" }}
+                
                     borderWidth="1px"
                     borderRadius="lg"
                     overflow="hidden"

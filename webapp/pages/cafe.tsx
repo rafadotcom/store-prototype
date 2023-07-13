@@ -1,4 +1,4 @@
-import { Box, Button, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Flex, FormLabel, Heading, Image, Input, InputGroup, Select, Text, ThemeProvider, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Flex, FormLabel, Heading, Image, Input, InputGroup, Select, Text, ThemeProvider, useDisclosure, useMediaQuery } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -121,6 +121,8 @@ export default function Produtos() {
     setComparar2(null)
     onClose()
   }
+
+  const [isPhone] = useMediaQuery("(max-width: 600px)"); 
 
   return (
     <ThemeProvider theme={theme} >
@@ -272,14 +274,16 @@ export default function Produtos() {
                   }
                 </Box>
 
-                <Flex flexWrap="wrap" p={6}>
+                <Flex flexWrap="wrap" p={6} flexDirection={isPhone ? "column" : "row"}>
+                
                   {(searchQuery ? filteredProducts : products).map((product) => (
                     <Box
                       key={product.id}
                       p={3}
                       mb={4}
                       mr={4}
-                      width={{ base: "40%", md: "48%", lg: "32%" }}
+                      width={{ base: isPhone ? "100%" : "48%", md: "48%", lg: "32%" }}
+                
                       borderWidth="1px"
                       borderRadius="lg"
                       overflow="hidden"
