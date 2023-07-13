@@ -1,4 +1,4 @@
-import { Box, Button, Flex, FormLabel, Heading, Image, Input, InputGroup, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, FormLabel, Heading, Image, Input, InputGroup, Text, useMediaQuery } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -127,6 +127,9 @@ export default function Profile() {
 
     }
 
+    const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
+    const [isSmallerThan768] = useMediaQuery("(max-width: 767px)");
+
     return (
         <Flex
             w="100vw"
@@ -151,13 +154,13 @@ export default function Profile() {
                     mt="120px"
                     gap="25px"
                     direction="column"
-                    w="70vw"
+                    w={isLargerThan768 ? "70vw" : "90vw"} // Adjust width based on screen size
                     background="rgb(0,0,0,0.5)"
                     padding={9}
                     borderRadius={20}
                 >
                     <Heading color="white" marginBottom="25px">Dados de Utilizador</Heading>
-                    <Flex gap="100px">
+                    <Flex gap="100px" direction={isSmallerThan768 ? "column" : "row"}>
                         <InputGroup mb="4">
                             <FormLabel color="white">Nome</FormLabel>
                             <Input
@@ -183,7 +186,7 @@ export default function Profile() {
 
 
                     </Flex>
-                    <Flex gap="100px">
+                    <Flex gap="100px" direction={isSmallerThan768 ? "column" : "row"}>
                         <InputGroup mb="4">
                             <FormLabel color="white">NIF</FormLabel>
                             <Input
@@ -208,7 +211,7 @@ export default function Profile() {
                         </InputGroup>
 
                     </Flex>
-                    <Flex gap="100px">
+                    <Flex gap="100px" direction={isSmallerThan768 ? "column" : "row"}>
                         <InputGroup mb="4">
                             <FormLabel color="white">Morada</FormLabel>
                             <Input
@@ -268,7 +271,7 @@ export default function Profile() {
                 </Heading>
             }
 
-            <Flex flexWrap="wrap" p={6}>
+            <Flex flexWrap="wrap" p={isSmallerThan768 ? 2 : 6}>
                 {bolos.map((product, index) => {
                     if (product.seller === email) {
                         return (

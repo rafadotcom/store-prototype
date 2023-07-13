@@ -52,7 +52,7 @@ export default function Home() {
         >
           <Box
             ml={2}
-            mr={{ base: 2, md: 0 }} // margin on small screens, no margin on medium and larger screens
+            mr={{ base: 3, md: 0 }} // margin on small screens, no margin on medium and larger screens
             mb={{ base: 8, md: 0 }} // margin bottom on small screens, no margin on medium and larger screens
             textAlign={{ base: "center", md: "left" }} // center align on small screens, left align on medium and larger screens
           >

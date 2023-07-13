@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Link, Text, ThemeProvider } from "@chakra-ui/react";
+import { Box, Button, Flex, Link, Text, ThemeProvider, useBreakpointValue } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -6,18 +6,17 @@ import Navbar from "../components/Navbar";
 import theme from "../styles/styles";
 
 export default function Produto() {
-
-  const router = useRouter()
-  const { status, data } = useSession()
-
-
+  const router = useRouter();
+  const { status, data } = useSession();
 
   useEffect(() => {
-    console.log(status)
+    console.log(status);
     if (status === "unauthenticated") {
-      router.replace("/login")
+      router.replace("/login");
     }
-  })
+  });
+
+  const textFontSize = useBreakpointValue({ base: "2xl", md: "4xl" });
 
   return (
     <ThemeProvider theme={theme}>
@@ -30,7 +29,7 @@ export default function Produto() {
         overflowX="hidden"
       >
         <Box
-          background="rgb(1,1,1,0.3)"
+          background="rgba(1, 1, 1, 0.3)"
           width="100%"
           height="100%"
           zIndex="100"
@@ -42,11 +41,16 @@ export default function Produto() {
             justifyContent="center"
             height="80%"
           >
-            <Text fontSize="4xl" fontWeight="bold" textAlign="center" mb={8}>
+            <Text
+              fontSize={textFontSize}
+              fontWeight="bold"
+              textAlign="center"
+              mb={8}
+            >
               Escolhe o que te faz feliz
             </Text>
-            <Flex alignItems="center" justifyContent="center">
-              <Box mr={8}>
+            <Flex alignItems="center" justifyContent="center" flexWrap="wrap">
+              <Box mr={8} mb={4}>
                 <Box
                   backgroundImage="url('/bolo1.png')"
                   backgroundRepeat="no-repeat"
@@ -71,9 +75,8 @@ export default function Produto() {
                     </Button>
                   </Link>
                 </Box>
-
               </Box>
-              <Box>
+              <Box mb={4}>
                 <Box
                   backgroundImage="url('/produto33.png')"
                   backgroundRepeat="no-repeat"
@@ -98,7 +101,6 @@ export default function Produto() {
                     </Button>
                   </Link>
                 </Box>
-
               </Box>
             </Flex>
           </Flex>
