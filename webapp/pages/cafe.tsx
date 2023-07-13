@@ -153,6 +153,7 @@ export default function Produtos() {
                       color="white"
                       value={newProduct.name}
                       onChange={handleChange}
+                      bg="gray.100"
                     />
                   </InputGroup>
 
@@ -165,6 +166,7 @@ export default function Produtos() {
                       color="white"
                       value={newProduct.description}
                       onChange={handleChange}
+                      bg="gray.100"
                     />
                   </InputGroup>
 
@@ -177,6 +179,7 @@ export default function Produtos() {
                       color="white"
                       value={newProduct.price}
                       onChange={handleChange}
+                      bg="gray.100"
                     />
                   </InputGroup>
 
@@ -187,6 +190,7 @@ export default function Produtos() {
                       color="black"
                       value={newProduct.glutenFree}
                       onChange={handleChange}
+                      bg="gray.100"
                     >
                       <option value='Sim'>Sim</option>
                       <option value='Nao'>Nao</option>
@@ -200,6 +204,7 @@ export default function Produtos() {
                       color="black"
                       value={newProduct.vegetarian}
                       onChange={handleChange}
+                      bg="gray.100"
                     >
                       <option value='Sim'>Sim</option>
                       <option value='Nao'>Nao</option>
@@ -213,6 +218,7 @@ export default function Produtos() {
                       color="black"
                       value={newProduct.vegan}
                       onChange={handleChange}
+                      bg="gray.100"
                     >
                       <option value='Sim'>Sim</option>
                       <option value='Nao'>Nao</option>
@@ -259,6 +265,8 @@ export default function Produtos() {
                       placeholder="Pesquisar produto"
                       value={searchQuery}
                       onChange={handleSearch}
+                      bg="gray.100"
+                      _placeholder={{ color: "grey" }}
                     />
                   </InputGroup>
                   {tipo === "vendedor" &&
@@ -296,11 +304,11 @@ export default function Produtos() {
                         borderRadius="lg"
                       />
 
-                      <Box mt="1" fontWeight="bold" fontSize="20px" as="h4" lineHeight="tight" isTruncated >
+                      <Box mt="1" fontWeight="bold" color="black" fontSize="20px" as="h4" lineHeight="tight" isTruncated >
                         {product.name}
                       </Box>
 
-                      < Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated >
+                      < Box mt="1" fontWeight="semibold" color="black" as="h4" lineHeight="tight" isTruncated >
                         {product.description}
                       </Box>
 
@@ -374,9 +382,7 @@ export default function Produtos() {
 
           {comparar1 != null && comparar2 != null &&
             <DrawerBody>
-              <Flex
-                direction="row"
-              >
+              <Flex direction={isPhone ? "column" : "row"}>
                 <Flex
                   direction="column"
                 >
@@ -518,7 +524,7 @@ export default function Produtos() {
 
 
           <DrawerFooter>
-            <Button variant='outline' mr={3} onClick={handleCleanComparar}>
+            <Button variant='outline' color={"black"} mr={3} onClick={handleCleanComparar}>
               Limpar
             </Button>
           </DrawerFooter>
@@ -527,4 +533,3 @@ export default function Produtos() {
     </ThemeProvider>
   );
 }
-

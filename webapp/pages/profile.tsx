@@ -154,7 +154,7 @@ export default function Profile() {
                     mt="120px"
                     gap="25px"
                     direction="column"
-                    w={isLargerThan768 ? "70vw" : "90vw"} // Adjust width based on screen size
+                    w={isLargerThan768 ? "70vw" : "90vw"}
                     background="rgb(0,0,0,0.5)"
                     padding={9}
                     borderRadius={20}
@@ -295,11 +295,11 @@ export default function Profile() {
                                     borderRadius="lg"
                                 />
 
-                                <Box mt="1" fontWeight="bold" fontSize="20px" as="h4" lineHeight="tight" isTruncated>
+                                <Box mt="1" fontWeight="bold" color={"black"} fontSize="20px" as="h4" lineHeight="tight" isTruncated>
                                     {product.name}
                                 </Box>
 
-                                <Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
+                                <Box mt="1" fontWeight="semibold" as="h4" color={"black"} lineHeight="tight" isTruncated>
                                     {product.description}
                                 </Box>
 
@@ -352,11 +352,11 @@ export default function Profile() {
                                     borderRadius="lg"
                                 />
 
-                                <Box mt="1" fontWeight="bold" fontSize="20px" as="h4" lineHeight="tight" isTruncated>
+                                <Box mt="1" fontWeight="bold" color={"black"} fontSize="20px" as="h4" lineHeight="tight" isTruncated>
                                     {product.name}
                                 </Box>
 
-                                <Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
+                                <Box mt="1" fontWeight="semibold" color={"black"} as="h4" lineHeight="tight" isTruncated>
                                     {product.description}
                                 </Box>
 

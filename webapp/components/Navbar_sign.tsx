@@ -21,33 +21,29 @@ const Navbar = () => {
 
 
       <Box display={{ base: "flex", md: "block" }}>
-  {/* Sign In Button */}
-  <NextLink href="/login" passHref>
-    <Button
-      colorScheme="#8A624A"
-      variant="outline"
-      mr={4}
-      borderRadius="0"
-      borderColor="white"
-    >
-      Sign In
-    </Button>
-  </NextLink>
-
-  {/* Sign Up Button */}
-  <NextLink href="/registo" passHref>
-    <Button
-      colorScheme="teal"
-      variant="solid"
-      borderRadius="0"
-      bg="white"
-      color="#8A624A"
-    >
-      Sign Up
-    </Button>
-  </NextLink>
-</Box>
-
+        <NextLink href="/login" passHref>
+          <Button
+            colorScheme="#8A624A"
+            variant="outline"
+            mr={4}
+            borderRadius="0"
+            borderColor="white"
+          >
+            Sign In
+          </Button>
+        </NextLink>
+        <NextLink href="/registo" passHref>
+          <Button
+            colorScheme="teal"
+            variant="solid"
+            borderRadius="0"
+            bg="white"
+            color="#8A624A"
+          >
+            Sign Up
+          </Button>
+        </NextLink>
+      </Box>
     </Flex>
   );
 };

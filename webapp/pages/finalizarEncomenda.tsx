@@ -50,10 +50,17 @@ export default function Cesto() {
         })
             .then((res) => res.json())
             .then((data: Cart) => {
-                setDbCart(data.data[0].produtos);
-                //console.log("products from cart fetch: ", cart)
-                if (data.data[0].produtos.length < 1) {
+                console.log("data.data.length: ",data.data.length)
+                if (data.data.length > 0) {
+                    setDbCart(data.data[0].produtos);
+                    //console.log("products from cart fetch: ", cart)
+                    if (data.data[0].produtos.length<1){
+                        setCartIsEmpty(true);
+                        setCartIsLoading(false);
+                        }
+                } else {
                     setCartIsEmpty(true);
+                    setCartIsLoading(false);
                 }
             })
             .catch((error) => {
@@ -135,6 +142,14 @@ export default function Cesto() {
         }
         console.log("newCart: ", newCart);
     }
+
+    //obter URL em uso
+    const domain = 'https://takeabite.store';
+    const successUrl = `${domain}/sucesso`;
+    const cancelUrl = `${domain}/semSucesso`;
+    console.log("successUrl: ", successUrl);
+    console.log("cancelUrl: ", cancelUrl);
+
     const handlePayment = async () => {
         const items = new Map([])
         let counter = 0
@@ -173,8 +188,8 @@ export default function Cesto() {
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ['card'],
             mode: 'payment',
-            success_url: "http://localhost:3000/about",
-            cancel_url: "http://localhost:3000/finalizarEncomenda",
+            success_url: successUrl,
+            cancel_url: cancelUrl,
             line_items: lineItems
         })
         window.location.href = session.url;
@@ -243,21 +258,19 @@ export default function Cesto() {
         const optionValue = e.target.value;
         setSelectedOption(optionValue);
         let newTotal = total;
-        let envio = "0";
+        let envio = 0;
         if (optionValue === 'Envio - Fornecedor (7 a 14 dias úteis)') {
-            envio = "0";
-            newTotal += parseFloat(envio);
+            envio = 0;
         } else if (optionValue === 'Envio - CTT (4 a 7 dias úteis)') {
-            envio = "2.99";
-            newTotal += parseFloat(envio);
+            envio = 2.99;
         } else if (optionValue === 'Envio - CTT Expresso (Dia Seguinte)') {
-            envio = "4.99";
-            newTotal += parseFloat(envio);
+            envio = 4.99;
         }
+        newTotal = parseFloat((total + envio).toFixed(2));
 
         setvalorApos(newTotal);
         setNomeEnvio(optionValue);
-        setPrecoEnvio(envio);
+        setPrecoEnvio(envio.toString());
     };
 
 
@@ -287,13 +300,13 @@ export default function Cesto() {
                             </div>
                         ) : (
                             cartIsEmpty ? null : (
-                                <Grid templateColumns="repeat(3, 1fr)" margin="1rem" gap={4}>
+                                <Grid flexDirection="row" templateColumns={'repeat(auto-fit, minmax(230px, max-content))'}  margin="1rem" gap={4}>
                                     {/* Render the cart data */}
                                     {cart.map((item) => (
                                         //produto nao encontrado
                                         item.found ? (
                                             //se o produto for encontrado numa das listas  
-                                            <GridItem bg="#faf0e6" borderRadius="10px" key={item._id}>
+                                            <GridItem maxWidth="470px" bg="#faf0e6" borderRadius="10px" key={item._id}>
                                                 <Box mt="1" margin="1rem" fontWeight="bold" fontSize="20px" as="h4" lineHeight="tight" isTruncated >
                                                     {item.name}
                                                 </Box>
@@ -308,10 +321,9 @@ export default function Cesto() {
                                                     <Box ml="1.5rem" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
                                                         {parseFloat(item.price) * item.quantidade} €
                                                     </Box>
-                                                    <NumberInput defaultValue={item.quantidade} margin="1rem" focusBorderColor="#deb887" maxW={32} min={0} precision={0} onChange={(value) => handleQuantityChange(item._id, value)}>
-                                                        <NumberInputField bg="white" border="1px solid #deb887" size={10} />
-                                                        <NumberInputStepper><NumberIncrementStepper /><NumberDecrementStepper /></NumberInputStepper>
-                                                    </NumberInput>
+                                                    <Box margin="1rem" mr="1.3rem">
+                                                        {parseFloat(item.price)}€ x{item.quantidade}
+                                                    </Box>
                                                 </Box>
                                             </GridItem>
                                         ) : null
@@ -326,7 +338,7 @@ export default function Cesto() {
                                 <Box ml="1.5rem" fontWeight="semibold" as="h4" lineHeight="tight" width="60px" isTruncated>
                                     Envio
                                 </Box>
-                                <Select required value={selectedOption} onChange={handleOptionChange}>
+                                <Select required value={selectedOption} onChange={handleOptionChange} border="1px solid #deb887" focusBorderColor="#deb887"  margin="1rem" bg="white">
                                     <option value="" disabled>Selecione</option>
                                     <option value="Envio - Fornecedor (7 a 14 dias úteis)">Fornecedor (7 a 14 dias úteis) - Envio Gratuito</option>
                                     <option value="Envio - CTT (4 a 7 dias úteis)">CTT (4 a 7 dias úteis) - 2,99€</option>
@@ -345,6 +357,7 @@ export default function Cesto() {
                             </Button>
                         </Box>
                     </Box>
+                    <Box h={1}></Box>
                 </Box>
             </Box>
         </ThemeProvider>

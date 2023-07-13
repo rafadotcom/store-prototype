@@ -47,10 +47,17 @@ export default function Cesto() {
     })
       .then((res) => res.json())
       .then((data: Cart) => {
-        setDbCart(data.data[0].produtos);
-        //console.log("products from cart fetch: ", cart)
-        if (data.data[0].produtos.length < 1) {
+        console.log("data.data.length: ",data.data.length)
+        if (data.data.length > 0) {
+          setDbCart(data.data[0].produtos);
+          //console.log("products from cart fetch: ", cart)
+          if (data.data[0].produtos.length<1){
+            setCartIsEmpty(true);
+            setCartIsLoading(false);
+          }
+        } else {
           setCartIsEmpty(true);
+          setCartIsLoading(false);
         }
       })
       .catch((error) => {
@@ -129,11 +136,12 @@ export default function Cesto() {
       setCart(newCart);
     } else {
       setCartIsEmpty(true);
+      setCartIsLoading(false);
     }
     console.log("newCart: ", newCart);
   }
   const handleClick = () => {
-    router.push('http://localhost:3000/finalizarEncomenda');
+    router.push('/finalizarEncomenda');
   }
   //procura o cesto e os produtos quando a pagina e aberta
   useEffect(() => {
@@ -220,14 +228,14 @@ export default function Cesto() {
               </div>
             ) : (
               cartIsEmpty ? null : (
-                <Grid templateColumns="repeat(3, 1fr)" margin="1rem" gap={4}>
+                <Grid flexDirection="row" templateColumns={'repeat(auto-fit, minmax(230px, max-content))'}  margin="1rem" gap={4}>
                   {/* Render the cart data */}
                   {cart.map((item) => (
                     //produto nao encontrado
                     item.found ? (
                       //se o produto for encontrado numa das listas  
-                      <GridItem bg="#faf0e6" borderRadius="10px" key={item._id} minWidth={0}>
-                        <Box mt="1" margin="1rem" fontWeight="bold" fontSize="20px" as="h4" lineHeight="tight" isTruncated >
+                      <GridItem maxWidth="470px" bg="#faf0e6" borderRadius="10px" key={item._id}>
+                        <Box mt="1" margin="1rem" color={"black"} fontWeight="bold" fontSize="20px" as="h4" lineHeight="tight" isTruncated >
                           {item.name}
                         </Box>
                         <Image src={item.img}
@@ -237,11 +245,11 @@ export default function Cesto() {
                           objectFit="cover"
                           borderRadius="lg"
                         />
-                        <Box display="flex" alignItems="center" justifyContent="space-between" minWidth="fit-content">
+                        <Box display="flex" alignItems="center" color={"black"} justifyContent="space-between" minWidth="fit-content">
                           <Box ml="1.5rem" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
                             {parseFloat(item.price) * item.quantidade} €
                           </Box>
-                          <NumberInput minWidth={0} size="sm" defaultValue={item.quantidade} margin="1rem" focusBorderColor="#deb887" maxW={24} min={0} precision={0} onChange={(value) => handleQuantityChange(item._id, value)}>
+                          <NumberInput minWidth={0} size="sm" color={"black"} defaultValue={item.quantidade} margin="1rem" focusBorderColor="#deb887" maxW={24} min={0} precision={0} onChange={(value) => handleQuantityChange(item._id, value)}>
                             <NumberInputField minWidth="fit-content" borderRadius="md" bg="white" border="1px solid #deb887" />
                             <NumberInputStepper><NumberIncrementStepper /><NumberDecrementStepper /></NumberInputStepper>
                           </NumberInput>
@@ -260,6 +268,7 @@ export default function Cesto() {
               </Button>
             </Box>
           </Box>
+          <Box h={1}></Box>
         </Box>
       </Box>
     </ThemeProvider>
