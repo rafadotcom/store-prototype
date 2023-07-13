@@ -37,9 +37,9 @@ export default function Contact() {
         >
           <Heading color="white" as="h1" mb={8}>Entre em contato conosco</Heading>
           <Box as="form" method="post" action="https://formspree.io/f/your-form-id">
-            <Input type="text" name="name" placeholder="Seu nome" mb={4} />
-            <Input type="email" name="_replyto" placeholder="Seu endereço de e-mail" mb={4} />
-            <Textarea name="message" placeholder="Sua mensagem" mb={4} />
+            <Input type="text" name="name" placeholder="Seu nome" mb={4} bg="gray.100"/>
+            <Input type="email" name="_replyto" placeholder="Seu endereço de e-mail" mb={4} bg="gray.100" />
+            <Textarea name="message" placeholder="Sua mensagem" mb={4} bg="gray.100" />
             <Button type="submit" bg="#8A624A">Enviar</Button>
           </Box>
         </Box>

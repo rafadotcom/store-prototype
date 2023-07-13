@@ -145,8 +145,8 @@ export default function Cesto() {
 
     //obter URL em uso
     const domain = 'https://takeabite.store';
-    const successUrl = `${domain}/about`;
-    const cancelUrl = `${domain}/finalizarEncomenda`;
+    const successUrl = `${domain}/sucesso`;
+    const cancelUrl = `${domain}/semSucesso`;
     console.log("successUrl: ", successUrl);
     console.log("cancelUrl: ", cancelUrl);
 

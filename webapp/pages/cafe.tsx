@@ -151,6 +151,7 @@ export default function Produtos() {
                       color="white"
                       value={newProduct.name}
                       onChange={handleChange}
+                      bg="gray.100"
                     />
                   </InputGroup>
 
@@ -163,6 +164,7 @@ export default function Produtos() {
                       color="white"
                       value={newProduct.description}
                       onChange={handleChange}
+                      bg="gray.100"
                     />
                   </InputGroup>
 
@@ -175,6 +177,7 @@ export default function Produtos() {
                       color="white"
                       value={newProduct.price}
                       onChange={handleChange}
+                      bg="gray.100"
                     />
                   </InputGroup>
 
@@ -185,6 +188,7 @@ export default function Produtos() {
                       color="black"
                       value={newProduct.glutenFree}
                       onChange={handleChange}
+                      bg="gray.100"
                     >
                       <option value='Sim'>Sim</option>
                       <option value='Nao'>Nao</option>
@@ -198,6 +202,7 @@ export default function Produtos() {
                       color="black"
                       value={newProduct.vegetarian}
                       onChange={handleChange}
+                      bg="gray.100"
                     >
                       <option value='Sim'>Sim</option>
                       <option value='Nao'>Nao</option>
@@ -211,6 +216,7 @@ export default function Produtos() {
                       color="black"
                       value={newProduct.vegan}
                       onChange={handleChange}
+                      bg="gray.100"
                     >
                       <option value='Sim'>Sim</option>
                       <option value='Nao'>Nao</option>
@@ -257,6 +263,7 @@ export default function Produtos() {
                       placeholder="Pesquisar produto"
                       value={searchQuery}
                       onChange={handleSearch}
+                      bg="gray.100"
                     />
                   </InputGroup>
                   {tipo === "vendedor" &&
