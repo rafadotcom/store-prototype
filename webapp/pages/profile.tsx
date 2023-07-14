@@ -154,6 +154,24 @@ export default function Profile() {
 
     }
 
+    const showProdInfo = (lista) => {
+        let final = ""
+        for (let i = 0; i < lista.length; i++) {
+            if (i == 0) {
+                final = lista[i].name + "(Quantidade: " + lista[i].quantidade + ", Preço: " + lista[i].price + "€)"
+            }
+            else {
+                final = final + "; " + lista[i].name + "(Quantidade: " + lista[i].quantidade + ", Preço: " + lista[i].price + "€)"
+            }
+
+        }
+        return (
+            <Box mt="1" fontWeight="bold" color={"black"} fontSize="20px" as="h4" lineHeight="tight" isTruncated>
+                {final}
+            </Box>
+        )
+    }
+
     const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
     const [isSmallerThan768] = useMediaQuery("(max-width: 767px)");
 
@@ -427,7 +445,7 @@ export default function Profile() {
                             p={3}
                             mb={4}
                             mr={4}
-                            width={{ base: "40%", md: "48%", lg: "32%" }}
+                            width={{ base: "90%", md: "90%", lg: "90%%" }}
                             borderWidth="1px"
                             borderRadius="lg"
                             overflow="hidden"
@@ -437,6 +455,8 @@ export default function Profile() {
                             <Box mt="1" fontWeight="bold" color={"black"} fontSize="20px" as="h4" lineHeight="tight" isTruncated>
                                 {"ID: " + encomenda._id}
                             </Box>
+
+                            {showProdInfo(encomenda.produtos)}
 
                             <Box mt="1" fontWeight="semibold" color={"black"} as="h4" lineHeight="tight" isTruncated>
                                 {"Entregar em: " + encomenda.morada}
