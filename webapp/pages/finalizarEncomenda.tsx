@@ -8,7 +8,7 @@ import theme from "../styles/styles";
 import { Cart } from "../types/cart";
 
 export default function Cesto() {
-    const domain = 'http://localhost:3000';
+    const domain = 'https://takeabite.store';
     const successUrl = `${domain}/sucesso`;
     const cancelUrl = `${domain}/semSucesso`;
 
