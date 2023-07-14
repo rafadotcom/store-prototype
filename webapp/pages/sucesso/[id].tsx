@@ -1,12 +1,33 @@
-import { CloseIcon } from '@chakra-ui/icons';
-import { Box, Button, Flex, Heading } from "@chakra-ui/react";
+import { CheckIcon } from '@chakra-ui/icons';
+import { Box, Flex, Heading } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import Navbar from "../components/Navbar";
+import { useEffect } from "react";
+import Navbar from "../../components/Navbar";
 
-export default function SemSuceso() {
+export default function Sucesso() {
+
     const router = useRouter()
     const { status, data } = useSession()
+
+    const id = router.query.id
+
+    useEffect(() => {
+        fetch("https://webstore-backend-nu.vercel.app/api/updateEncomenda", {
+            method: "POST",
+            mode: "cors",
+            body: JSON.stringify({
+                id: id
+            })
+        })
+            .then((res) => {
+                if (res.ok) {
+                    setTimeout(function () { router.push("/") }, 3000)
+                }
+            })
+    })
+
+
 
     return (
         <Flex
@@ -35,9 +56,8 @@ export default function SemSuceso() {
                 borderRadius={20}
             >
                 <Flex align="space-between">
-                    <Heading color="white" marginBottom="0px" marginRight={"19px"}>Encomenda Realizada sem Sucesso!</Heading>
-                    <CloseIcon boxSize={50} color="red" marginRight="25px" />
-                    <Button onClick={() => router.push('/cesto')}>Ir para o cesto</Button>
+                    <Heading color="white" marginBottom="0px" marginRight={"19px"}>Encomenda Realizada com Sucesso!</Heading>
+                    <CheckIcon boxSize={50} color="green" marginRight="25px" />
                 </Flex>
             </Flex>
         </Flex>

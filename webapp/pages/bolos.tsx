@@ -120,7 +120,7 @@ export default function Produtos() {
     onClose()
   }
 
-  const [isPhone] = useMediaQuery("(max-width: 600px)"); 
+  const [isPhone] = useMediaQuery("(max-width: 600px)");
 
 
   return (
@@ -145,7 +145,7 @@ export default function Produtos() {
                     type="text"
                     placeholder="Nome do produto"
                     name="name"
-                    color="white"
+                    color="black"
                     value={newProduct.name}
                     onChange={handleChange}
                     bg="gray.100"
@@ -158,7 +158,7 @@ export default function Produtos() {
                     type="descricao"
                     placeholder="Descrição do Produto"
                     name="description"
-                    color="white"
+                    color="black"
                     value={newProduct.description}
                     onChange={handleChange}
                     bg="gray.100"
@@ -171,7 +171,7 @@ export default function Produtos() {
                     type="preco"
                     placeholder="Preço do produto"
                     name="price"
-                    color="white"
+                    color="black"
                     value={newProduct.price}
                     onChange={handleChange}
                     bg="gray.100"
@@ -373,8 +373,8 @@ export default function Produtos() {
         onClose={onClose}
         finalFocusRef={btnRef}
         size="lg"
-        
-        
+
+
       >
         <DrawerOverlay />
         <DrawerContent>

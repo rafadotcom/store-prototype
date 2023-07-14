@@ -122,7 +122,7 @@ export default function Produtos() {
     onClose()
   }
 
-  const [isPhone] = useMediaQuery("(max-width: 600px)"); 
+  const [isPhone] = useMediaQuery("(max-width: 600px)");
 
   return (
     <ThemeProvider theme={theme} >
@@ -150,7 +150,7 @@ export default function Produtos() {
                       type="text"
                       placeholder="Nome do produto"
                       name="name"
-                      color="white"
+                      color="black"
                       value={newProduct.name}
                       onChange={handleChange}
                       bg="gray.100"
@@ -163,7 +163,7 @@ export default function Produtos() {
                       type="descricao"
                       placeholder="Descrição do Produto"
                       name="description"
-                      color="white"
+                      color="black"
                       value={newProduct.description}
                       onChange={handleChange}
                       bg="gray.100"
@@ -176,7 +176,7 @@ export default function Produtos() {
                       type="preco"
                       placeholder="Preço do produto"
                       name="price"
-                      color="white"
+                      color="black"
                       value={newProduct.price}
                       onChange={handleChange}
                       bg="gray.100"
@@ -283,7 +283,7 @@ export default function Produtos() {
                 </Box>
 
                 <Flex flexWrap="wrap" p={6} flexDirection={isPhone ? "column" : "row"}>
-                
+
                   {(searchQuery ? filteredProducts : products).map((product) => (
                     <Box
                       key={product.id}
@@ -291,7 +291,7 @@ export default function Produtos() {
                       mb={4}
                       mr={4}
                       width={{ base: isPhone ? "100%" : "48%", md: "48%", lg: "32%" }}
-                
+
                       borderWidth="1px"
                       borderRadius="lg"
                       overflow="hidden"

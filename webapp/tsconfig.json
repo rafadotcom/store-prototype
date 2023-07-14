@@ -19,15 +19,20 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/db/*": ["./db/*"],
-      "@/models/*": ["./models/*"]
-    }
+      "@/db/*": [
+        "./db/*"
+      ],
+      "@/models/*": [
+        "./models/*"
+      ]
+    },
+    "target": "es5"
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx", 
-    "db/Connection.tsx"  
+    "**/*.tsx",
+    "db/Connection.tsx"
   ],
   "exclude": [
     "node_modules"
