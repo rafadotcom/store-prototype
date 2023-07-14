@@ -1,15 +1,12 @@
-import { Box, Button, Icon, Heading, Text, ThemeProvider, Flex, FormLabel, Input, InputGroup, background } from "@chakra-ui/react";
 import { CloseIcon } from '@chakra-ui/icons';
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import theme from "../styles/styles";
-import Email from "next-auth/providers/email";
 
-export default function semSucesso(){
+export default function SemSuceso() {
     const router = useRouter()
-    const {status,data} = useSession()
+    const { status, data } = useSession()
 
     return (
         <Flex
@@ -29,20 +26,20 @@ export default function semSucesso(){
             >
                 <Navbar />
             </Box>
-                <Flex
-                    gap="25px"
-                    direction="column"
-                    w="70vw"
-                    background="rgb(0,0,0,0.5)"
-                    padding={9}
-                    borderRadius={20}
-                >
+            <Flex
+                gap="25px"
+                direction="column"
+                w="70vw"
+                background="rgb(0,0,0,0.5)"
+                padding={9}
+                borderRadius={20}
+            >
                 <Flex align="space-between">
-                <Heading color="white" marginBottom="0px" marginRight={"19px"}>Encomenda Realizada sem Sucesso!</Heading>
-                <CloseIcon boxSize={50} color="red" marginRight="25px"/>
-                <Button onClick={() => router.push('/cesto')}>Ir para o cesto</Button>
+                    <Heading color="white" marginBottom="0px" marginRight={"19px"}>Encomenda Realizada sem Sucesso!</Heading>
+                    <CloseIcon boxSize={50} color="red" marginRight="25px" />
+                    <Button onClick={() => router.push('/cesto')}>Ir para o cesto</Button>
                 </Flex>
-                </Flex>
+            </Flex>
         </Flex>
     );
 }

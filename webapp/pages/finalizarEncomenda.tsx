@@ -1,4 +1,4 @@
-import { Box, Button, Grid, GridItem, Image, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper, Select, Spinner, ThemeProvider } from "@chakra-ui/react";
+import { Box, Button, Grid, GridItem, Image, Select, Spinner, ThemeProvider } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import { Cart } from "../types/cart";
 
 export default function Cesto() {
     const domain = 'http://localhost:3000';
+    const successUrl = `${domain}/sucesso`;
     const cancelUrl = `${domain}/semSucesso`;
 
     const stripe = new Stripe('sk_test_51NSHZzAjScMaZI5GQoyzqHr6lyDoersNIlwvWFdcGgqiieHEVEQvsi6nfWtTHKyxtWj2eZ6LjYdutVNnbejFRQ2I00KhriYYnh', {
@@ -45,7 +46,6 @@ export default function Cesto() {
     const [morada, setMorada] = useState('');
     const [telemovel, setTelemovel] = useState('');
     const [encomendaId, setEncomendaId] = useState('');
-    const [successUrl, setSuccessUrl] = useState('');
 
     useEffect(() => {
         fetch("https://webstore-backend-nu.vercel.app/api/getUsers")
@@ -72,14 +72,14 @@ export default function Cesto() {
         })
             .then((res) => res.json())
             .then((data: Cart) => {
-                console.log("data.data.length: ",data.data.length)
+                console.log("data.data.length: ", data.data.length)
                 if (data.data.length > 0) {
                     setDbCart(data.data[0].produtos);
                     //console.log("products from cart fetch: ", cart)
-                    if (data.data[0].produtos.length<1){
+                    if (data.data[0].produtos.length < 1) {
                         setCartIsEmpty(true);
                         setCartIsLoading(false);
-                        }
+                    }
                 } else {
                     setCartIsEmpty(true);
                     setCartIsLoading(false);
@@ -165,10 +165,14 @@ export default function Cesto() {
         console.log("newCart: ", newCart);
     }
 
+    const addEncomendaDB = async (produtos) => {
+
+    }
+
     const handlePayment = async () => {
         let produtos = []
-        for(let i = 0; i < cart.length; i++){
-            if(cart[i].found){
+        for (let i = 0; i < cart.length; i++) {
+            if (cart[i].found) {
                 produtos.push(cart[i])
             }
         }
@@ -188,62 +192,60 @@ export default function Cesto() {
                 estado: "naoPago"
             })
         })
-        .then((res) => res.json())
-        .then(async (data) => {
-            setEncomendaId(data.data._id)
-            setSuccessUrl(`${domain}/sucesso/${data.data._id}`)
-            console.log(successUrl)
+            .then((res) => res.json())
+            .then(async (data) => {
+                /* setEncomendaId(data.data._id)
+                setSuccessUrl(`${domain}/sucesso/${data.data._id}`) */
+                let ide = data.data._id
+                console.log(ide)
+                console.log(successUrl + "/" + ide)
 
-            
-        })
-
-        setTimeout(async function () {
-            const items = new Map([])
-            let counter = 0
-            for (let i = 0; i < cart.length; i++) {
-                const id_produto = cart[i]._id;
-                const quantidade = cart[i].quantidade;
-                const bolosTeste = bolos.find(item => item._id === id_produto);
-                const cafesTeste = cafes.find(item => item._id === id_produto);
-                if (bolosTeste !== undefined) {
-                    if (cafesTeste === undefined) {
-                        if (items.size === counter) {
-                            items.set(counter, [quantidade, { precoCentimos: (parseInt(bolosTeste.price) * 100), nome: bolosTeste.name }])
-                            counter++
+                if (data.data._id) {
+                    const items = new Map([])
+                    let counter = 0
+                    for (let i = 0; i < cart.length; i++) {
+                        const id_produto = cart[i]._id;
+                        const quantidade = cart[i].quantidade;
+                        const bolosTeste = bolos.find(item => item._id === id_produto);
+                        const cafesTeste = cafes.find(item => item._id === id_produto);
+                        if (bolosTeste !== undefined) {
+                            if (cafesTeste === undefined) {
+                                if (items.size === counter) {
+                                    items.set(counter, [quantidade, { precoCentimos: (parseInt(bolosTeste.price) * 100), nome: bolosTeste.name }])
+                                    counter++
+                                }
+                            }
+                        } else if (cafesTeste !== undefined) {
+                            if (bolosTeste === undefined) {
+                                if (items.size === counter) {
+                                    items.set(counter, [quantidade, { precoCentimos: (parseInt(cafesTeste.price) * 100), nome: cafesTeste.name }])
+                                    counter++
+                                }
+                            }
                         }
                     }
-                } else if (cafesTeste !== undefined) {
-                    if (bolosTeste === undefined) {
-                        if (items.size === counter) {
-                            items.set(counter, [quantidade, { precoCentimos: (parseInt(cafesTeste.price) * 100), nome: cafesTeste.name }])
-                            counter++
-                        }
-                    }
+                    items.set(counter, [1, { precoCentimos: (parseFloat(precoEnvio) * 100), nome: nomeEnvio }])
+                    const lineItems = Array.from(items.values()).map(([quantity, { precoCentimos, nome }]) => ({
+                        price_data: {
+                            currency: 'eur',
+                            product_data: {
+                                name: nome,
+                            },
+                            unit_amount: precoCentimos,
+                        },
+                        quantity: quantity,
+                    }));
+                    const session = await stripe.checkout.sessions.create({
+                        payment_method_types: ['card'],
+                        mode: 'payment',
+                        success_url: successUrl + "/" + ide,
+                        cancel_url: cancelUrl,
+                        line_items: lineItems
+                    })
+                    window.location.href = session.url;
                 }
-            }
-            items.set(counter, [1, { precoCentimos: (parseFloat(precoEnvio) * 100), nome: nomeEnvio }])
-            const lineItems = Array.from(items.values()).map(([quantity, { precoCentimos, nome }]) => ({
-                price_data: {
-                    currency: 'eur',
-                    product_data: {
-                        name: nome,
-                    },
-                    unit_amount: precoCentimos,
-                },
-                quantity: quantity,
-            }));
-            const session = await stripe.checkout.sessions.create({
-                payment_method_types: ['card'],
-                mode: 'payment',
-                success_url: successUrl,
-                cancel_url: cancelUrl,
-                line_items: lineItems
+
             })
-            window.location.href = session.url;
-        }, 1500)
-
-        
-
     }
     //procura o cesto e os produtos quando a pagina e aberta
     useEffect(() => {
@@ -348,7 +350,7 @@ export default function Cesto() {
                             </div>
                         ) : (
                             cartIsEmpty ? null : (
-                                <Grid flexDirection="row" templateColumns={'repeat(auto-fit, minmax(230px, max-content))'}  margin="1rem" gap={4}>
+                                <Grid flexDirection="row" templateColumns={'repeat(auto-fit, minmax(230px, max-content))'} margin="1rem" gap={4}>
                                     {/* Render the cart data */}
                                     {cart.map((item) => (
                                         //produto nao encontrado
@@ -386,7 +388,7 @@ export default function Cesto() {
                                 <Box ml="1.5rem" fontWeight="semibold" as="h4" lineHeight="tight" width="60px" isTruncated>
                                     Envio
                                 </Box>
-                                <Select required value={selectedOption} onChange={handleOptionChange} border="1px solid #deb887" focusBorderColor="#deb887"  margin="1rem" bg="white">
+                                <Select required value={selectedOption} onChange={handleOptionChange} border="1px solid #deb887" focusBorderColor="#deb887" margin="1rem" bg="white">
                                     <option value="" disabled>Selecione</option>
                                     <option value="Envio - Fornecedor (7 a 14 dias úteis)">Fornecedor (7 a 14 dias úteis) - Envio Gratuito</option>
                                     <option value="Envio - CTT (4 a 7 dias úteis)">CTT (4 a 7 dias úteis) - 2,99€</option>
