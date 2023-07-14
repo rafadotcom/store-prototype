@@ -7,7 +7,7 @@ import Navbar from "../components/Navbar";
 import theme from "../styles/styles";
 import Email from "next-auth/providers/email";
 
-export default function semSucesso(){
+export default function SemSucesso(){
     const router = useRouter()
     const {status,data} = useSession()
 

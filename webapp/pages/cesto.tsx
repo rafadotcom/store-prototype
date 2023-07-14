@@ -251,7 +251,7 @@ export default function Cesto() {
                           </Box>
                           <NumberInput minWidth={0} size="sm" color={"black"} defaultValue={item.quantidade} margin="1rem" focusBorderColor="#deb887" maxW={24} min={0} precision={0} onChange={(value) => handleQuantityChange(item._id, value)}>
                             <NumberInputField minWidth="fit-content" borderRadius="md" bg="white" border="1px solid #deb887" />
-                            <NumberInputStepper><NumberIncrementStepper /><NumberDecrementStepper /></NumberInputStepper>
+                            <NumberInputStepper><NumberIncrementStepper color={"black"} /><NumberDecrementStepper color={"black"} /></NumberInputStepper>
                           </NumberInput>
                         </Box>
                       </GridItem>

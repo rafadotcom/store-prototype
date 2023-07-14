@@ -144,7 +144,8 @@ export default function Cesto() {
     }
 
     //obter URL em uso
-    const domain = 'https://takeabite.store';
+    //const domain = 'https://takeabite.store';
+    const domain = 'http://localhost:3000';
     const successUrl = `${domain}/sucesso`;
     const cancelUrl = `${domain}/semSucesso`;
     console.log("successUrl: ", successUrl);
@@ -284,7 +285,7 @@ export default function Cesto() {
                 height="100vh"
                 overflowX="hidden"
             >
-                <Box width="100%" height="100%" zIndex="100">
+                <Box width="100%" height="100%" zIndex="100"  color="black !important">
                     <Navbar />
 
                     {/* Para mostrar o que está no carrinho é preciso ir buscar á bd o carrinho do user */}
