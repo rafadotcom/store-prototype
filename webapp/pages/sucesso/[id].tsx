@@ -3,14 +3,32 @@ import { CheckIcon } from '@chakra-ui/icons';
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Navbar from "../components/Navbar";
-import theme from "../styles/styles";
+import Navbar from "../../components/Navbar";
+import theme from "../../styles/styles";
 import Email from "next-auth/providers/email";
 
 export default function Sucesso(){
 
     const router = useRouter()
     const {status,data} = useSession()
+
+    const id = router.query.id
+
+    useEffect(() => { 
+        fetch("https://webstore-backend-nu.vercel.app/api/updateEncomenda", {
+            method: "POST",
+            mode: "cors",
+            body: JSON.stringify({
+                id: id
+            })
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data.data)
+        })
+    })
+
+    
 
     return (
         <Flex

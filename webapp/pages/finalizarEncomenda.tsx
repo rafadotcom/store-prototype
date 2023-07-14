@@ -8,6 +8,9 @@ import theme from "../styles/styles";
 import { Cart } from "../types/cart";
 
 export default function Cesto() {
+    const domain = 'http://localhost:3000';
+    const cancelUrl = `${domain}/semSucesso`;
+
     const stripe = new Stripe('sk_test_51NSHZzAjScMaZI5GQoyzqHr6lyDoersNIlwvWFdcGgqiieHEVEQvsi6nfWtTHKyxtWj2eZ6LjYdutVNnbejFRQ2I00KhriYYnh', {
         apiVersion: '2022-11-15',
     });
@@ -38,6 +41,25 @@ export default function Cesto() {
     const [valorApos, setvalorApos] = useState(0);
     const [nomeEnvio, setNomeEnvio] = useState('');
     const [precoEnvio, setPrecoEnvio] = useState('');
+    const [nif, setNif] = useState('');
+    const [morada, setMorada] = useState('');
+    const [telemovel, setTelemovel] = useState('');
+    const [encomendaId, setEncomendaId] = useState('');
+    const [successUrl, setSuccessUrl] = useState('');
+
+    useEffect(() => {
+        fetch("https://webstore-backend-nu.vercel.app/api/getUsers")
+            .then((response) => response.json())
+            .then((data) => {
+                data.data.forEach(user => {
+                    if (user.email == email) {
+                        setNif(user.NIF)
+                        setMorada(user.morada)
+                        setTelemovel(user.telemovel)
+                    }
+                });
+            });
+    })
 
     /** 
      * Procura o cesto do utilizador
@@ -143,58 +165,84 @@ export default function Cesto() {
         console.log("newCart: ", newCart);
     }
 
-    //obter URL em uso
-    const domain = 'https://takeabite.store';
-    const successUrl = `${domain}/sucesso`;
-    const cancelUrl = `${domain}/semSucesso`;
-    console.log("successUrl: ", successUrl);
-    console.log("cancelUrl: ", cancelUrl);
-
     const handlePayment = async () => {
-        const items = new Map([])
-        let counter = 0
-        for (let i = 0; i < cart.length; i++) {
-            const id_produto = cart[i]._id;
-            const quantidade = cart[i].quantidade;
-            const bolosTeste = bolos.find(item => item._id === id_produto);
-            const cafesTeste = cafes.find(item => item._id === id_produto);
-            if (bolosTeste !== undefined) {
-                if (cafesTeste === undefined) {
-                    if (items.size === counter) {
-                        items.set(counter, [quantidade, { precoCentimos: (parseInt(bolosTeste.price) * 100), nome: bolosTeste.name }])
-                        counter++
+        let produtos = []
+        for(let i = 0; i < cart.length; i++){
+            if(cart[i].found){
+                produtos.push(cart[i])
+            }
+        }
+        console.log(produtos)
+
+        await fetch("https://webstore-backend-nu.vercel.app/api/addEncomenda", {
+            method: "POST",
+            mode: "cors",
+            body: JSON.stringify({
+                produtos: produtos,
+                comprador: email,
+                transporte: selectedOption,
+                NIF: nif,
+                telemovel: telemovel,
+                morada: morada,
+                preco: total,
+                estado: "naoPago"
+            })
+        })
+        .then((res) => res.json())
+        .then(async (data) => {
+            setEncomendaId(data.data._id)
+            setSuccessUrl(`${domain}/sucesso/${data.data._id}`)
+            console.log(successUrl)
+
+            
+        })
+
+        setTimeout(async function () {
+            const items = new Map([])
+            let counter = 0
+            for (let i = 0; i < cart.length; i++) {
+                const id_produto = cart[i]._id;
+                const quantidade = cart[i].quantidade;
+                const bolosTeste = bolos.find(item => item._id === id_produto);
+                const cafesTeste = cafes.find(item => item._id === id_produto);
+                if (bolosTeste !== undefined) {
+                    if (cafesTeste === undefined) {
+                        if (items.size === counter) {
+                            items.set(counter, [quantidade, { precoCentimos: (parseInt(bolosTeste.price) * 100), nome: bolosTeste.name }])
+                            counter++
+                        }
                     }
-                }
-            } else if (cafesTeste !== undefined) {
-                if (bolosTeste === undefined) {
-                    if (items.size === counter) {
-                        items.set(counter, [quantidade, { precoCentimos: (parseInt(cafesTeste.price) * 100), nome: cafesTeste.name }])
-                        counter++
+                } else if (cafesTeste !== undefined) {
+                    if (bolosTeste === undefined) {
+                        if (items.size === counter) {
+                            items.set(counter, [quantidade, { precoCentimos: (parseInt(cafesTeste.price) * 100), nome: cafesTeste.name }])
+                            counter++
+                        }
                     }
                 }
             }
-        }
-        items.set(counter, [1, { precoCentimos: (parseFloat(precoEnvio) * 100), nome: nomeEnvio }])
-        const lineItems = Array.from(items.values()).map(([quantity, { precoCentimos, nome }]) => ({
-            price_data: {
-                currency: 'eur',
-                product_data: {
-                    name: nome,
+            items.set(counter, [1, { precoCentimos: (parseFloat(precoEnvio) * 100), nome: nomeEnvio }])
+            const lineItems = Array.from(items.values()).map(([quantity, { precoCentimos, nome }]) => ({
+                price_data: {
+                    currency: 'eur',
+                    product_data: {
+                        name: nome,
+                    },
+                    unit_amount: precoCentimos,
                 },
-                unit_amount: precoCentimos,
-            },
-            quantity: quantity,
-        }));
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            mode: 'payment',
-            success_url: successUrl,
-            cancel_url: cancelUrl,
-            line_items: lineItems
-        })
-        window.location.href = session.url;
+                quantity: quantity,
+            }));
+            const session = await stripe.checkout.sessions.create({
+                payment_method_types: ['card'],
+                mode: 'payment',
+                success_url: successUrl,
+                cancel_url: cancelUrl,
+                line_items: lineItems
+            })
+            window.location.href = session.url;
+        }, 1500)
 
-
+        
 
     }
     //procura o cesto e os produtos quando a pagina e aberta
