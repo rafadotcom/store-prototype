@@ -334,7 +334,7 @@ export default function Cesto() {
                 height="100vh"
                 overflowX="hidden"
             >
-                <Box width="100%" height="100%" zIndex="100">
+                <Box width="100%" height="100%" zIndex="100" color="black !important">
                     <Navbar />
 
                     {/* Para mostrar o que está no carrinho é preciso ir buscar á bd o carrinho do user */}
@@ -402,7 +402,7 @@ export default function Cesto() {
                             <Box ml="1.5rem" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
                                 Total: {valorApos} €
                             </Box>
-                            <Button ml="auto" bg="#deb887" margin="1rem" onClick={() => handlePayment()}>
+                            <Button ml="auto" bg="#deb887" margin="1rem" onClick={() => handlePayment()} isDisabled={valorApos === 0}>
                                 Comprar
                             </Button>
                         </Box>

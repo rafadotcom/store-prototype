@@ -235,7 +235,7 @@ export default function Cesto() {
                     item.found ? (
                       //se o produto for encontrado numa das listas  
                       <GridItem maxWidth="470px" bg="#faf0e6" borderRadius="10px" key={item._id}>
-                        <Box mt="1" margin="1rem" fontWeight="bold" fontSize="20px" as="h4" lineHeight="tight" isTruncated >
+                        <Box mt="1" margin="1rem" color={"black"} fontWeight="bold" fontSize="20px" as="h4" lineHeight="tight" isTruncated >
                           {item.name}
                         </Box>
                         <Image src={item.img}
@@ -245,13 +245,13 @@ export default function Cesto() {
                           objectFit="cover"
                           borderRadius="lg"
                         />
-                        <Box display="flex" alignItems="center" justifyContent="space-between" minWidth="fit-content">
+                        <Box display="flex" alignItems="center" color={"black"} justifyContent="space-between" minWidth="fit-content">
                           <Box ml="1.5rem" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
                             {parseFloat(item.price) * item.quantidade} €
                           </Box>
-                          <NumberInput minWidth={0} size="sm" defaultValue={item.quantidade} margin="1rem" focusBorderColor="#deb887" maxW={24} min={0} precision={0} onChange={(value) => handleQuantityChange(item._id, value)}>
+                          <NumberInput minWidth={0} size="sm" color={"black"} defaultValue={item.quantidade} margin="1rem" focusBorderColor="#deb887" maxW={24} min={0} precision={0} onChange={(value) => handleQuantityChange(item._id, value)}>
                             <NumberInputField minWidth="fit-content" borderRadius="md" bg="white" border="1px solid #deb887" />
-                            <NumberInputStepper><NumberIncrementStepper /><NumberDecrementStepper /></NumberInputStepper>
+                            <NumberInputStepper><NumberIncrementStepper color={"black"} /><NumberDecrementStepper color={"black"} /></NumberInputStepper>
                           </NumberInput>
                         </Box>
                       </GridItem>

@@ -20,7 +20,7 @@ const Navbar = () => {
 
 
 
-      <Box display={{ base: "none", md: "block" }}>
+      <Box display={{ base: "flex", md: "block" }}>
         <NextLink href="/login" passHref>
           <Button
             colorScheme="#8A624A"

@@ -1,4 +1,4 @@
-import { Box, Button, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Flex, FormLabel, Heading, Image, Input, InputGroup, Select, Text, ThemeProvider, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, Flex, FormLabel, Heading, Image, Input, InputGroup, Select, Text, ThemeProvider, useDisclosure, useMediaQuery } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -120,6 +120,7 @@ export default function Produtos() {
     onClose()
   }
 
+  const [isPhone] = useMediaQuery("(max-width: 600px)");
 
 
   return (
@@ -144,7 +145,7 @@ export default function Produtos() {
                     type="text"
                     placeholder="Nome do produto"
                     name="name"
-                    color="white"
+                    color="black"
                     value={newProduct.name}
                     onChange={handleChange}
                     bg="gray.100"
@@ -157,7 +158,7 @@ export default function Produtos() {
                     type="descricao"
                     placeholder="Descrição do Produto"
                     name="description"
-                    color="white"
+                    color="black"
                     value={newProduct.description}
                     onChange={handleChange}
                     bg="gray.100"
@@ -170,7 +171,7 @@ export default function Produtos() {
                     type="preco"
                     placeholder="Preço do produto"
                     name="price"
-                    color="white"
+                    color="black"
                     value={newProduct.price}
                     onChange={handleChange}
                     bg="gray.100"
@@ -259,6 +260,7 @@ export default function Produtos() {
                     value={searchQuery}
                     onChange={handleSearch}
                     bg="gray.100"
+                    _placeholder={{ color: "grey" }}
                   />
                 </InputGroup>
                 {tipo === "vendedor" &&
@@ -277,14 +279,14 @@ export default function Produtos() {
                 </Flex>
               </Box>
 
-              <Flex flexWrap="wrap" p={6}>
+              <Flex flexWrap="wrap" p={6} flexDirection={isPhone ? "column" : "row"}>
                 {(searchQuery ? filteredProducts : products).map((product) => (
                   <Box
                     key={product.id}
                     p={3}
                     mb={4}
                     mr={4}
-                    width={{ base: "40%", md: "48%", lg: "32%" }}
+                    width={{ base: isPhone ? "100%" : "48%", md: "48%", lg: "32%" }}
                     borderWidth="1px"
                     borderRadius="lg"
                     overflow="hidden"
@@ -299,11 +301,11 @@ export default function Produtos() {
                       borderRadius="lg"
                     />
 
-                    <Box mt="1" fontWeight="bold" fontSize="20px" as="h4" lineHeight="tight" isTruncated>
+                    <Box mt="1" fontWeight="bold" color="black" fontSize="20px" as="h4" lineHeight="tight" isTruncated>
                       {product.name}
                     </Box>
 
-                    <Box mt="1" fontWeight="semibold" as="h4" lineHeight="tight" isTruncated>
+                    <Box mt="1" fontWeight="semibold" color="black" as="h4" lineHeight="tight" isTruncated>
                       {product.description}
                     </Box>
 
@@ -371,6 +373,8 @@ export default function Produtos() {
         onClose={onClose}
         finalFocusRef={btnRef}
         size="lg"
+
+
       >
         <DrawerOverlay />
         <DrawerContent>
@@ -378,9 +382,7 @@ export default function Produtos() {
 
           {comparar1 != null && comparar2 != null &&
             <DrawerBody>
-              <Flex
-                direction="row"
-              >
+              <Flex direction={isPhone ? "column" : "row"}>
                 <Flex
                   direction="column"
                 >
@@ -522,7 +524,7 @@ export default function Produtos() {
 
 
           <DrawerFooter>
-            <Button variant='outline' mr={3} onClick={handleCleanComparar}>
+            <Button color={"black"} variant='outline' mr={3} onClick={handleCleanComparar}>
               Limpar
             </Button>
           </DrawerFooter>
@@ -531,3 +533,4 @@ export default function Produtos() {
     </ThemeProvider>
   );
 }
+
