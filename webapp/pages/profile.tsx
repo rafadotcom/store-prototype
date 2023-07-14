@@ -16,6 +16,9 @@ export default function Profile() {
     const [cafes, setCafes] = useState([]);
     const [del, setDel] = useState(0)
 
+    const [encomendas, setEncomendas] = useState([]);
+    const [cancel, setCancel] = useState(0)
+
     const router = useRouter()
     const { status, data } = useSession()
 
@@ -24,6 +27,17 @@ export default function Profile() {
     const [canUpdate, setCanUpdate] = useState(false)
 
     const email = data?.user.email
+
+    useEffect(() => {
+        fetch("https://webstore-backend-nu.vercel.app/api/getEncomendas", {
+            method: "GET"
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data, "encomendas");
+                setEncomendas(data.data);
+            });
+    }, [cancel]);
 
     useEffect(() => {
         fetch("https://webstore-backend-nu.vercel.app/api/getBolos", {
@@ -64,6 +78,19 @@ export default function Profile() {
         }).then((res) => {
             console.log(res)
             setDel(del + 1)
+        })
+    };
+
+    const cancelEncomenda = async (id) => {
+        await fetch("https://webstore-backend-nu.vercel.app/api/cancelEncomenda", {
+            method: "POST",
+            mode: "cors",
+            body: JSON.stringify({
+                id: id
+            })
+        }).then((res) => {
+            console.log(res)
+            setCancel(cancel + 1)
         })
     };
 
@@ -387,6 +414,55 @@ export default function Profile() {
 
                 )}
             </Flex>
+
+            <Heading as="h1" size="xl" textAlign="center" m={6}>
+                As suas encomendas:
+            </Heading>
+
+            {encomendas.map((encomenda, index) => {
+                if (encomenda.comprador === email && encomenda.estado === "pago") {
+                    return (
+                        < Box
+                            key={encomenda.id}
+                            p={3}
+                            mb={4}
+                            mr={4}
+                            width={{ base: "40%", md: "48%", lg: "32%" }}
+                            borderWidth="1px"
+                            borderRadius="lg"
+                            overflow="hidden"
+                            bg="#faf0e6"
+                        >
+
+                            <Box mt="1" fontWeight="bold" color={"black"} fontSize="20px" as="h4" lineHeight="tight" isTruncated>
+                                {"ID: " + encomenda._id}
+                            </Box>
+
+                            <Box mt="1" fontWeight="semibold" color={"black"} as="h4" lineHeight="tight" isTruncated>
+                                {"Entregar em: " + encomenda.morada}
+                            </Box>
+
+                            <Box mt="1" fontWeight="semibold" color={"black"} as="h4" lineHeight="tight" isTruncated>
+                                {"Preço total: " + encomenda.preco}
+                            </Box>
+
+                            <Box display="flex" mt="2" alignItems="center">
+                                <Text fontWeight="semibold" fontSize="30px" color="black">
+
+                                </Text>
+                                <Button
+                                    ml="auto"
+                                    bg="#deb887"
+                                    onClick={() => cancelEncomenda(encomenda._id)}
+                                >
+                                    Cancelar
+                                </Button>
+                            </Box>
+                        </Box>
+                    )
+                }
+            }
+            )}
         </Flex >
     );
 }
