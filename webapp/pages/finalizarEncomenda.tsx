@@ -144,8 +144,8 @@ export default function Cesto() {
     }
 
     //obter URL em uso
-    //const domain = 'https://takeabite.store';
-    const domain = 'http://localhost:3000';
+    const domain = 'https://takeabite.store';
+    //const domain = 'http://localhost:3000';
     const successUrl = `${domain}/sucesso`;
     const cancelUrl = `${domain}/semSucesso`;
     console.log("successUrl: ", successUrl);
